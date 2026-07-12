@@ -38,6 +38,21 @@ Create `content/work/<slug>.mdx`. Frontmatter fields:
 The chat endpoint reads the same MDX files, so new case studies become
 askable automatically.
 
+## Message in a bottle (home hero)
+
+Visitors open a drifting bottle, read the previous visitor's note, and
+leave one back (pastel paper, ASCII signature icon, optional name).
+`/api/bottle` moderates submissions with Claude (falls back to link and
+gibberish checks without a key; fails closed on API errors) — rejected
+notes are stored unapproved and the next visitor gets the preset note in
+`src/lib/bottle.ts` instead.
+
+**Storage is a local JSON file (`data/bottle.json`).** That works in dev
+and on any persistent host, but NOT on Vercel serverless, where disk is
+ephemeral. Before deploying, swap the read/write internals of
+`src/lib/bottle.ts` for a real store (Supabase, Vercel KV, etc.) — the
+API and UI won't need to change.
+
 ## Still open (Phase 1 spec, section 5)
 
 - Real content for UMi, DPSS, AgentMail (placeholder files exist).
