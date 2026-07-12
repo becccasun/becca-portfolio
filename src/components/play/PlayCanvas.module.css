@@ -1,0 +1,82 @@
+.viewport {
+  position: relative;
+  height: calc(100vh - 64px);
+  overflow: hidden;
+  border-top: 1px solid var(--border);
+  background: var(--bg);
+  touch-action: none;
+  user-select: none;
+}
+
+.world {
+  position: absolute;
+  top: 0;
+  left: 0;
+  will-change: transform;
+}
+
+.tile {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.item {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+}
+
+.item img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--r-md);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  transition: border-color 0.25s var(--ease-out),
+    box-shadow 0.4s var(--ease-out);
+}
+
+.item:hover img {
+  border-color: var(--accent);
+}
+
+.itemMeta {
+  font-size: var(--fs-small);
+  color: var(--text-muted);
+}
+
+/* Landing state after "I'm feeling lucky": accent ring, no pulsing. */
+.lucky img {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.luckyBar {
+  position: absolute;
+  bottom: var(--s-8);
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.luckyBtn {
+  pointer-events: auto;
+  font-size: var(--fs-small);
+  font-weight: 500;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  padding: var(--s-3) var(--s-6);
+  box-shadow: 0 1px 3px rgba(26, 26, 31, 0.08);
+  transition: border-color 0.2s var(--ease-out), color 0.2s var(--ease-out);
+}
+
+.luckyBtn:hover {
+  border-color: var(--accent);
+  color: var(--accent-press);
+}

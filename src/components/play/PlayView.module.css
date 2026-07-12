@@ -1,0 +1,42 @@
+.page {
+  padding-top: var(--s-16);
+}
+
+.head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--s-6);
+  padding-bottom: var(--s-8);
+}
+
+.title {
+  font-size: var(--fs-display);
+  line-height: 1.05;
+  margin-top: var(--s-4);
+}
+
+.toggle {
+  display: flex;
+  gap: var(--s-6);
+  border-bottom: 1px solid var(--border);
+}
+
+.toggleBtn {
+  font-size: var(--fs-small);
+  font-weight: 500;
+  color: var(--text-muted);
+  padding: var(--s-2) 0;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: color 0.2s var(--ease-out), border-color 0.2s var(--ease-out);
+}
+
+.toggleBtn:hover {
+  color: var(--text);
+}
+
+.toggleActive {
+  color: var(--accent-press);
+  border-bottom-color: var(--accent);
+}
