@@ -5,11 +5,9 @@ import { SITE } from "@/lib/site";
 import styles from "./Hero.module.css";
 
 const PHOTOS = ["/hero/photo-1.svg", "/hero/photo-2.svg", "/hero/photo-3.svg"];
-const PHRASES = ["systems thinking.", "product strategy.", "visual craft."];
 
 export default function Hero() {
   const [index, setIndex] = useState(0);
-  const [phrase, setPhrase] = useState(0);
 
   useEffect(() => {
     const reduced = window.matchMedia(
@@ -19,26 +17,20 @@ export default function Hero() {
     const t = setInterval(() => {
       setIndex((i) => (i + 1) % PHOTOS.length);
     }, 3500);
-    const p = setInterval(() => {
-      setPhrase((i) => (i + 1) % PHRASES.length);
-    }, 2600);
-    return () => {
-      clearInterval(t);
-      clearInterval(p);
-    };
+    return () => clearInterval(t);
   }, []);
 
   return (
     <section className={`container ${styles.hero}`}>
       <div className={styles.copy}>
         <h1 className={`serif ${styles.title}`}>
-          I design and build beautiful products with
-          <br />
-          <span key={phrase} className={styles.rotator}>
-            {PHRASES[phrase]}
-          </span>
+          I design and build beautiful experiences with systems thinking,
+          product strategy, and visual craft.
         </h1>
-        <p className={styles.positioning}>{SITE.tagline}</p>
+        <div className={styles.positioning}>
+          <p>Product design at Loop Financial</p>
+          <p>Studying UX and AI at the University of Michigan</p>
+        </div>
         <div className={styles.actions}>
           <a href="#work" className="link">
             See selected work
