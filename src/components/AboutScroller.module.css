@@ -74,6 +74,12 @@
   line-height: 1.05;
 }
 
+.subtext {
+  font-size: var(--fs-h3);
+  color: var(--text-muted);
+  max-width: 34ch;
+}
+
 .scrollHint {
   font-size: var(--fs-small);
   color: var(--text-muted);

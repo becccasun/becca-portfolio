@@ -14,18 +14,17 @@
   height: 10px;
   border-radius: 50%;
   background: var(--text);
-  transform: translate(-50%, -50%);
-  transition: width 0.25s var(--ease-out), height 0.25s var(--ease-out),
-    background 0.25s var(--ease-out);
+  transform: translate(-50%, -50%) scale(1);
+  transform-origin: center;
+  transition: transform 0.3s var(--ease-out), background 0.3s var(--ease-out);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-/* Hover: color does the heavy lifting; growth stays subtle. */
+/* Hover: the expansion animates via scale; color does the heavy lifting. */
 .grown {
-  width: 16px;
-  height: 16px;
+  transform: translate(-50%, -50%) scale(1.6);
   background: var(--accent);
 }
 
@@ -35,6 +34,19 @@
   padding: 6px 12px;
   border-radius: var(--r-lg);
   background: var(--accent);
+  transform: translate(-50%, -50%) scale(1);
+  animation: labelIn 0.3s var(--ease-out);
+}
+
+@keyframes labelIn {
+  from {
+    transform: translate(-50%, -50%) scale(0.5);
+    opacity: 0.4;
+  }
+  to {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
 }
 
 .label {

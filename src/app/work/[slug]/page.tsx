@@ -52,14 +52,11 @@ export default async function CaseStudyPage({
   return (
     <article className={`container ${styles.page}`}>
       <header className={styles.head}>
-        <p className="eyebrow">
-          {meta.year} · {meta.role}
-        </p>
         <h1 className={`serif ${styles.title}`}>{meta.title}</h1>
         <p className={styles.subtitle}>{meta.subtitle}</p>
-        {meta.tags.length > 0 && (
-          <p className={styles.tags}>{meta.tags.join(" · ")}</p>
-        )}
+        <p className={styles.tags}>
+          {[`${meta.year} · ${meta.role}`, ...meta.tags].join(" · ")}
+        </p>
       </header>
 
       <div className={styles.layout}>

@@ -32,8 +32,9 @@ export default function PlayView() {
       {view === "grid" ? (
         <>
           <header className={`container ${styles.head}`}>
-            <p className="eyebrow">Play</p>
-            <h1 className={`serif ${styles.title}`}>Made for fun</h1>
+            <h1 className={`serif ${styles.title}`}>
+              Playing and experimenting with new ideas.
+            </h1>
           </header>
           <PlayGrid />
         </>

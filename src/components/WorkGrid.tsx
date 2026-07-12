@@ -9,12 +9,15 @@ import styles from "./WorkGrid.module.css";
 export default function WorkGrid({
   items,
   showSecondary = true,
+  flat = false,
 }: {
   items: WorkMeta[];
   showSecondary?: boolean;
+  /** Render every item as a tile, ignoring tiers (used by the archive). */
+  flat?: boolean;
 }) {
-  const primary = items.filter((w) => w.tier === 1);
-  const secondary = items.filter((w) => w.tier === 2);
+  const primary = flat ? items : items.filter((w) => w.tier === 1);
+  const secondary = flat ? [] : items.filter((w) => w.tier === 2);
 
   return (
     <div className={styles.wrap}>

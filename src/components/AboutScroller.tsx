@@ -82,12 +82,10 @@ export default function AboutScroller() {
       <div className={styles.viewport}>
         <div ref={trackRef} className={styles.track}>
           <section className={styles.frame}>
-            <p className="eyebrow">About</p>
-            <h1 className={`serif ${styles.title}`}>
-              Design and engineering,
-              <br />
-              same person.
-            </h1>
+            <h1 className={`serif ${styles.title}`}>About Me</h1>
+            <p className={styles.subtext}>
+              Get a glimpse into the way I design, build, and grow.
+            </p>
             <p className={styles.scrollHint} aria-hidden="true">
               Keep scrolling
             </p>

@@ -4,6 +4,15 @@ import matter from "gray-matter";
 
 export type WorkSection = { id: string; title: string };
 
+export const WORK_CATEGORIES = [
+  { id: "personal", label: "Personal projects" },
+  { id: "client", label: "Contract & client work" },
+  { id: "hackathons", label: "Hackathons" },
+  { id: "sprints", label: "Design sprints" },
+] as const;
+
+export type WorkCategory = (typeof WORK_CATEGORIES)[number]["id"];
+
 export type WorkMeta = {
   slug: string;
   title: string;
@@ -13,6 +22,7 @@ export type WorkMeta = {
   tags: string[];
   tier: 1 | 2;
   order: number;
+  category: WorkCategory;
   cover?: string;
   sections: WorkSection[];
 };
@@ -34,6 +44,7 @@ export function getAllWork(): WorkMeta[] {
       tags: data.tags ?? [],
       tier: (data.tier ?? 2) as 1 | 2,
       order: data.order ?? 99,
+      category: (data.category ?? "personal") as WorkCategory,
       cover: data.cover,
       sections: data.sections ?? [],
     };
@@ -56,6 +67,7 @@ export function getWork(slug: string): { meta: WorkMeta; content: string } | nul
       tags: data.tags ?? [],
       tier: (data.tier ?? 2) as 1 | 2,
       order: data.order ?? 99,
+      category: (data.category ?? "personal") as WorkCategory,
       cover: data.cover,
       sections: data.sections ?? [],
     },

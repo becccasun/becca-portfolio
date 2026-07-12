@@ -7,6 +7,8 @@ import styles from "./PlayGallery.module.css";
 const WALLS: (0 | 1 | 2 | 3)[] = [0, 1, 2, 3];
 const DEG = 180 / Math.PI;
 const PITCH_LIMIT = 32;
+const PERSP = 760;
+const LUCKY_ZOOM = 1.7;
 
 /**
  * A first-person gallery room built from CSS 3D planes: four walls, a
@@ -17,10 +19,12 @@ const PITCH_LIMIT = 32;
  */
 export default function PlayGallery() {
   const worldRef = useRef<HTMLDivElement>(null);
+  const sceneRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
-  // current follows target with damping for a weighty, settled feel
-  const target = useRef({ yaw: 0, pitch: 0 });
-  const current = useRef({ yaw: 0, pitch: 0 });
+  // current follows target with damping for a weighty, settled feel;
+  // zoom scales the perspective distance, narrowing the FOV like a dolly-in
+  const target = useRef({ yaw: 0, pitch: 0, zoom: 1 });
+  const current = useRef({ yaw: 0, pitch: 0, zoom: 1 });
   const dragged = useRef(false);
   const [luckyId, setLuckyId] = useState<string | null>(null);
 
@@ -36,8 +40,13 @@ export default function PlayGallery() {
       const t = target.current;
       c.yaw += (t.yaw - c.yaw) * 0.1;
       c.pitch += (t.pitch - c.pitch) * 0.1;
+      c.zoom += (t.zoom - c.zoom) * 0.06;
+      const persp = PERSP * c.zoom;
+      if (sceneRef.current) {
+        sceneRef.current.style.perspective = `${persp}px`;
+      }
       if (worldRef.current) {
-        worldRef.current.style.transform = `translateZ(var(--persp)) rotateX(${c.pitch}deg) rotateY(${c.yaw}deg)`;
+        worldRef.current.style.transform = `translateZ(${persp}px) rotateX(${c.pitch}deg) rotateY(${c.yaw}deg)`;
       }
       raf = requestAnimationFrame(tick);
     };
@@ -60,6 +69,7 @@ export default function PlayGallery() {
       last = { x: e.clientX, y: e.clientY };
       target.current.yaw += dx * 0.14;
       target.current.pitch = clampPitch(target.current.pitch - dy * 0.1);
+      target.current.zoom = 1;
     };
     const up = () => {
       panning = false;
@@ -67,6 +77,7 @@ export default function PlayGallery() {
     const wheel = (e: WheelEvent) => {
       e.preventDefault();
       target.current.yaw += e.deltaX * 0.08 + e.deltaY * 0.08;
+      target.current.zoom = 1;
     };
     // A drag should turn the camera, not follow the link under it.
     const click = (e: MouseEvent) => {
@@ -114,8 +125,8 @@ export default function PlayGallery() {
     const reduced = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
     ).matches;
-    target.current = { yaw, pitch };
-    if (reduced) current.current = { yaw, pitch };
+    target.current = { yaw, pitch, zoom: LUCKY_ZOOM };
+    if (reduced) current.current = { yaw, pitch, zoom: LUCKY_ZOOM };
 
     setLuckyId(null);
     window.setTimeout(() => setLuckyId(item.id), reduced ? 50 : 700);
@@ -123,13 +134,17 @@ export default function PlayGallery() {
 
   useEffect(() => {
     if (!luckyId) return;
-    const t = setTimeout(() => setLuckyId(null), 2000);
+    // Hold on the piece, then ease the zoom back out.
+    const t = setTimeout(() => {
+      setLuckyId(null);
+      target.current.zoom = 1;
+    }, 2600);
     return () => clearTimeout(t);
   }, [luckyId]);
 
   return (
     <div className={styles.viewport} ref={viewportRef} data-cursor>
-      <div className={styles.scene}>
+      <div className={styles.scene} ref={sceneRef}>
         <div className={styles.world} ref={worldRef}>
           {WALLS.map((wall) => (
             <div
