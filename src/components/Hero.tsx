@@ -23,11 +23,9 @@ export default function Hero() {
   return (
     <section className={`container ${styles.hero}`}>
       <div className={styles.copy}>
-        <p className="eyebrow">Design engineer · Ann Arbor, MI</p>
         <h1 className={`serif ${styles.title}`}>
-          I design interfaces,
-          <br />
-          then I build them.
+          I design &amp; build 0 to 1 products with systems thinking, product
+          strategy, and visual craft.
         </h1>
         <p className={styles.positioning}>{SITE.tagline}</p>
         <div className={styles.actions}>
