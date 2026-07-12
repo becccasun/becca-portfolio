@@ -2,16 +2,15 @@
 
 import { useState } from "react";
 import PlayGrid from "./PlayGrid";
-import PlayCanvas from "./PlayCanvas";
+import PlayGallery from "./PlayGallery";
 import styles from "./PlayView.module.css";
 
 /**
  * Play has two views: a grid of linked pieces (rachelchen.tech/fun) and
- * an infinite canvas with an "I'm feeling lucky" picker (emmiwu.com/playground
- * meets the Google homepage).
+ * a first-person 3D gallery room with an "I'm feeling lucky" picker.
  */
 export default function PlayView() {
-  const [view, setView] = useState<"grid" | "canvas">("grid");
+  const [view, setView] = useState<"grid" | "gallery">("grid");
 
   return (
     <div className={styles.page}>
@@ -33,18 +32,18 @@ export default function PlayView() {
           </button>
           <button
             role="tab"
-            aria-selected={view === "canvas"}
+            aria-selected={view === "gallery"}
             className={`${styles.toggleBtn} ${
-              view === "canvas" ? styles.toggleActive : ""
+              view === "gallery" ? styles.toggleActive : ""
             }`}
-            onClick={() => setView("canvas")}
+            onClick={() => setView("gallery")}
           >
-            Canvas
+            Gallery
           </button>
         </div>
       </header>
 
-      {view === "grid" ? <PlayGrid /> : <PlayCanvas />}
+      {view === "grid" ? <PlayGrid /> : <PlayGallery />}
     </div>
   );
 }
