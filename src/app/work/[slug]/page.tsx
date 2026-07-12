@@ -50,18 +50,24 @@ export default async function CaseStudyPage({
   const { meta, content } = work;
 
   return (
-    <article className={`container ${styles.page}`}>
-      <header className={styles.head}>
-        <h1 className={`serif ${styles.title}`}>{meta.title}</h1>
-        <p className={styles.subtitle}>{meta.subtitle}</p>
-        <p className={styles.tags}>
-          {[`${meta.year} · ${meta.role}`, ...meta.tags].join(" · ")}
-        </p>
-      </header>
+    <article className={styles.page}>
+      <div className={styles.hero}>
+        {meta.cover && (
+          /* eslint-disable-next-line @next/next/no-img-element */
+          <img src={meta.cover} alt="" className={styles.heroImage} />
+        )}
+      </div>
 
-      <div className={styles.layout}>
+      <div className={`container ${styles.layout}`}>
         <Toc sections={meta.sections} />
         <div className={styles.body}>
+          <header className={styles.head}>
+            <h1 className={`serif ${styles.title}`}>{meta.title}</h1>
+            <p className={styles.subtitle}>{meta.subtitle}</p>
+            <p className={styles.tags}>
+              {[`${meta.year} · ${meta.role}`, ...meta.tags].join(" · ")}
+            </p>
+          </header>
           <MDXRemote source={content} components={mdxComponents} />
         </div>
       </div>

@@ -8,9 +8,8 @@
 }
 
 .title {
-  font-size: var(--fs-display);
-  line-height: 1.05;
-  margin-top: var(--s-4);
+  font-size: var(--fs-title);
+  line-height: 1.1;
 }
 
 /* Floating view switcher: fixed so it survives any scroll or takeover. */

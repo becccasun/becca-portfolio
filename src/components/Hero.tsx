@@ -5,9 +5,11 @@ import { SITE } from "@/lib/site";
 import styles from "./Hero.module.css";
 
 const PHOTOS = ["/hero/photo-1.svg", "/hero/photo-2.svg", "/hero/photo-3.svg"];
+const PHRASES = ["systems thinking.", "product strategy.", "visual craft."];
 
 export default function Hero() {
   const [index, setIndex] = useState(0);
+  const [phrase, setPhrase] = useState(0);
 
   useEffect(() => {
     const reduced = window.matchMedia(
@@ -17,15 +19,24 @@ export default function Hero() {
     const t = setInterval(() => {
       setIndex((i) => (i + 1) % PHOTOS.length);
     }, 3500);
-    return () => clearInterval(t);
+    const p = setInterval(() => {
+      setPhrase((i) => (i + 1) % PHRASES.length);
+    }, 2600);
+    return () => {
+      clearInterval(t);
+      clearInterval(p);
+    };
   }, []);
 
   return (
     <section className={`container ${styles.hero}`}>
       <div className={styles.copy}>
         <h1 className={`serif ${styles.title}`}>
-          I design &amp; build 0 to 1 products with systems thinking, product
-          strategy, and visual craft.
+          I design and build beautiful products with
+          <br />
+          <span key={phrase} className={styles.rotator}>
+            {PHRASES[phrase]}
+          </span>
         </h1>
         <p className={styles.positioning}>{SITE.tagline}</p>
         <div className={styles.actions}>

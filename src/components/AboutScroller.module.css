@@ -70,8 +70,8 @@
 /* Frame content */
 
 .title {
-  font-size: var(--fs-display);
-  line-height: 1.05;
+  font-size: var(--fs-title);
+  line-height: 1.1;
 }
 
 .subtext {
