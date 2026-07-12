@@ -9,9 +9,9 @@
   --text: #1a1a1f;
   --text-muted: #6b6b76;
   --border: #e6e6ec;
-  --accent: #7c5cff;
-  --accent-soft: #ede9ff;
-  --accent-press: #5b3fe0;
+  --accent: #3d82ff;
+  --accent-soft: #e7efff;
+  --accent-press: #1e5ad6;
 
   /* type scale (fluid) */
   --fs-display: clamp(3.5rem, 2.4rem + 4vw, 5rem);
