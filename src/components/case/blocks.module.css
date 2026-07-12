@@ -82,7 +82,10 @@
   gap: var(--s-3);
 }
 
-.pullquote p {
+.quoteText,
+.quoteText :global(p) {
+  font-family: var(--font-instrument), Georgia, serif;
+  font-weight: 400;
   font-size: var(--fs-h2);
   line-height: 1.25;
 }

@@ -103,7 +103,7 @@ export function PullQuote({
 }) {
   return (
     <blockquote className={styles.pullquote}>
-      <p className="serif">{children}</p>
+      <div className={styles.quoteText}>{children}</div>
       {attribution && <cite>{attribution}</cite>}
     </blockquote>
   );
