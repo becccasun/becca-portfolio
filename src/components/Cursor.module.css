@@ -1,0 +1,44 @@
+.cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 200;
+  pointer-events: none;
+}
+
+.dot {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--text);
+  transform: translate(-50%, -50%);
+  transition: width 0.25s var(--ease-out), height 0.25s var(--ease-out),
+    background 0.25s var(--ease-out);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.grown {
+  width: 40px;
+  height: 40px;
+  background: var(--accent);
+}
+
+.labeled {
+  width: auto;
+  height: auto;
+  padding: 6px 12px;
+  border-radius: var(--r-lg);
+  background: var(--accent);
+}
+
+.label {
+  font-size: var(--fs-eyebrow);
+  font-weight: 600;
+  color: #fff;
+  white-space: nowrap;
+}

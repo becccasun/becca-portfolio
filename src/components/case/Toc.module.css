@@ -1,0 +1,38 @@
+.toc {
+  position: sticky;
+  top: 96px;
+  align-self: start;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+}
+
+.list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+}
+
+.entry {
+  font-size: var(--fs-small);
+  font-weight: 500;
+  color: var(--text-muted);
+  transition: color 0.2s var(--ease-out);
+  display: block;
+  padding: var(--s-1) 0;
+}
+
+.entry:hover {
+  color: var(--text);
+}
+
+.active {
+  color: var(--accent-press);
+}
+
+@media (max-width: 960px) {
+  .toc {
+    display: none;
+  }
+}
