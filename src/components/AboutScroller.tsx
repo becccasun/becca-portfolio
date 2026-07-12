@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { SITE } from "@/lib/site";
+import { SITE, TIMELINE } from "@/lib/site";
 import styles from "./AboutScroller.module.css";
 
 /**
@@ -127,6 +127,34 @@ export default function AboutScroller() {
               , and previously with DPSS, AgentMail, and Nezha. The details
               live in the case studies.
             </p>
+          </section>
+
+          <section className={`${styles.frame} ${styles.experienceFrame}`}>
+            <p className="eyebrow">Experience</p>
+            <ol className={styles.timeline}>
+              {TIMELINE.map((entry) => {
+                const inner = (
+                  <>
+                    <span className={styles.tDate}>{entry.date}</span>
+                    <span className={styles.tText}>
+                      <span className={styles.tTitle}>{entry.title}</span>
+                      <span className={styles.tDetail}>{entry.detail}</span>
+                    </span>
+                  </>
+                );
+                return (
+                  <li key={`${entry.title}-${entry.date}`}>
+                    {entry.href ? (
+                      <a href={entry.href} className={styles.tRow}>
+                        {inner}
+                      </a>
+                    ) : (
+                      <div className={styles.tRow}>{inner}</div>
+                    )}
+                  </li>
+                );
+              })}
+            </ol>
           </section>
 
           <section className={styles.frame}>

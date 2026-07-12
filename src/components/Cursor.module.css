@@ -22,9 +22,10 @@
   justify-content: center;
 }
 
+/* Hover: color does the heavy lifting; growth stays subtle. */
 .grown {
-  width: 40px;
-  height: 40px;
+  width: 16px;
+  height: 16px;
   background: var(--accent);
 }
 

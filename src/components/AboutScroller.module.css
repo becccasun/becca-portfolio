@@ -122,6 +122,52 @@ a.accented:hover {
   line-height: 1.1;
 }
 
+/* Experience frame */
+
+.isHorizontal .experienceFrame {
+  width: min(720px, 50vw);
+}
+
+.timeline {
+  list-style: none;
+  border-top: 1px solid var(--border);
+}
+
+.tRow {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: var(--s-4);
+  align-items: baseline;
+  padding: var(--s-3) 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.tDate {
+  font-size: var(--fs-small);
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.tText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.tTitle {
+  font-weight: 600;
+  transition: color 0.2s var(--ease-out);
+}
+
+a.tRow:hover .tTitle {
+  color: var(--accent-press);
+}
+
+.tDetail {
+  font-size: var(--fs-small);
+  color: var(--text-muted);
+}
+
 @media (max-width: 899px) {
   .photo {
     max-width: 420px;

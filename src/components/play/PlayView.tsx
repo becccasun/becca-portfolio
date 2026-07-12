@@ -1,49 +1,68 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PlayGrid from "./PlayGrid";
 import PlayGallery from "./PlayGallery";
 import styles from "./PlayView.module.css";
 
 /**
  * Play has two views: a grid of linked pieces (rachelchen.tech/fun) and
- * a first-person 3D gallery room with an "I'm feeling lucky" picker.
+ * a first-person 3D gallery room. The switcher floats fixed on screen so
+ * it stays reachable even when the gallery owns the scroll. Gallery mode
+ * takes the full viewport and hides the site footer (via a body
+ * attribute globals.css watches) so the room is the whole page.
  */
 export default function PlayView() {
   const [view, setView] = useState<"grid" | "gallery">("grid");
 
+  useEffect(() => {
+    if (view === "gallery") {
+      document.body.dataset.playView = "gallery";
+      window.scrollTo(0, 0);
+    } else {
+      delete document.body.dataset.playView;
+    }
+    return () => {
+      delete document.body.dataset.playView;
+    };
+  }, [view]);
+
   return (
     <div className={styles.page}>
-      <header className={`container ${styles.head}`}>
-        <div>
-          <p className="eyebrow">Play</p>
-          <h1 className={`serif ${styles.title}`}>Made for fun</h1>
-        </div>
-        <div className={styles.toggle} role="tablist" aria-label="Play view">
-          <button
-            role="tab"
-            aria-selected={view === "grid"}
-            className={`${styles.toggleBtn} ${
-              view === "grid" ? styles.toggleActive : ""
-            }`}
-            onClick={() => setView("grid")}
-          >
-            Grid
-          </button>
-          <button
-            role="tab"
-            aria-selected={view === "gallery"}
-            className={`${styles.toggleBtn} ${
-              view === "gallery" ? styles.toggleActive : ""
-            }`}
-            onClick={() => setView("gallery")}
-          >
-            Gallery
-          </button>
-        </div>
-      </header>
+      {view === "grid" ? (
+        <>
+          <header className={`container ${styles.head}`}>
+            <p className="eyebrow">Play</p>
+            <h1 className={`serif ${styles.title}`}>Made for fun</h1>
+          </header>
+          <PlayGrid />
+        </>
+      ) : (
+        <PlayGallery />
+      )}
 
-      {view === "grid" ? <PlayGrid /> : <PlayGallery />}
+      <div className={styles.switcher} role="tablist" aria-label="Play view">
+        <button
+          role="tab"
+          aria-selected={view === "grid"}
+          className={`${styles.switchBtn} ${
+            view === "grid" ? styles.switchActive : ""
+          }`}
+          onClick={() => setView("grid")}
+        >
+          Grid
+        </button>
+        <button
+          role="tab"
+          aria-selected={view === "gallery"}
+          className={`${styles.switchBtn} ${
+            view === "gallery" ? styles.switchActive : ""
+          }`}
+          onClick={() => setView("gallery")}
+        >
+          Gallery
+        </button>
+      </div>
     </div>
   );
 }

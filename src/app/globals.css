@@ -142,6 +142,11 @@ button {
   text-decoration-color: var(--accent);
 }
 
+/* Gallery view owns the whole viewport; no footer, no page scroll. */
+body[data-play-view="gallery"] footer {
+  display: none;
+}
+
 /* screen-reader only */
 .sr-only {
   position: absolute;
