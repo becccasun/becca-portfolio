@@ -1,8 +1,28 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-16);
+  padding-bottom: var(--s-16);
+}
+
+.group {
+  scroll-margin-top: 96px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-8);
+}
+
+.groupTitle {
+  font-size: var(--fs-h3);
+  font-weight: 600;
+  padding-bottom: var(--s-4);
+  border-bottom: 1px solid var(--border);
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: var(--s-8);
-  padding-bottom: var(--s-16);
 }
 
 .tile {

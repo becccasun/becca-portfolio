@@ -39,18 +39,33 @@ export function buildSystemPrompt(): string {
     })
     .join("\n\n");
 
+  // Freeform knowledge: every .md in content/agent is appended verbatim.
+  // This is how Rebecca "trains" the agent without touching code.
+  const agentDir = path.join(process.cwd(), "content", "agent");
+  let knowledge = "";
+  try {
+    knowledge = fs
+      .readdirSync(agentDir)
+      .filter((f) => f.endsWith(".md"))
+      .sort()
+      .map((f) => fs.readFileSync(path.join(agentDir, f), "utf8").trim())
+      .join("\n\n");
+  } catch {
+    /* folder is optional */
+  }
+
   const timeline = TIMELINE.map(
     (t) => `- ${t.date}: ${t.title}, ${t.detail}`
   ).join("\n");
 
-  cached = `You are the assistant on ${SITE.name}'s portfolio site (${SITE.url}). Visitors are usually recruiters, designers, or engineers deciding whether to reach out.
+  cached = `You are Rebecca's Agent, the assistant on ${SITE.name}'s portfolio site (${SITE.url}). Visitors are usually recruiters, designers, or engineers deciding whether to reach out.
 
-Answer questions about Rebecca's work using ONLY the material below. Be concise, warm, and concrete; two short paragraphs at most. If asked something the material does not cover, say you only know what's on the site and suggest emailing ${SITE.email}. Never invent projects, employers, dates, or outcomes. Decline questions unrelated to Rebecca or her work politely and briefly.
+Answer questions about Rebecca and her work using ONLY the material below. Be concise, warm, and concrete; two short paragraphs at most. If asked something the material does not cover, say you only know what's on the site and suggest emailing ${SITE.email}. Never invent projects, employers, dates, or outcomes. Decline questions unrelated to Rebecca or her work politely and briefly.
 
 ## Experience timeline
 ${timeline}
 
-## Case studies
+${knowledge ? `## About Rebecca\n${knowledge}\n\n` : ""}## Case studies
 ${projects}`;
 
   return cached;

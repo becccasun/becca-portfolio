@@ -8,9 +8,16 @@
   scroll-margin-top: 64px;
 }
 
+/* invisible until the first frame renders, then eases in */
 .canvas {
   position: absolute;
   inset: 0;
+  opacity: 0;
+  transition: opacity 0.9s var(--ease-out);
+}
+
+.canvasReady {
+  opacity: 1;
 }
 
 .canvas canvas {

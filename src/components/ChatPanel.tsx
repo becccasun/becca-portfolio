@@ -91,7 +91,9 @@ export default function ChatPanel() {
       >
         <header className={styles.head}>
           <div>
-            <h2 className={`serif ${styles.title}`}>Ask about my work</h2>
+            <h2 className={`serif ${styles.title}`}>
+              Rebecca&apos;s Agent <span aria-hidden="true">ᯓ★</span>
+            </h2>
             <p className={styles.hint}>
               Answers are grounded in the case studies on this site.
             </p>

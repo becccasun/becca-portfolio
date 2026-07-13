@@ -42,7 +42,7 @@ export default function Nav() {
           onClick={() => window.dispatchEvent(new CustomEvent("chat:open"))}
           data-cursor-label="Chat"
         >
-          Rebecca&apos;s Agent
+          Rebecca&apos;s Agent <span aria-hidden="true">ᯓ★</span>
         </button>
       </div>
     </header>

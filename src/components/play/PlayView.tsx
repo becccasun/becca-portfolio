@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import PlayGrid from "./PlayGrid";
 import PlayGallery from "./PlayGallery";
+import { PLAY_CATEGORIES, GRID_ORDER } from "@/lib/play";
 import styles from "./PlayView.module.css";
 
 /**
@@ -35,6 +36,20 @@ export default function PlayView() {
             <h1 className={`serif ${styles.title}`}>
               Playing and experimenting with new ideas.
             </h1>
+            <nav className={styles.shortcuts} aria-label="Play categories">
+              {GRID_ORDER.map((id) => {
+                const cat = PLAY_CATEGORIES.find((c) => c.id === id)!;
+                return (
+                  <a
+                    key={id}
+                    href={`#play-${id}`}
+                    className={styles.shortcut}
+                  >
+                    {cat.label}
+                  </a>
+                );
+              })}
+            </nav>
           </header>
           <PlayGrid />
         </>

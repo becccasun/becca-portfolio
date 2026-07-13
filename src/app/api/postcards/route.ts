@@ -22,7 +22,7 @@ const lastPost = new Map<string, number>();
 export async function GET() {
   // Presets always anchor the stream; visitor cards join newest-last.
   return NextResponse.json({
-    cards: [...PRESET_CARDS, ...listApprovedPostcards()],
+    cards: [...PRESET_CARDS, ...(await listApprovedPostcards())],
   });
 }
 
@@ -58,14 +58,21 @@ export async function POST(req: Request) {
   lastPost.set(ip, now);
 
   const approved = await moderateMessage(text, name);
-  appendPostcard({
-    id: crypto.randomUUID(),
-    design: { bg: design.bg, fg: design.fg, deco: design.deco },
-    text,
-    name,
-    approved,
-    createdAt: new Date().toISOString(),
-  });
+  try {
+    await appendPostcard({
+      id: crypto.randomUUID(),
+      design: { bg: design.bg, fg: design.fg, deco: design.deco },
+      text,
+      name,
+      approved,
+      createdAt: new Date().toISOString(),
+    });
+  } catch {
+    return NextResponse.json(
+      { error: "Could not save your postcard. Try again in a moment." },
+      { status: 500 }
+    );
+  }
 
   // Moderation outcome is intentionally not disclosed; unapproved cards
   // simply never enter the stream.

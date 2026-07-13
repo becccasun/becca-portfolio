@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { PLAY_ITEMS, ROOM } from "@/lib/play";
+import { PLAY_ITEMS, PLAY_CATEGORIES, ROOM } from "@/lib/play";
 import styles from "./PlayGallery.module.css";
 
 const WALLS: (0 | 1 | 2 | 3)[] = [0, 1, 2, 3];
@@ -156,6 +156,9 @@ export default function PlayGallery() {
                 }px)`,
               }}
             >
+              <span className={`serif ${styles.wallLabel}`}>
+                {PLAY_CATEGORIES.find((c) => c.wall === wall)?.label}
+              </span>
               {PLAY_ITEMS.filter((i) => i.wall === wall).map((item) => (
                 <a
                   key={item.id}
@@ -190,7 +193,7 @@ export default function PlayGallery() {
       </div>
 
       <p className={styles.hint} aria-hidden="true">
-        Drag to look around
+        Scroll and drag to look around
       </p>
       <div className={styles.luckyBar}>
         <button className={styles.luckyBtn} onClick={feelingLucky}>

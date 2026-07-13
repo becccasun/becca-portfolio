@@ -47,6 +47,7 @@ const HOLD_MS = 1100;
 export default function PostcardHero() {
   const mountRef = useRef<HTMLDivElement>(null);
   const [typed, setTyped] = useState("");
+  const [ready, setReady] = useState(false);
 
   // Typewriter: type a phrase, hold, delete, advance, loop forever.
   useEffect(() => {
@@ -205,6 +206,7 @@ export default function PostcardHero() {
       window.addEventListener("resize", onResize);
 
       const clock = new THREE.Clock();
+      let firstFrame = true;
       const animate = () => {
         if (disposed || !renderer) return;
         const dt = Math.min(clock.getDelta(), 0.05);
@@ -250,6 +252,10 @@ export default function PostcardHero() {
 
         mount.style.cursor = hovered ? "pointer" : "default";
         renderer.render(scene, camera);
+        if (firstFrame) {
+          firstFrame = false;
+          setReady(true);
+        }
         raf = requestAnimationFrame(animate);
       };
       animate();
@@ -275,7 +281,10 @@ export default function PostcardHero() {
 
   return (
     <section className={styles.hero} aria-label="Postcards">
-      <div ref={mountRef} className={styles.canvas} />
+      <div
+        ref={mountRef}
+        className={`${styles.canvas} ${ready ? styles.canvasReady : ""}`}
+      />
 
       <p
         className={styles.tagline}

@@ -5,6 +5,28 @@
 .head {
   padding-top: var(--s-16);
   padding-bottom: var(--s-8);
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s-8);
+  flex-wrap: wrap;
+}
+
+.shortcuts {
+  display: flex;
+  gap: var(--s-6);
+  flex-wrap: wrap;
+}
+
+.shortcut {
+  font-size: var(--fs-small);
+  font-weight: 500;
+  color: var(--text-muted);
+  transition: color 0.2s var(--ease-out);
+}
+
+.shortcut:hover {
+  color: var(--accent-press);
 }
 
 .title {
