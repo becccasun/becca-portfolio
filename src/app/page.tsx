@@ -1,5 +1,5 @@
 import Link from "next/link";
-import BottleHero from "@/components/bottle/BottleHero";
+import PostcardHero from "@/components/postcards/PostcardHero";
 import WorkGrid from "@/components/WorkGrid";
 import { getAllWork } from "@/lib/work";
 import styles from "./page.module.css";
@@ -9,7 +9,7 @@ export default function HomePage() {
 
   return (
     <>
-      <BottleHero />
+      <PostcardHero />
 
       <section id="work" className={`container ${styles.section}`}>
         <div className={styles.sectionHead}>
