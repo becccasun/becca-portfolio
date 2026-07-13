@@ -1,5 +1,10 @@
+/* Drawer: fixed beneath the page; main scrolls away to reveal it. */
 .footer {
-  margin-top: var(--s-32);
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 0;
   border-top: 1px solid var(--border);
   background: var(--surface);
 }

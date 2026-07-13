@@ -23,8 +23,6 @@ type CardState = {
   /** Invisible, never-rotating plane used for hover raycasts, so the
    *  hit area stays stable while the card itself flips. */
   hitPlane: THREE.Mesh;
-  /** Soft shadow plane behind the card. */
-  shadow: THREE.Mesh;
   baseOffset: number;
   flip: number;
   targetFlip: number;
@@ -106,30 +104,6 @@ export default function PostcardHero() {
       const hitGeometry = new THREE.PlaneGeometry(CARD_W, CARD_H);
       const hitMaterial = new THREE.MeshBasicMaterial({ visible: false });
 
-      // Soft drop shadow behind each card lifts the cream paper off
-      // the near-white page background.
-      const shadowCanvas = document.createElement("canvas");
-      shadowCanvas.width = 256;
-      shadowCanvas.height = 256;
-      {
-        const sctx = shadowCanvas.getContext("2d")!;
-        const grad = sctx.createRadialGradient(128, 128, 24, 128, 128, 128);
-        grad.addColorStop(0, "rgba(26, 26, 31, 0.4)");
-        grad.addColorStop(1, "rgba(26, 26, 31, 0)");
-        sctx.fillStyle = grad;
-        sctx.fillRect(0, 0, 256, 256);
-      }
-      const shadowTexture = new THREE.CanvasTexture(shadowCanvas);
-      const shadowGeometry = new THREE.PlaneGeometry(
-        CARD_W * 1.65,
-        CARD_H * 1.85
-      );
-      const shadowMaterial = new THREE.MeshBasicMaterial({
-        map: shadowTexture,
-        transparent: true,
-        depthWrite: false,
-      });
-
       const states: CardState[] = cards.map((card, i) => {
         const front = new THREE.MeshStandardMaterial({
           map: makeTexture((ctx, w, h) => drawPostcardFront(ctx, w, h, card.design)),
@@ -144,22 +118,17 @@ export default function PostcardHero() {
         // BoxGeometry material order: +x, -x, +y, -y, +z (front), -z (back)
         const mesh = new THREE.Mesh(geometry, [edge, edge, edge, edge, front, back]);
         const hitPlane = new THREE.Mesh(hitGeometry, hitMaterial);
-        const shadow = new THREE.Mesh(shadowGeometry, shadowMaterial);
         mesh.position.y = CARD_Y;
         hitPlane.position.y = CARD_Y;
-        shadow.position.set(0, CARD_Y - 0.22, -0.7);
-        shadow.renderOrder = -1;
         const state: CardState = {
           mesh,
           hitPlane,
-          shadow,
           baseOffset: i * SPACING,
           flip: 0,
           targetFlip: 0,
         };
         scene.add(mesh);
         scene.add(hitPlane);
-        scene.add(shadow);
         return state;
       });
 
@@ -216,7 +185,6 @@ export default function PostcardHero() {
             ((((s.baseOffset - scroll) % total) + total) % total) - total / 2;
           s.mesh.position.x = x;
           s.hitPlane.position.x = x;
-          s.shadow.position.x = x;
 
           s.targetFlip =
             s === hovered || (now < stickyUntil && s.flip > 0.1)

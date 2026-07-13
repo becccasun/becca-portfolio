@@ -144,9 +144,24 @@ button {
   text-decoration-color: var(--accent);
 }
 
+/* Main rides above the drawer footer; its bottom margin creates the
+   scroll distance that reveals the footer beneath. */
+main {
+  position: relative;
+  z-index: 1;
+  background: var(--bg);
+  min-height: calc(100vh - 64px);
+  margin-bottom: var(--footer-h, 0px);
+  box-shadow: 0 24px 32px -20px rgba(26, 26, 31, 0.18);
+}
+
 /* Gallery view owns the whole viewport; no footer, no page scroll. */
 body[data-play-view="gallery"] footer {
   display: none;
+}
+
+body[data-play-view="gallery"] main {
+  margin-bottom: 0;
 }
 
 /* screen-reader only */
