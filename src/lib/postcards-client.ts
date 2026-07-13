@@ -316,28 +316,36 @@ export function drawPostcardBack(
     ctx.stroke();
   }
 
-  // message, wrapped, on the left half
+  // message on the left half: wrap first, then center the block vertically
   ctx.fillStyle = INK;
   const size = u * 1.55;
+  const lineHeight = size * 1.35;
   ctx.font = `italic ${size}px Georgia, serif`;
   const maxWidth = w * 0.56 - u * 4;
   const words = text.split(/\s+/);
+  const lines: string[] = [];
   let line = "";
-  let y = u * 3.4;
   for (const word of words) {
     const attempt = line ? `${line} ${word}` : word;
     if (ctx.measureText(attempt).width > maxWidth && line) {
-      ctx.fillText(line, u * 2, y);
+      lines.push(line);
       line = word;
-      y += size * 1.35;
-      if (y > h - u * 5) break;
     } else {
       line = attempt;
     }
   }
-  if (y <= h - u * 5) ctx.fillText(line, u * 2, y);
+  if (line) lines.push(line);
+  const maxLines = Math.floor((h - u * 4) / lineHeight);
+  const shown = lines.slice(0, maxLines);
+  let y =
+    (h - shown.length * lineHeight) / 2 + size * 0.85;
+  for (const l of shown) {
+    ctx.fillText(l, u * 2, y);
+    y += lineHeight;
+  }
 
-  ctx.font = `${u * 1.2}px Georgia, serif`;
-  ctx.fillStyle = "rgba(43,43,51,0.65)";
-  ctx.fillText(`— ${name || "anonymous"}`, u * 2, h - u * 2.6);
+  // signature sits where the address would go, above the address lines
+  ctx.font = `italic ${u * 1.3}px Georgia, serif`;
+  ctx.fillStyle = "rgba(43,43,51,0.7)";
+  ctx.fillText(`— ${name || "anonymous"}`, w * 0.62, h * 0.55 - u * 1.2);
 }
