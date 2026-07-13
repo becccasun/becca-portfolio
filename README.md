@@ -38,20 +38,22 @@ Create `content/work/<slug>.mdx`. Frontmatter fields:
 The chat endpoint reads the same MDX files, so new case studies become
 askable automatically.
 
-## Message in a bottle (home hero)
+## Postcard stream (home hero)
 
-Visitors open a drifting bottle, read the previous visitor's note, and
-leave one back (pastel paper, ASCII signature icon, optional name).
-`/api/bottle` moderates submissions with Claude (falls back to link and
-gibberish checks without a key; fails closed on API errors) — rejected
-notes are stored unapproved and the next visitor gets the preset note in
-`src/lib/bottle.ts` instead.
+A Three.js stream of postcards drifts across the hero; hovering the
+card nearest center pauses the stream and flips it to its written back.
+Visitors design their own card at `/postcard` from preset components
+(background, foreground, decoration in `src/lib/postcards-client.ts`,
+which also holds the canvas renderers for both card faces and Rebecca's
+preset cards). `/api/postcards` moderates messages with Claude (link
+and gibberish checks without a key; fails closed on API errors) —
+rejected cards are stored unapproved and never enter the stream.
 
-**Storage is a local JSON file (`data/bottle.json`).** That works in dev
-and on any persistent host, but NOT on Vercel serverless, where disk is
-ephemeral. Before deploying, swap the read/write internals of
-`src/lib/bottle.ts` for a real store (Supabase, Vercel KV, etc.) — the
-API and UI won't need to change.
+**Storage is a local JSON file (`data/postcards.json`).** That works in
+dev and on any persistent host, but NOT on Vercel serverless, where
+disk is ephemeral. Before deploying, swap the read/write internals of
+`src/lib/postcards.ts` for a real store (Supabase, Vercel KV, etc.) —
+the API and UI won't need to change.
 
 ## Still open (Phase 1 spec, section 5)
 
