@@ -60,6 +60,10 @@
 
 html {
   scroll-behavior: smooth;
+  /* no rubber-band bounce past the footer drawer */
+  overscroll-behavior-y: none;
+  /* magnetic scroll: sections opt in with scroll-snap-align */
+  scroll-snap-type: y proximity;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -152,7 +156,6 @@ main {
   background: var(--bg);
   min-height: calc(100vh - 64px);
   margin-bottom: var(--footer-h, 0px);
-  box-shadow: 0 24px 32px -20px rgba(26, 26, 31, 0.18);
 }
 
 /* Gallery view owns the whole viewport; no footer, no page scroll. */

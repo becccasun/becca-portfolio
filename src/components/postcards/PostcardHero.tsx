@@ -13,10 +13,14 @@ import styles from "./PostcardHero.module.css";
 
 const CARD_W = 3.3;
 const CARD_H = 2.2;
-const SPACING = 4.1;
-const BASE_SPEED = 0.55; // world units per second
-const CARD_Y = 0.45; // one shared baseline for every card
+const ANG_SPACING = 0.46; // radians between cards along the arc
+const BASE_SPEED = 0.07; // radians per second
 const FLIP_EASE = 0.045; // slow, settled flip
+// Cards travel the upper arc of this ellipse. Its center sits well
+// below the viewport, so the visible path arches down toward the
+// bottom edges of the screen.
+const ARC = { cy: -5.4, rx: 8.6, ry: 5.9 };
+const HIDE_ANGLE = Math.PI * 0.55; // past this the card is around the bend
 
 type CardState = {
   mesh: THREE.Mesh;
@@ -118,12 +122,10 @@ export default function PostcardHero() {
         // BoxGeometry material order: +x, -x, +y, -y, +z (front), -z (back)
         const mesh = new THREE.Mesh(geometry, [edge, edge, edge, edge, front, back]);
         const hitPlane = new THREE.Mesh(hitGeometry, hitMaterial);
-        mesh.position.y = CARD_Y;
-        hitPlane.position.y = CARD_Y;
         const state: CardState = {
           mesh,
           hitPlane,
-          baseOffset: i * SPACING,
+          baseOffset: i * ANG_SPACING,
           flip: 0,
           targetFlip: 0,
         };
@@ -132,7 +134,7 @@ export default function PostcardHero() {
         return state;
       });
 
-      const total = states.length * SPACING;
+      const total = states.length * ANG_SPACING;
       const raycaster = new THREE.Raycaster();
       const pointer = new THREE.Vector2(-10, -10);
       let hovered: CardState | null = null;
@@ -181,10 +183,16 @@ export default function PostcardHero() {
         scroll += speed * dt;
 
         for (const s of states) {
-          const x =
+          // angle along the arc, wrapped around the full loop; 0 = apex
+          const a =
             ((((s.baseOffset - scroll) % total) + total) % total) - total / 2;
-          s.mesh.position.x = x;
-          s.hitPlane.position.x = x;
+          const onArc = Math.abs(a) < HIDE_ANGLE;
+          s.mesh.visible = onArc;
+          const x = ARC.rx * Math.sin(a);
+          const y = ARC.cy + ARC.ry * Math.cos(a);
+          s.mesh.position.set(x, y, 0);
+          // park the hit plane far away while its card is around the bend
+          s.hitPlane.position.set(x, onArc ? y : -100, 0);
 
           s.targetFlip =
             s === hovered || (now < stickyUntil && s.flip > 0.1)

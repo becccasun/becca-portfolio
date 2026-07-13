@@ -62,6 +62,14 @@ export default function Footer() {
             >
               GitHub
             </a>
+            <a
+              href="https://x.com/beqscreatives"
+              className="link"
+              target="_blank"
+              rel="noreferrer"
+            >
+              X
+            </a>
             <a href="/resume.pdf" className="link">
               Resume
             </a>
