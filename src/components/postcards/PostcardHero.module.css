@@ -18,39 +18,38 @@
 .overlay {
   position: absolute;
   left: 50%;
-  bottom: 16%;
+  bottom: 14%;
   transform: translateX(-50%);
-  width: min(760px, calc(100% - var(--s-12)));
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--s-6);
-  text-align: center;
+  justify-content: center;
   pointer-events: none;
 }
 
-.identity {
-  font-size: clamp(1.6rem, 1.2rem + 1.6vw, 2.4rem);
-  line-height: 1.25;
-  text-wrap: balance;
-}
-
+/* Bare text + hexagon arrow, no button chrome. */
 .cta {
   pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: var(--s-4);
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
   font-size: var(--fs-small);
-  font-weight: 600;
-  color: var(--accent-press);
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: var(--r-sm);
-  padding: var(--s-3) var(--s-6);
-  box-shadow: 0 1px 3px rgba(26, 26, 31, 0.08);
-  transition: border-color 0.2s var(--ease-out), background 0.2s var(--ease-out);
+  letter-spacing: 0.02em;
+  color: var(--text);
+  transition: color 0.2s var(--ease-out);
+}
+
+.ctaHex {
+  color: var(--text-muted);
+  transition: color 0.2s var(--ease-out), transform 0.3s var(--ease-out);
 }
 
 .cta:hover {
-  border-color: var(--accent);
-  background: var(--accent-soft);
+  color: var(--accent-press);
+}
+
+.cta:hover .ctaHex {
+  color: var(--accent);
+  transform: translate(2px, -2px);
 }
 
 .corner {

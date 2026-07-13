@@ -15,16 +15,17 @@ const CARD_W = 3.3;
 const CARD_H = 2.2;
 const SPACING = 4.1;
 const BASE_SPEED = 0.55; // world units per second
-const CENTER_ZONE = 1.7; // |x| within which a hovered card flips
+const CARD_Y = 0.45; // one shared baseline for every card
+const FLIP_EASE = 0.045; // slow, settled flip
 
 type CardState = {
   mesh: THREE.Mesh;
+  /** Invisible, never-rotating plane used for hover raycasts, so the
+   *  hit area stays stable while the card itself flips. */
+  hitPlane: THREE.Mesh;
   baseOffset: number;
-  baseY: number;
-  baseRotZ: number;
   flip: number;
   targetFlip: number;
-  phase: number;
 };
 
 /**
@@ -103,6 +104,8 @@ export default function PostcardHero() {
 
       const geometry = new THREE.BoxGeometry(CARD_W, CARD_H, 0.03);
       const edge = new THREE.MeshStandardMaterial({ color: 0xf2efe6 });
+      const hitGeometry = new THREE.PlaneGeometry(CARD_W, CARD_H);
+      const hitMaterial = new THREE.MeshBasicMaterial({ visible: false });
 
       const states: CardState[] = cards.map((card, i) => {
         const front = new THREE.MeshStandardMaterial({
@@ -118,16 +121,18 @@ export default function PostcardHero() {
         });
         // BoxGeometry material order: +x, -x, +y, -y, +z (front), -z (back)
         const mesh = new THREE.Mesh(geometry, [edge, edge, edge, edge, front, back]);
+        const hitPlane = new THREE.Mesh(hitGeometry, hitMaterial);
+        mesh.position.y = CARD_Y;
+        hitPlane.position.y = CARD_Y;
         const state: CardState = {
           mesh,
+          hitPlane,
           baseOffset: i * SPACING,
-          baseY: 0.55 + (i % 3) * 0.14 - 0.14,
-          baseRotZ: ((i * 7919) % 10) / 10 * 0.07 - 0.035,
           flip: 0,
           targetFlip: 0,
-          phase: i * 1.7,
         };
         scene.add(mesh);
+        scene.add(hitPlane);
         return state;
       });
 
@@ -166,14 +171,13 @@ export default function PostcardHero() {
         const dt = Math.min(clock.getDelta(), 0.05);
         const now = performance.now();
 
+        // Raycast the static hit planes, never the flipping cards: a
+        // mid-flip card turns edge-on and would drop the hover, making
+        // it oscillate open and shut.
         raycaster.setFromCamera(pointer, camera);
-        const hits = raycaster.intersectObjects(states.map((s) => s.mesh));
-        const hitMesh = hits[0]?.object;
-        hovered =
-          states.find(
-            (s) =>
-              s.mesh === hitMesh && Math.abs(s.mesh.position.x) < CENTER_ZONE
-          ) ?? null;
+        const hits = raycaster.intersectObjects(states.map((s) => s.hitPlane));
+        const hitPlane = hits[0]?.object;
+        hovered = states.find((s) => s.hitPlane === hitPlane) ?? null;
 
         const holding = hovered !== null || now < stickyUntil;
         const speedTarget = reduced ? 0 : holding ? 0 : BASE_SPEED;
@@ -184,15 +188,13 @@ export default function PostcardHero() {
           const x =
             ((((s.baseOffset - scroll) % total) + total) % total) - total / 2;
           s.mesh.position.x = x;
-          s.mesh.position.y =
-            s.baseY + (reduced ? 0 : Math.sin(now / 1400 + s.phase) * 0.05);
-          s.mesh.rotation.z = s.baseRotZ;
+          s.hitPlane.position.x = x;
 
           s.targetFlip =
             s === hovered || (now < stickyUntil && s.flip > 0.1)
               ? Math.PI
               : 0;
-          s.flip += (s.targetFlip - s.flip) * (reduced ? 1 : 0.09);
+          s.flip += (s.targetFlip - s.flip) * (reduced ? 1 : FLIP_EASE);
           s.mesh.rotation.y = s.flip;
         }
 
@@ -226,12 +228,30 @@ export default function PostcardHero() {
       <div ref={mountRef} className={styles.canvas} />
 
       <div className={styles.overlay}>
-        <h1 className={`serif ${styles.identity}`}>
-          I design and build beautiful experiences with visual craft, system
-          thinking, and product strategy.
-        </h1>
         <Link href="/postcard" className={styles.cta}>
-          Leave your own postcard
+          <span>Leave your own postcard</span>
+          <svg
+            viewBox="0 0 52 44"
+            width="52"
+            height="44"
+            className={styles.ctaHex}
+            aria-hidden="true"
+          >
+            <path
+              d="M16 2 L36 2 L50 22 L36 42 L16 42 L2 22 Z"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+            />
+            <path
+              d="M20 28 L32 16 M24 16 L32 16 L32 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
         </Link>
       </div>
 
