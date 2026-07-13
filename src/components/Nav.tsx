@@ -17,8 +17,10 @@ export default function Nav() {
   return (
     <header className={styles.header}>
       <div className={`container ${styles.inner}`}>
-        <Link href="/" className={styles.wordmark}>
-          {SITE.wordmark}
+        <Link href="/" className={styles.brand}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/logo.png" alt="" className={styles.logo} />
+          <span className={styles.wordmark}>{SITE.wordmark}</span>
         </Link>
 
         <nav className={styles.nav} aria-label="Primary">
@@ -33,14 +35,15 @@ export default function Nav() {
               {l.label}
             </Link>
           ))}
-          <button
-            className={styles.ask}
-            onClick={() => window.dispatchEvent(new CustomEvent("chat:open"))}
-            data-cursor-label="Ask"
-          >
-            Ask about my work
-          </button>
         </nav>
+
+        <button
+          className={styles.ask}
+          onClick={() => window.dispatchEvent(new CustomEvent("chat:open"))}
+          data-cursor-label="Chat"
+        >
+          Rebecca&apos;s Agent
+        </button>
       </div>
     </header>
   );

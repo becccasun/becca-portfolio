@@ -35,9 +35,13 @@ export default function Footer() {
   return (
     <footer className={styles.footer} ref={ref}>
       <div className={`container ${styles.inner}`}>
-        <p className={`serif ${styles.signoff}`}>
-          Say hi, I read everything.
-        </p>
+        <div className={styles.brandRow}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/logo.png" alt="Rebecca Sun logo" className={styles.logo} />
+          <p className={`serif ${styles.signoff}`}>
+            Say hi, I read everything.
+          </p>
+        </div>
 
         <div className={styles.playSlot} data-footer-interaction-slot />
 

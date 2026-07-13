@@ -17,6 +17,18 @@
   gap: var(--s-12);
 }
 
+.brandRow {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-6);
+}
+
+.logo {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+}
+
 .signoff {
   font-size: clamp(2rem, 4vw, 3.25rem);
   line-height: 1.1;
