@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import * as THREE from "three";
 import {
@@ -11,8 +11,8 @@ import {
 } from "@/lib/postcards-client";
 import styles from "./PostcardHero.module.css";
 
-const CARD_W = 3.3;
-const CARD_H = 2.2;
+const CARD_W = 2.55;
+const CARD_H = 1.7;
 const ANG_SPACING = 0.46; // radians between cards along the arc
 const BASE_SPEED = 0.07; // radians per second
 const FLIP_EASE = 0.045; // slow, settled flip
@@ -39,8 +39,49 @@ type CardState = {
  * flips it to the written side. Visitor-made cards from /postcard
  * join the stream after moderation.
  */
+const PHRASES = ["systems thinking", "product strategy", "visual craft"];
+const TYPE_MS = 55;
+const DELETE_MS = 30;
+const HOLD_MS = 1100;
+
 export default function PostcardHero() {
   const mountRef = useRef<HTMLDivElement>(null);
+  const [typed, setTyped] = useState("");
+
+  // Typewriter: type a phrase, hold, delete, advance, loop forever.
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setTyped("systems thinking, product strategy, and visual craft");
+      return;
+    }
+    let phrase = 0;
+    let len = 0;
+    let deleting = false;
+    let timer: number;
+    const tick = () => {
+      const current = PHRASES[phrase];
+      if (!deleting) {
+        len++;
+        setTyped(current.slice(0, len));
+        if (len === current.length) {
+          deleting = true;
+          timer = window.setTimeout(tick, HOLD_MS);
+        } else {
+          timer = window.setTimeout(tick, TYPE_MS);
+        }
+      } else {
+        len--;
+        setTyped(current.slice(0, len));
+        if (len === 0) {
+          deleting = false;
+          phrase = (phrase + 1) % PHRASES.length;
+        }
+        timer = window.setTimeout(tick, DELETE_MS);
+      }
+    };
+    timer = window.setTimeout(tick, 500);
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     const mount = mountRef.current;
@@ -190,9 +231,14 @@ export default function PostcardHero() {
           s.mesh.visible = onArc;
           const x = ARC.rx * Math.sin(a);
           const y = ARC.cy + ARC.ry * Math.cos(a);
+          // lean the card along the path: its bottom edge tracks the
+          // ellipse tangent at this angle
+          const tilt = Math.atan2(-ARC.ry * Math.sin(a), ARC.rx * Math.cos(a));
           s.mesh.position.set(x, y, 0);
+          s.mesh.rotation.z = tilt;
           // park the hit plane far away while its card is around the bend
           s.hitPlane.position.set(x, onArc ? y : -100, 0);
+          s.hitPlane.rotation.z = tilt;
 
           s.targetFlip =
             s === hovered || (now < stickyUntil && s.flip > 0.1)
@@ -230,6 +276,17 @@ export default function PostcardHero() {
   return (
     <section className={styles.hero} aria-label="Postcards">
       <div ref={mountRef} className={styles.canvas} />
+
+      <p
+        className={styles.tagline}
+        aria-label="I design and build beautiful experiences with systems thinking, product strategy, and visual craft."
+      >
+        <span aria-hidden="true">
+          I design and build beautiful experiences with{" "}
+          <span className={styles.typed}>{typed}</span>
+          <span className={styles.caret} />
+        </span>
+      </p>
 
       <div className={styles.overlay}>
         <Link href="/postcard" className={styles.cta}>
