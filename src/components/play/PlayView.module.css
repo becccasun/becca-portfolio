@@ -29,6 +29,11 @@
   color: var(--accent-press);
 }
 
+.shortcutActive {
+  color: var(--accent-press);
+  border-bottom: 2px solid var(--accent);
+}
+
 .title {
   font-size: var(--fs-title);
   line-height: 1.1;

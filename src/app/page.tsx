@@ -13,12 +13,14 @@ export default function HomePage() {
 
       <section id="work" className={`container ${styles.section}`}>
         <div className={styles.sectionHead}>
-          <p className="eyebrow">Selected work</p>
-          <Link href="/work" className="link">
-            See more work
-          </Link>
+          <p className="eyebrow">Featured Works</p>
         </div>
         <WorkGrid items={work} />
+        <div className={styles.sectionFoot}>
+          <Link href="/work" className="link">
+            See All Works
+          </Link>
+        </div>
       </section>
     </>
   );

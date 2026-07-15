@@ -3,7 +3,11 @@
 import { useEffect, useState } from "react";
 import PlayGrid from "./PlayGrid";
 import PlayGallery from "./PlayGallery";
-import { PLAY_CATEGORIES, GRID_ORDER } from "@/lib/play";
+import {
+  PLAY_CATEGORIES,
+  GRID_ORDER,
+  type PlayCategory,
+} from "@/lib/play";
 import styles from "./PlayView.module.css";
 
 /**
@@ -15,6 +19,7 @@ import styles from "./PlayView.module.css";
  */
 export default function PlayView() {
   const [view, setView] = useState<"grid" | "gallery">("grid");
+  const [filter, setFilter] = useState<PlayCategory | "all">("all");
 
   useEffect(() => {
     if (view === "gallery") {
@@ -37,21 +42,27 @@ export default function PlayView() {
               Playing and experimenting with new ideas.
             </h1>
             <nav className={styles.shortcuts} aria-label="Play categories">
-              {GRID_ORDER.map((id) => {
-                const cat = PLAY_CATEGORIES.find((c) => c.id === id)!;
+              {(["all", ...GRID_ORDER] as const).map((id) => {
+                const label =
+                  id === "all"
+                    ? "All"
+                    : PLAY_CATEGORIES.find((c) => c.id === id)!.label;
                 return (
-                  <a
+                  <button
                     key={id}
-                    href={`#play-${id}`}
-                    className={styles.shortcut}
+                    className={`${styles.shortcut} ${
+                      filter === id ? styles.shortcutActive : ""
+                    }`}
+                    aria-pressed={filter === id}
+                    onClick={() => setFilter(id)}
                   >
-                    {cat.label}
-                  </a>
+                    {label}
+                  </button>
                 );
               })}
             </nav>
           </header>
-          <PlayGrid />
+          <PlayGrid filter={filter} />
         </>
       ) : (
         <PlayGallery />

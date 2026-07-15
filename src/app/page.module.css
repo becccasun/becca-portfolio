@@ -13,3 +13,10 @@
   align-items: baseline;
   justify-content: space-between;
 }
+
+.sectionFoot {
+  display: flex;
+  justify-content: center;
+  padding-top: var(--s-4);
+  font-weight: 500;
+}

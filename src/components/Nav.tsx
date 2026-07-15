@@ -5,10 +5,12 @@ import { usePathname } from "next/navigation";
 import { SITE } from "@/lib/site";
 import styles from "./Nav.module.css";
 
+// Works jumps to the featured section on the home page; the archive at
+// /work is reached only via "See All Works" below the featured grid.
 const LINKS = [
-  { href: "/work", label: "Works" },
-  { href: "/play", label: "Play" },
-  { href: "/about", label: "About" },
+  { href: "/#work", activePrefix: "/work", label: "Works" },
+  { href: "/play", activePrefix: "/play", label: "Play" },
+  { href: "/about", activePrefix: "/about", label: "About" },
 ];
 
 export default function Nav() {
@@ -29,7 +31,7 @@ export default function Nav() {
               key={l.href}
               href={l.href}
               className={`${styles.navLink} ${
-                pathname.startsWith(l.href) ? styles.active : ""
+                pathname.startsWith(l.activePrefix) ? styles.active : ""
               }`}
             >
               {l.label}

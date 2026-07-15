@@ -1,10 +1,24 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { PLAY_ITEMS, PLAY_CATEGORIES, ROOM } from "@/lib/play";
+import { PLAY_ITEMS, ROOM } from "@/lib/play";
 import styles from "./PlayGallery.module.css";
 
 const WALLS: (0 | 1 | 2 | 3)[] = [0, 1, 2, 3];
+
+// Mixed hanging: pieces are dealt onto the walls' layout slots in a
+// deterministic shuffle (stable across server and client renders)
+// instead of grouped by category.
+function hash(s: string) {
+  let h = 0;
+  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0;
+  return h;
+}
+
+const SLOTS = PLAY_ITEMS.map(({ wall, x, y, w }) => ({ wall, x, y, w }));
+const HUNG = [...PLAY_ITEMS]
+  .sort((a, b) => hash(a.id + "salt") - hash(b.id + "salt"))
+  .map((item, i) => ({ ...item, ...SLOTS[i] }));
 const DEG = 180 / Math.PI;
 const PITCH_LIMIT = 32;
 const PERSP = 760;
@@ -110,7 +124,7 @@ export default function PlayGallery() {
   }
 
   function feelingLucky() {
-    const item = PLAY_ITEMS[Math.floor(Math.random() * PLAY_ITEMS.length)];
+    const item = HUNG[Math.floor(Math.random() * HUNG.length)];
     const half = ROOM.size / 2;
 
     // Yaw that faces the piece: the wall's angle plus the piece's
@@ -156,10 +170,7 @@ export default function PlayGallery() {
                 }px)`,
               }}
             >
-              <span className={`serif ${styles.wallLabel}`}>
-                {PLAY_CATEGORIES.find((c) => c.wall === wall)?.label}
-              </span>
-              {PLAY_ITEMS.filter((i) => i.wall === wall).map((item) => (
+              {HUNG.filter((i) => i.wall === wall).map((item) => (
                 <a
                   key={item.id}
                   href={item.href}

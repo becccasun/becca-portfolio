@@ -39,8 +39,8 @@ export default function Footer() {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/logo.png" alt="Rebecca Sun logo" className={styles.logo} />
           <p className={`serif ${styles.signoff}`}>
-            To design tastefully is to design a future worth looking forward
-            to.
+            We all have a philosopher&apos;s stone that turns sand into
+            knowledge.
           </p>
         </div>
 
