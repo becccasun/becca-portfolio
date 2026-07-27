@@ -68,6 +68,14 @@ export default function Footer() {
               GitHub
             </a>
             <a
+              href={SITE.medium}
+              className="link"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Medium
+            </a>
+            <a
               href="https://x.com/beqscreatives"
               className="link"
               target="_blank"

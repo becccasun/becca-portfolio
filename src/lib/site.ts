@@ -5,6 +5,8 @@ export const SITE = {
     "Product design at Loop Financial, studying UX and AI at the University of Michigan.",
   email: "beccasun@umich.edu",
   url: "https://www.rebeccasun.me",
+  mediumHandle: "becccasun",
+  medium: "https://medium.com/@becccasun",
 };
 
 export type TimelineEntry = {

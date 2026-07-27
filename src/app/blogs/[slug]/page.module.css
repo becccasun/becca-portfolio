@@ -1,0 +1,172 @@
+.page {
+  padding-top: var(--s-12);
+  padding-bottom: var(--s-16);
+  max-width: calc(var(--reading-w) + var(--s-12));
+}
+
+.back {
+  display: inline-block;
+  font-size: var(--fs-small);
+  color: var(--text-muted);
+  transition: color 0.2s var(--ease-out);
+}
+
+.back:hover {
+  color: var(--accent-press);
+}
+
+.head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+  padding: var(--s-8) 0 var(--s-12);
+  border-bottom: 1px solid var(--border);
+}
+
+.title {
+  font-size: var(--fs-h1);
+  line-height: 1.15;
+}
+
+.meta {
+  font-size: var(--fs-small);
+  color: var(--text-muted);
+}
+
+/* ------------------------------------------------------------------ */
+/*  Article body, injected as HTML from the feed                       */
+/* ------------------------------------------------------------------ */
+
+.body {
+  padding-top: var(--s-12);
+  font-size: var(--fs-body);
+  line-height: 1.75;
+}
+
+.body > * + * {
+  margin-top: var(--s-6);
+}
+
+/* Medium usually opens on a figure; don't stack its margin on the
+   body's own top padding. */
+.body > :first-child {
+  margin-top: 0;
+}
+
+.body h1,
+.body h2,
+.body h3,
+.body h4 {
+  font-family: var(--font-instrument), Georgia, serif;
+  font-weight: 400;
+  font-size: var(--fs-h2);
+  line-height: 1.25;
+  margin-top: var(--s-12);
+}
+
+.body strong {
+  font-weight: 600;
+}
+
+.body a {
+  color: var(--accent-press);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.body ul,
+.body ol {
+  padding-left: 1.2em;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+}
+
+.body blockquote {
+  border-left: 2px solid var(--accent);
+  padding-left: var(--s-6);
+  color: var(--text-muted);
+}
+
+.body figure {
+  margin: var(--s-12) 0;
+}
+
+.body img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--r-md);
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+
+.body figcaption {
+  margin-top: var(--s-3);
+  font-size: var(--fs-small);
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.body pre {
+  overflow-x: auto;
+  padding: var(--s-4);
+  border-radius: var(--r-md);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  font-size: var(--fs-small);
+}
+
+.body hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: var(--s-12) 0;
+}
+
+/* ------------------------------------------------------------------ */
+
+.foot {
+  margin-top: var(--s-16);
+  padding-top: var(--s-8);
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s-6);
+  flex-wrap: wrap;
+}
+
+.tags {
+  font-size: var(--fs-small);
+  color: var(--text-muted);
+}
+
+.pager {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--s-8);
+  margin-top: var(--s-12);
+  padding-top: var(--s-8);
+  border-top: 1px solid var(--border);
+}
+
+.pagerLink {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-1);
+  max-width: 22ch;
+}
+
+.pagerNext {
+  text-align: right;
+  align-items: flex-end;
+}
+
+.pagerTitle {
+  font-weight: 600;
+  line-height: 1.35;
+  transition: color 0.2s var(--ease-out);
+}
+
+.pagerLink:hover .pagerTitle {
+  color: var(--accent-press);
+}

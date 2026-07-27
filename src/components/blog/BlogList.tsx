@@ -1,12 +1,15 @@
-import { BLOG_POSTS } from "@/lib/blogs";
+import Image from "next/image";
+import Link from "next/link";
+import { getBlogPosts, MEDIUM_URL } from "@/lib/blogs";
 import styles from "./BlogList.module.css";
 
 /**
- * Writing index. A list rather than a grid, because these are read in
- * order and the title matters more than the thumbnail.
+ * Writing index, read live from Medium. A list rather than a grid,
+ * because these are read in order and the title matters more than the
+ * thumbnail.
  */
-export default function BlogList() {
-  const posts = [...BLOG_POSTS].sort((a, b) => b.added - a.added);
+export default async function BlogList() {
+  const { posts } = await getBlogPosts();
 
   return (
     <div className={`container ${styles.page}`}>
@@ -14,30 +17,54 @@ export default function BlogList() {
         <h1 className={`serif ${styles.title}`}>
           Writing about design, and about learning to build.
         </h1>
+        <a
+          href={MEDIUM_URL}
+          target="_blank"
+          rel="noreferrer"
+          className={`link ${styles.follow}`}
+          data-cursor-label="Medium"
+        >
+          Follow on Medium
+        </a>
       </header>
 
       <ul className={styles.list}>
         {posts.map((post) => (
           <li key={post.id}>
-            <a
-              href={post.href}
-              target="_blank"
-              rel="noreferrer"
+            <Link
+              href={`/blogs/${post.id}`}
               className={styles.row}
-              data-cursor-label={`Read on ${post.source}`}
+              data-cursor-label="Read"
             >
               <span className={styles.thumb}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={post.image} alt="" loading="lazy" />
+                {post.image && (
+                  <Image
+                    src={post.image}
+                    alt=""
+                    fill
+                    sizes="(max-width: 560px) 100vw, 160px"
+                  />
+                )}
               </span>
+
               <span className={styles.body}>
+                {post.series && (
+                  <span className={styles.series}>{post.series}</span>
+                )}
                 <span className={styles.name}>{post.title}</span>
-                <span className={styles.blurb}>{post.blurb}</span>
+                <span className={styles.excerpt}>{post.excerpt}</span>
               </span>
+
               <span className={styles.detail}>
-                {post.source} · {post.year}
+                <time dateTime={post.date}>{post.dateLabel}</time>
+                <span>{post.minutes} min read</span>
+                {post.publication && (
+                  <span className={styles.publication}>
+                    {post.publication}
+                  </span>
+                )}
               </span>
-            </a>
+            </Link>
           </li>
         ))}
       </ul>
