@@ -154,7 +154,11 @@ main {
   position: relative;
   z-index: 1;
   background: var(--bg);
-  min-height: calc(100vh - 64px);
+  /* The nav is fixed, so it no longer reserves its own space. Pages
+     pad past it; the hero cancels this with a negative margin so its
+     backdrop reaches the top of the viewport. */
+  padding-top: 64px;
+  min-height: 100vh;
   margin-bottom: var(--footer-h, 0px);
 }
 

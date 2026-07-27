@@ -1,11 +1,32 @@
 .hero {
   position: relative;
-  height: calc(100svh - 64px);
+  /* Cancel main's nav padding so the set runs to the top of the screen
+     and the nav sits over it. */
+  margin-top: -64px;
+  height: 100svh;
   overflow: hidden;
-  background: linear-gradient(180deg, var(--bg) 0%, #f3f6fc 100%);
+  /* Matches the lit backdrop in the scene so there's no colour jump
+     before the canvas fades in. */
+  background: #ececed;
   border-bottom: 1px solid var(--border);
   scroll-snap-align: start;
   scroll-margin-top: 64px;
+}
+
+/* Lens falloff over the whole set. Subtle, and it sits above the canvas
+   but below the copy. */
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(
+    115% 85% at 42% 34%,
+    rgba(255, 255, 255, 0.16) 0%,
+    rgba(255, 255, 255, 0) 45%,
+    rgba(28, 28, 32, 0.09) 100%
+  );
 }
 
 /* invisible until the first frame renders, then eases in */
@@ -24,47 +45,9 @@
   display: block;
 }
 
-/* Tagline in the space between the nav and the top of the arc.
-   Figtree (the body face), not the display serif. */
-.tagline {
-  position: absolute;
-  top: 11%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: max(60%, 320px);
-  text-align: center;
-  font-weight: 500;
-  font-size: clamp(1.1rem, 0.95rem + 0.9vw, 1.5rem);
-  line-height: 1.4;
-  pointer-events: none;
-}
-
-.typed {
-  color: var(--accent-press);
-}
-
-.caret {
-  display: inline-block;
-  width: 2px;
-  height: 1.05em;
-  margin-left: 2px;
-  vertical-align: -0.15em;
-  background: var(--accent-press);
-  animation: caret-blink 1.1s steps(2, jump-none) infinite;
-}
-
-@keyframes caret-blink {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0;
-  }
-}
-
 .overlay {
   position: absolute;
+  z-index: 2;
   left: 50%;
   bottom: 14%;
   transform: translateX(-50%);
@@ -102,6 +85,7 @@
 
 .corner {
   position: absolute;
+  z-index: 2;
   font-size: var(--fs-small);
   color: var(--text-muted);
   pointer-events: none;

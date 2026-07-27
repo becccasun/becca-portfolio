@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import * as THREE from "three";
+import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
 import {
   drawPostcardFront,
   drawPostcardBack,
@@ -21,6 +22,28 @@ const FLIP_EASE = 0.045; // slow, settled flip
 // bottom edges of the screen.
 const ARC = { cy: -5.4, rx: 8.6, ry: 5.9 };
 const HIDE_ANGLE = Math.PI * 0.55; // past this the card is around the bend
+// A card is retired over this last stretch rather than switched off, so
+// the shadow it casts shrinks away instead of popping.
+const FADE_SPAN = 0.3;
+// The loop has to be long enough that a card reaches HIDE_ANGLE before
+// it wraps to the far side. Below this many cards the wrap happens while
+// the card's shadow is still on screen, so the stream repeats its source
+// cards up to this count instead of leaving a gap in the arc.
+const MIN_STREAM = 9;
+
+/**
+ * Placeholder artwork for the card fronts. All roughly square, so each
+ * is cover-cropped to the card's 3:2. `focusY` biases that crop when the
+ * subject isn't centred (0 = keep the top, 1 = keep the bottom).
+ */
+const ART = [
+  { src: "/postcards/water-sparkle.jpg", focusY: 0.5 },
+  { src: "/postcards/forest-light.jpg", focusY: 0.45 },
+  { src: "/postcards/tree-sun.jpg", focusY: 0.4 },
+  { src: "/postcards/lily-of-the-valley.jpg", focusY: 0.5 },
+  { src: "/postcards/aurora-walk.jpg", focusY: 0.72 },
+  { src: "/postcards/green-ripple.jpg", focusY: 0.5 },
+];
 
 type CardState = {
   mesh: THREE.Mesh;
@@ -39,50 +62,9 @@ type CardState = {
  * flips it to the written side. Visitor-made cards from /postcard
  * join the stream after moderation.
  */
-const PHRASES = ["systems thinking", "product strategy", "visual craft"];
-const TYPE_MS = 55;
-const DELETE_MS = 30;
-const HOLD_MS = 1100;
-
 export default function PostcardHero() {
   const mountRef = useRef<HTMLDivElement>(null);
-  const [typed, setTyped] = useState("");
   const [ready, setReady] = useState(false);
-
-  // Typewriter: type a phrase, hold, delete, advance, loop forever.
-  useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setTyped("systems thinking, product strategy, and visual craft");
-      return;
-    }
-    let phrase = 0;
-    let len = 0;
-    let deleting = false;
-    let timer: number;
-    const tick = () => {
-      const current = PHRASES[phrase];
-      if (!deleting) {
-        len++;
-        setTyped(current.slice(0, len));
-        if (len === current.length) {
-          deleting = true;
-          timer = window.setTimeout(tick, HOLD_MS);
-        } else {
-          timer = window.setTimeout(tick, TYPE_MS);
-        }
-      } else {
-        len--;
-        setTyped(current.slice(0, len));
-        if (len === 0) {
-          deleting = false;
-          phrase = (phrase + 1) % PHRASES.length;
-        }
-        timer = window.setTimeout(tick, DELETE_MS);
-      }
-    };
-    timer = window.setTimeout(tick, 500);
-    return () => clearTimeout(timer);
-  }, []);
 
   useEffect(() => {
     const mount = mountRef.current;
@@ -108,7 +90,73 @@ export default function PostcardHero() {
       draw(ctx, canvas.width, canvas.height);
       const tex = new THREE.CanvasTexture(canvas);
       tex.colorSpace = THREE.SRGBColorSpace;
-      tex.anisotropy = 4;
+      tex.anisotropy = 8;
+      return tex;
+    }
+
+    /**
+     * Cover-crop a square-ish source into the card's 3:2 texture: scale
+     * to fill, then slide the overflowing axis to the artwork's focal
+     * point. Nothing is squashed, and no bars are left at the edges.
+     */
+    function makeArtTexture(image: HTMLImageElement, focusY: number) {
+      const canvas = document.createElement("canvas");
+      canvas.width = 1200;
+      canvas.height = 800;
+      const ctx = canvas.getContext("2d")!;
+      const scale = Math.max(
+        canvas.width / image.naturalWidth,
+        canvas.height / image.naturalHeight
+      );
+      const w = image.naturalWidth * scale;
+      const h = image.naturalHeight * scale;
+      ctx.drawImage(
+        image,
+        (canvas.width - w) / 2,
+        (canvas.height - h) * focusY,
+        w,
+        h
+      );
+      const tex = new THREE.CanvasTexture(canvas);
+      tex.colorSpace = THREE.SRGBColorSpace;
+      tex.anisotropy = 8;
+      return tex;
+    }
+
+    function loadImage(src: string) {
+      return new Promise<HTMLImageElement | null>((resolve) => {
+        const img = new Image();
+        img.onload = () => resolve(img);
+        img.onerror = () => resolve(null);
+        img.src = src;
+      });
+    }
+
+    /**
+     * Paper grain, generated once and shared by every card. Drives both
+     * the bump and the roughness so the stock catches the key light
+     * unevenly the way real card does, instead of reading as a flat
+     * printed rectangle.
+     */
+    function makePaperGrain() {
+      const size = 512;
+      const canvas = document.createElement("canvas");
+      canvas.width = canvas.height = size;
+      const ctx = canvas.getContext("2d")!;
+      const img = ctx.createImageData(size, size);
+      for (let i = 0; i < img.data.length; i += 4) {
+        const n = 132 + (Math.random() - 0.5) * 54;
+        img.data[i] = img.data[i + 1] = img.data[i + 2] = n;
+        img.data[i + 3] = 255;
+      }
+      ctx.putImageData(img, 0, 0);
+      // Soften the noise into fibre; raw per-pixel noise reads as static.
+      ctx.filter = "blur(0.7px)";
+      ctx.drawImage(canvas, 0, 0);
+      ctx.filter = "none";
+      const tex = new THREE.CanvasTexture(canvas);
+      tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+      tex.repeat.set(2.5, 1.7);
       return tex;
     }
 
@@ -135,34 +183,131 @@ export default function PostcardHero() {
       renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
       renderer.setSize(mount.clientWidth, mount.clientHeight);
+      // Khronos PBR Neutral rather than ACES: it rolls highlights off
+      // without pulling saturation out of the artwork, which ACES does
+      // badly to the greens and blues on these cards.
+      renderer.toneMapping = THREE.NeutralToneMapping;
+      renderer.toneMappingExposure = 1;
+      renderer.shadowMap.enabled = true;
+      // VSM rather than PCF: it blurs the shadow map itself, which is
+      // the only way to get a genuinely diffuse edge instead of a
+      // slightly feathered hard one.
+      renderer.shadowMap.type = THREE.VSMShadowMap;
       mount.appendChild(renderer.domElement);
 
-      scene.add(new THREE.AmbientLight(0xffffff, 1.6));
-      const key = new THREE.DirectionalLight(0xffffff, 1.4);
-      key.position.set(3, 5, 8);
+      // Soft indirect bounce, so matte surfaces aren't lit by direct
+      // light alone. Kept dim: this is fill, not a second key.
+      const pmrem = new THREE.PMREMGenerator(renderer);
+      const envRT = pmrem.fromScene(new RoomEnvironment(), 0.04);
+      scene.environment = envRT.texture;
+      scene.environmentIntensity = 0.25;
+      pmrem.dispose();
+
+      // Studio cyclorama. A plain light-grey wall well behind the cards:
+      // the gradient across it is cast by the key light rather than
+      // painted in, which is what makes it read as a lit set.
+      const backdrop = new THREE.Mesh(
+        new THREE.PlaneGeometry(80, 46),
+        new THREE.MeshStandardMaterial({
+          color: 0xececed,
+          roughness: 1,
+          metalness: 0,
+        })
+      );
+      backdrop.position.set(0, 0, -2);
+      backdrop.receiveShadow = true;
+      scene.add(backdrop);
+
+      // Kept deliberately low. Ambient that competes with the key light
+      // is what flattens a render; the shadows have to carry the form.
+      // Total illumination sits near 1.0 so the artwork renders close to
+      // its own colour rather than being lifted toward white.
+      scene.add(new THREE.AmbientLight(0xffffff, 0.32));
+      scene.add(new THREE.HemisphereLight(0xffffff, 0xd4d4da, 0.32));
+
+      // Key: camera-left and only modestly raised. Any higher and the
+      // cards throw their shadows off the bottom of the frame instead
+      // of onto the backdrop behind them.
+      // Neutral studio key: a near-white that leaves the backdrop and
+      // the artwork their own colour rather than casting a tint.
+      const key = new THREE.DirectionalLight(0xfffaf2, 1.05);
+      key.position.set(-3.2, 2.2, 9);
+      key.castShadow = true;
+      key.shadow.mapSize.set(1024, 1024);
+      key.shadow.radius = 7;
+      key.shadow.blurSamples = 24;
+      key.shadow.bias = 0;
+      key.shadow.normalBias = 0.02;
+      const shadowCam = key.shadow.camera;
+      shadowCam.left = -12;
+      shadowCam.right = 12;
+      shadowCam.top = 9;
+      shadowCam.bottom = -9;
+      shadowCam.near = 0.5;
+      shadowCam.far = 40;
+      shadowCam.updateProjectionMatrix();
       scene.add(key);
-      const fill = new THREE.DirectionalLight(0xdbe7ff, 0.5);
-      fill.position.set(-4, -2, 6);
+
+      // Off-white fill from the opposite side lifts the shadow side
+      // without adding a second set of shadows.
+      const fill = new THREE.DirectionalLight(0xe6edff, 0.2);
+      fill.position.set(6, -1.5, 5);
       scene.add(fill);
 
-      const geometry = new THREE.BoxGeometry(CARD_W, CARD_H, 0.03);
-      const edge = new THREE.MeshStandardMaterial({ color: 0xf2efe6 });
+      // Load the artwork up front, then deal it out in a shuffled order
+      // so the arc looks different on each visit. Cards outnumber the
+      // art, so the deck wraps.
+      const artImages = await Promise.all(ART.map((a) => loadImage(a.src)));
+      const deck = ART.map((art, i) => ({ art, image: artImages[i] }))
+        .filter((entry) => entry.image !== null)
+        .sort(() => Math.random() - 0.5);
+      if (disposed || !mount) return;
+
+      const geometry = new THREE.BoxGeometry(CARD_W, CARD_H, 0.02);
+      const grain = makePaperGrain();
+      const edge = new THREE.MeshStandardMaterial({
+        color: 0xf2efe6,
+        roughness: 0.95,
+      });
       const hitGeometry = new THREE.PlaneGeometry(CARD_W, CARD_H);
       const hitMaterial = new THREE.MeshBasicMaterial({ visible: false });
 
-      const states: CardState[] = cards.map((card, i) => {
+      // Repeat the source cards up to MIN_STREAM so the arc wraps well
+      // off screen. Spacing stays the same, so the stream reads the same;
+      // there are just more of them around the unseen part of the loop.
+      const stream = Array.from(
+        { length: Math.max(MIN_STREAM, cards.length) },
+        (_, i) => cards[i % cards.length]
+      );
+
+      const states: CardState[] = stream.map((card, i) => {
+        const paper = {
+          roughness: 0.88,
+          roughnessMap: grain,
+          bumpMap: grain,
+          bumpScale: 0.5,
+          metalness: 0,
+        };
+        const dealt = deck.length ? deck[i % deck.length] : null;
         const front = new THREE.MeshStandardMaterial({
-          map: makeTexture((ctx, w, h) => drawPostcardFront(ctx, w, h, card.design)),
-          roughness: 0.85,
+          map: dealt
+            ? makeArtTexture(dealt.image!, dealt.art.focusY)
+            : // No artwork reached the browser: fall back to the drawn
+              // design so the arc is never a row of blank cards.
+              makeTexture((ctx, w, h) =>
+                drawPostcardFront(ctx, w, h, card.design)
+              ),
+          ...paper,
         });
         const back = new THREE.MeshStandardMaterial({
           map: makeTexture((ctx, w, h) =>
             drawPostcardBack(ctx, w, h, card.text, card.name)
           ),
-          roughness: 0.9,
+          ...paper,
         });
         // BoxGeometry material order: +x, -x, +y, -y, +z (front), -z (back)
         const mesh = new THREE.Mesh(geometry, [edge, edge, edge, edge, front, back]);
+        mesh.castShadow = true;
         const hitPlane = new THREE.Mesh(hitGeometry, hitMaterial);
         const state: CardState = {
           mesh,
@@ -197,13 +342,22 @@ export default function PostcardHero() {
       mount.addEventListener("pointerdown", onPointerDown);
       mount.addEventListener("pointerleave", onLeave);
 
-      const onResize = () => {
+      // Watch the container, not the window. The hero's height also
+      // changes from CSS and from the mobile URL bar collapsing, and
+      // neither of those fires a resize event, which leaves the canvas
+      // at a stale size and a strip of the viewport unpainted.
+      const resize = () => {
         if (!renderer) return;
-        camera.aspect = mount.clientWidth / mount.clientHeight;
+        const w = mount.clientWidth;
+        const h = mount.clientHeight;
+        if (!w || !h) return;
+        camera.aspect = w / h;
         camera.updateProjectionMatrix();
-        renderer.setSize(mount.clientWidth, mount.clientHeight);
+        renderer.setSize(w, h);
       };
-      window.addEventListener("resize", onResize);
+      const observer = new ResizeObserver(resize);
+      observer.observe(mount);
+      resize();
 
       const clock = new THREE.Clock();
       let firstFrame = true;
@@ -229,8 +383,22 @@ export default function PostcardHero() {
           // angle along the arc, wrapped around the full loop; 0 = apex
           const a =
             ((((s.baseOffset - scroll) % total) + total) % total) - total / 2;
-          const onArc = Math.abs(a) < HIDE_ANGLE;
+
+          // Retire the card over the last FADE_SPAN of its run instead of
+          // switching it off at a hard angle. Scaling shrinks the cast
+          // shadow with it, so nothing vanishes mid-frame. The whole fade
+          // happens past the edge of the viewport, so the card itself is
+          // never seen shrinking.
+          const edge = Math.min(HIDE_ANGLE, total / 2);
+          const t = Math.min(
+            1,
+            Math.max(0, (edge - Math.abs(a)) / FADE_SPAN)
+          );
+          const scale = t * t * (3 - 2 * t); // smoothstep
+          const onArc = scale > 0.01;
           s.mesh.visible = onArc;
+          s.mesh.scale.setScalar(scale);
+
           const x = ARC.rx * Math.sin(a);
           const y = ARC.cy + ARC.ry * Math.cos(a);
           // lean the card along the path: its bottom edge tracks the
@@ -264,7 +432,7 @@ export default function PostcardHero() {
         mount.removeEventListener("pointermove", onPointerMove);
         mount.removeEventListener("pointerdown", onPointerDown);
         mount.removeEventListener("pointerleave", onLeave);
-        window.removeEventListener("resize", onResize);
+        observer.disconnect();
       };
     }
 
@@ -285,17 +453,6 @@ export default function PostcardHero() {
         ref={mountRef}
         className={`${styles.canvas} ${ready ? styles.canvasReady : ""}`}
       />
-
-      <p
-        className={styles.tagline}
-        aria-label="I design and build beautiful experiences with systems thinking, product strategy, and visual craft."
-      >
-        <span aria-hidden="true">
-          I design and build beautiful experiences with{" "}
-          <span className={styles.typed}>{typed}</span>
-          <span className={styles.caret} />
-        </span>
-      </p>
 
       <div className={styles.overlay}>
         <Link href="/postcard" className={styles.cta}>
