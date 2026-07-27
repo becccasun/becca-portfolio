@@ -1,0 +1,210 @@
+---
+title: Onboarding redesign
+projectLabel: Onboarding
+subtitle: Most rejected applicants were never eligible in the first place. The redesign tells them in seconds instead of weeks.
+status: In design and handoff
+year: "2026"
+role: Product design
+tags: [Fintech, Compliance, Prototyping]
+category: client
+tier: 1
+order: 1.2
+parent: loop
+cover: /work/loop/onboarding.png
+sections:
+  - { id: overview, title: Overview }
+  - { id: data, title: What the data said }
+  - { id: eligibility, title: Eligibility first }
+  - { id: declines, title: Saying no well }
+  - { id: cofill, title: Co-filling }
+  - { id: build, title: The build }
+  - { id: standing, title: Where it stands }
+  - { id: reflection, title: Reflection }
+---
+
+<Section id="overview" title="You could spend forty minutes on an application you were never eligible to make.">
+  <Prose>
+    Opening a Loop account means a KYB application: legal entity details,
+    every director and beneficial owner over 25%, proof of operations,
+    government ID for each person, expected payment volumes, and a stack of
+    documents. It is long because it has to be. Loop is a regulated financial
+    institution in Canada and compliance sets most of the fields.
+
+    What compliance does not set is the order. The old flow collected all of
+    it, then queued the application for human review, and the applicant found
+    out days later whether Loop could serve their business at all. Cannabis,
+    crypto, a Quebec sole proprietorship, no Canadian resident director: all of
+    these are policy limits Loop knows about in advance, and all of them were
+    being discovered at the end.
+  </Prose>
+</Section>
+
+<Section id="data" title="What the data said.">
+  <Prose>
+    I pulled the baseline before designing anything, from application decision
+    data and the support and product analytics Loop already had.
+
+    Thirty-nine percent of onboarding decisions were declines. The median wait
+    for a decision was six business days and the ninetieth percentile was
+    thirty-four. Around forty-two percent of people who started registration
+    never finished it. And of the applicants who did get approved, the share
+    who went on to activate their account had fallen from sixty-nine percent to
+    forty-one.
+
+    The last number is the one that reframed the project for me. The people in
+    that gap had already been told yes. Something between approval and first
+    use was losing customers Loop had already paid to acquire and already
+    decided to accept.
+  </Prose>
+
+  <Prose>
+    Then I went through the decline reasons themselves. Restricted industry,
+    prohibited entity type, Quebec sole proprietorship, no Canadian director,
+    applicant under 18, pre-revenue, spam. Nearly all of the top reasons are
+    answerable from five questions, and none of them require a document.
+  </Prose>
+
+  <PullQuote>
+    How might we tell someone we cannot serve them in seconds, instead of after
+    six days and thirty uploaded files?
+  </PullQuote>
+</Section>
+
+<Section id="eligibility" title="Screening moved in front of the review queue.">
+  <Prose>
+    The priority move of the redesign is a single screen placed before document
+    upload and before anything reaches a human reviewer. Industry, a restricted
+    activity checklist, province and entity type, whether at least one director
+    is a Canadian resident, and whether the business is generating revenue yet.
+
+    Everything downstream changed shape once that screen existed. Business
+    details pre-fill from answers already given. The registry check runs
+    automatically against public records to confirm the entity exists and is in
+    good standing, which takes seconds and used to be part of what people
+    waited days for. Ineligible applicants never enter the queue, so the queue
+    itself gets shorter for everyone still in it.
+
+    Screening also turned out to be the hardest part to design, because the
+    branching kept growing. Businesses the registry cannot identify need
+    conditional jurisdiction, entity type and CRA number steps. I ended up
+    mapping the whole eligibility tree in FigJam as its own artifact, separate
+    from the screens, because the logic stopped fitting in a linear flow.
+  </Prose>
+</Section>
+
+<Section id="declines" title="Every no has a reason, a person to talk to, and a way back.">
+  <Prose>
+    Front-loading the screening only helps if the rejection itself is decent.
+    The old exits were generic. The redesign gives every terminal state
+    reason-specific copy, an alternative where one exists, and a route to a
+    human.
+
+    It also separates three things the old flow treated the same way. A hard
+    policy limit is a terminal exit. A borderline case, like a pre-revenue
+    business, gets an honest heads-up and a choice: talk to someone first, or
+    continue flagged for genuine review. Never a silent surprise decline later.
+    An unreadable document is neither: it is a recapture loop with tips, not a
+    rejection, and it never restarts the application.
+
+    The same rule applies after submission. When review needs one more
+    document, the screen asks for exactly that document inline and preserves
+    everything else. And "Under review" is designed as a real screen rather
+    than a gap: what is happening, an honest ranged estimate, what you can
+    usefully do in the meantime, and how you will hear. A median six day wait
+    with a ninetieth percentile of thirty-four cannot be a blank page.
+  </Prose>
+</Section>
+
+<Section id="cofill" title="One person should not have to hold the entire application.">
+  <Prose>
+    Watching where applications stalled, a pattern showed up that had nothing
+    to do with eligibility. The person filling out the form frequently does not
+    have all the answers. They need the CFO's numbers, a director's ID, a
+    registration number somebody else has.
+
+    So the application became something more than one person can work on.
+    Invited owners and signers verify their own identity through secure email
+    links on their own time, in parallel, and the applicant is never blocked
+    waiting for them. Beyond that, any field, subsection, or whole page can be
+    sent to a teammate: it locks, shows "waiting for Priya to fill", and can be
+    revoked and taken back. The system still records who entered and edited
+    what, because compliance needs that audit trail regardless of how many
+    people touched the form.
+
+    Getting there took a wrong turn first. I initially designed simultaneous
+    editing, two people in the same section at once, and cut it. The
+    collaboration model that survived is asynchronous assignment, because
+    live co-editing creates a question about who is attesting to a given
+    answer, and on a KYB form that question has a legal answer.
+  </Prose>
+</Section>
+
+<Section id="build" title="I built it as a working prototype instead of a Figma file.">
+  <Prose>
+    The flow has around thirty nodes, conditional branches, soft warnings,
+    recapture loops, and states that depend on what someone answered four
+    screens earlier. Figma prototyping links do not survive that. So I built it
+    in HTML, CSS and vanilla JavaScript as a single hash-routed page, styled
+    against Loop's real tokens, and put it under git.
+
+    That decision paid for itself in a way I did not predict. Compliance,
+    product, engineering and customer experience all reviewed the same
+    artifact, and they could click the path their own question was about
+    instead of asking me to demo it. Reviewers found branch problems I had not
+    found, because they went where I would not have thought to click. Iteration
+    became a commit rather than a duplicated frame, so there is a real history
+    of what changed and when: five substantive iterations so far, and V3.2 is
+    live at the moment.
+  </Prose>
+
+  <Gallery
+    images={[
+      { src: "/work/loop/onboarding-v1.png", alt: "Onboarding account creation, first iteration" },
+      { src: "/work/loop/onboarding-v3.png", alt: "Onboarding account creation, current iteration" },
+    ]}
+    caption="Account creation, V1.0 and V3.2. The changes are small and all of them came from review: mobile number added for verification, a referral code entry point, honest time-to-complete at the top, French language toggle for Bill 96, twelve character password minimum, and the social sign-in removed because a work email has to match business records later."
+  />
+
+  <Prose>
+    What I cut: agreements and signing moved out of the application entirely to
+    after approval, because asking someone to sign a deposit account agreement
+    for an account that might be declined is asking for a commitment the
+    business has not made yet. Live registry verification during the form and
+    an agent that screens uploads and requests the right documents are both
+    designed and both scoped out of this release.
+  </Prose>
+</Section>
+
+<Section id="standing" title="Where it stands.">
+  <Prose>
+    This is not shipped. The flow spec, the wireframes for every node including
+    the exceptions, and the clickable prototype are the handoff package, and
+    the compliance decisions that gate implementation are still open: which
+    eligibility answers auto-deflect versus route to human review is owned by
+    the compliance team, and the flow models both outcomes until they rule.
+
+    There is also a real backlog. A long consolidated feedback list from the
+    cross-functional reviews is still open, and closing it out before it grows
+    is the current job.
+  </Prose>
+</Section>
+
+<Section id="reflection" title="Reflection">
+  <Prose>
+    **The number that mattered was the one after approval.** I came in expecting
+    the story to be about abandonment during the form, and there is a story
+    there. But approved customers failing to activate is a worse problem,
+    because those are people the business already said yes to, and no amount of
+    form design fixes momentum lost during a thirty-four day wait.
+
+    **Compliance is a design constraint, not an obstacle to route around.** Most
+    of the fields are not negotiable. The order, the wording, the moment you
+    ask, and what you do when the answer is no are all completely open, and
+    that is where every improvement in this project came from.
+
+    **A prototype people can click is a different object than a prototype
+    people watch.** Building in code instead of Figma turned review meetings
+    from me demoing into four teams exploring, and the branch problems they
+    found were ones I could not have found alone.
+  </Prose>
+</Section>

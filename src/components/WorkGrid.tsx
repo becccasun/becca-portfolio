@@ -22,32 +22,51 @@ export default function WorkGrid({
   return (
     <div className={styles.wrap}>
       <div className={styles.grid}>
-        {primary.map((w) => (
-          <Link
-            key={w.slug}
-            href={`/work/${w.slug}`}
-            className={styles.tile}
-            data-cursor-label="View"
-          >
-            <div className={styles.cover}>
-              {w.cover ? (
-                /* eslint-disable-next-line @next/next/no-img-element */
-                <img src={w.cover} alt="" loading="lazy" />
-              ) : (
-                <span className={`serif ${styles.coverFallback}`}>
-                  {w.title}
-                </span>
-              )}
-            </div>
-            <div className={styles.tileMeta}>
-              <h3 className={styles.tileTitle}>{w.title}</h3>
-              <p className={styles.tileSubtitle}>{w.subtitle}</p>
-              <p className="eyebrow">
-                {w.year} · {w.role}
-              </p>
-            </div>
-          </Link>
-        ))}
+        {primary.map((w) => {
+          const stacked = (w.childCount ?? 0) > 1;
+          return (
+            <Link
+              key={w.slug}
+              href={`/work/${w.slug}`}
+              className={styles.tile}
+              data-cursor-label="View"
+              data-stacked={stacked || undefined}
+            >
+              {/* Umbrella projects sit on a stack of skeleton cards, so the
+                  tile reads as several projects before anyone clicks it. */}
+              <div className={styles.coverStack}>
+                {stacked && (
+                  <>
+                    <span className={styles.ghostBack} aria-hidden="true" />
+                    <span className={styles.ghostFront} aria-hidden="true" />
+                  </>
+                )}
+                <div className={styles.cover}>
+                  {w.cover ? (
+                    /* eslint-disable-next-line @next/next/no-img-element */
+                    <img src={w.cover} alt="" loading="lazy" />
+                  ) : (
+                    <span className={`serif ${styles.coverFallback}`}>
+                      {w.title}
+                    </span>
+                  )}
+                </div>
+                {stacked && (
+                  <span className={styles.countChip}>
+                    {w.childCount} projects
+                  </span>
+                )}
+              </div>
+              <div className={styles.tileMeta}>
+                <h3 className={styles.tileTitle}>{w.title}</h3>
+                <p className={styles.tileSubtitle}>{w.subtitle}</p>
+                <p className="eyebrow">
+                  {w.year} · {w.role}
+                </p>
+              </div>
+            </Link>
+          );
+        })}
       </div>
 
       {showSecondary && secondary.length > 0 && (

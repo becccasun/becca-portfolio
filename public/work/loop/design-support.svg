@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000">
+  <rect width="1600" height="1000" fill="#F4F4F7"/>
+
+  <!-- a stack of one-off requests: emails, pricing tables, decks -->
+  <g stroke="#E6E6EC" stroke-width="2">
+    <rect x="300" y="300" width="440" height="440" rx="20" fill="#FCFCFD" transform="rotate(-4 520 520)"/>
+    <rect x="360" y="270" width="440" height="440" rx="20" fill="#FCFCFD" transform="rotate(3 580 490)"/>
+    <rect x="420" y="290" width="440" height="440" rx="20" fill="#FCFCFD"/>
+  </g>
+
+  <g fill="#E6E6EC">
+    <rect x="470" y="350" width="200" height="16" rx="8"/>
+    <rect x="470" y="392" width="320" height="12" rx="6"/>
+    <rect x="470" y="424" width="280" height="12" rx="6"/>
+    <rect x="470" y="486" width="340" height="120" rx="12"/>
+    <rect x="470" y="638" width="160" height="36" rx="18" fill="#E7EFFF"/>
+  </g>
+
+  <g stroke="#E6E6EC" stroke-width="2">
+    <rect x="920" y="290" width="380" height="200" rx="20" fill="#FCFCFD"/>
+    <rect x="920" y="530" width="380" height="200" rx="20" fill="#FCFCFD"/>
+  </g>
+
+  <g fill="#E6E6EC">
+    <rect x="960" y="340" width="140" height="14" rx="7"/>
+    <rect x="960" y="378" width="260" height="10" rx="5"/>
+    <rect x="960" y="404" width="220" height="10" rx="5"/>
+    <rect x="960" y="580" width="140" height="14" rx="7"/>
+    <rect x="960" y="618" width="260" height="10" rx="5"/>
+    <rect x="960" y="644" width="200" height="10" rx="5"/>
+  </g>
+
+  <text x="800" y="880" font-family="Georgia, serif" font-size="40" fill="#6B6B76" text-anchor="middle">design support</text>
+</svg>

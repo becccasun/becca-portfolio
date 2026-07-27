@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000">
+  <rect width="1600" height="1000" fill="#F4F4F7"/>
+
+  <!-- generate -> compile -> test -> correct, closing back on itself -->
+  <g fill="none" stroke="#9A9AA6" stroke-width="3">
+    <path d="M 660 300 L 940 300" stroke-dasharray="10 10"/>
+    <path d="M 1060 400 L 1060 600" stroke-dasharray="10 10"/>
+    <path d="M 940 700 L 660 700" stroke-dasharray="10 10"/>
+    <path d="M 540 600 L 540 400" stroke-dasharray="10 10"/>
+  </g>
+
+  <g fill="#6B6B76">
+    <path d="M 940 292 l 22 8 l -22 8 z"/>
+    <path d="M 1052 600 l 8 22 l 8 -22 z"/>
+    <path d="M 660 692 l -22 8 l 22 8 z"/>
+    <path d="M 532 400 l 8 -22 l 8 22 z"/>
+  </g>
+
+  <g font-family="Georgia, serif" font-size="34" fill="#1A1A1F" text-anchor="middle">
+    <rect x="380" y="252" width="320" height="96" rx="16" fill="#FCFCFD" stroke="#E6E6EC" stroke-width="2"/>
+    <text x="540" y="312">generate</text>
+
+    <rect x="900" y="252" width="320" height="96" rx="16" fill="#FCFCFD" stroke="#E6E6EC" stroke-width="2"/>
+    <text x="1060" y="312">compile</text>
+
+    <rect x="900" y="652" width="320" height="96" rx="16" fill="#FCFCFD" stroke="#E6E6EC" stroke-width="2"/>
+    <text x="1060" y="712">test</text>
+
+    <rect x="380" y="652" width="320" height="96" rx="16" fill="#E7EFFF" stroke="#3D82FF" stroke-width="2"/>
+    <text x="540" y="712" fill="#1E5AD6">correct</text>
+  </g>
+
+  <text x="800" y="516" font-family="Georgia, serif" font-size="40" fill="#6B6B76" text-anchor="middle">design agent</text>
+</svg>

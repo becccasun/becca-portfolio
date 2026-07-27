@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import WorkGrid from "@/components/WorkGrid";
-import { getAllWork, WORK_CATEGORIES } from "@/lib/work";
+import { getTopLevelWork, WORK_CATEGORIES } from "@/lib/work";
 import styles from "./page.module.css";
 
 export const metadata: Metadata = {
@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 };
 
 export default function WorkArchivePage() {
-  const work = getAllWork();
+  const work = getTopLevelWork();
   const groups = WORK_CATEGORIES.map((cat) => ({
     ...cat,
     items: work.filter((w) => w.category === cat.id),

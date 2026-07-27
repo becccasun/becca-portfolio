@@ -35,6 +35,15 @@
   font-weight: 600;
 }
 
+.prose :global(code) {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 0.875em;
+  padding: 0.1em 0.35em;
+  border-radius: var(--r-sm);
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+
 .prose :global(a) {
   color: var(--accent-press);
   text-decoration: underline;

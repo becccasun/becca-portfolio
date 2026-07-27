@@ -1,0 +1,92 @@
+---
+title: Careers page redesign
+projectLabel: Careers page
+subtitle: Loop's hiring page told candidates nothing about how Loop hires. Three directions, built as working pages.
+status: Prototype, in review
+year: "2026"
+role: Product design & frontend
+tags: [Marketing site, Brand, HTML/CSS]
+category: client
+tier: 1
+order: 1.4
+parent: loop
+cover: /work/loop/careers.png
+sections:
+  - { id: overview, title: Overview }
+  - { id: directions, title: Three directions }
+  - { id: decisions, title: Two decisions }
+  - { id: reflection, title: Reflection }
+---
+
+<Section id="overview" title="The page asked people to apply and told them nothing worth applying to.">
+  <Prose>
+    Loop's existing careers page listed open roles. Everything a candidate
+    actually decides on was missing: what the company values, how the interview
+    process runs, what the benefits are, whether the team is in an office, what
+    it is like to work there. Culture, process and benefits were all opaque.
+
+    Loop's own position is that it is transparent in its job descriptions and
+    shares salary upfront. The page was not making that case, which is a
+    strange thing for a recruitment page to fail at.
+  </Prose>
+</Section>
+
+<Section id="directions" title="I built three complete pages instead of three mood boards.">
+  <Prose>
+    Same content and section order across all three: hero, guiding principles,
+    meet the team, an FAQ covering the things the old page hid, filterable open
+    roles, and a closing block for people who do not fit a current listing.
+    They differ in visual treatment, and each commits to one signature
+    material rather than mixing.
+
+    One runs on gradient surfaces in Loop's deep green. One uses frosted glass
+    panels over photography. One is flat and close to monochrome, letting type
+    scale carry the hierarchy. Building all three as real HTML rather than
+    static comps meant the FAQ actually expanded, the role filters actually
+    filtered, and the scroll behaviour from the hero CTA to the roles section
+    could be judged rather than imagined.
+  </Prose>
+
+  <Figure
+    src="/work/loop/careers.png"
+    alt="Careers at Loop, hero section of the gradient direction"
+    caption="The gradient direction. The banner across the top is deliberate: the prototype ships with its own disclaimer so nobody in review mistakes placeholder bios for approved copy."
+    wide
+  />
+</Section>
+
+<Section id="decisions" title="Two decisions worth defending.">
+  <Prose>
+    **The featured teammate rotates.** Leadership photos in a flat grid make a
+    company look like an org chart. One person featured large with the rest as
+    smaller cards below, rotating on a timer and promoting whichever card you
+    click, gives every person a turn at full size without ranking anybody. It
+    also means the block reads as people rather than as a directory.
+
+    **The FAQ is the argument, not the filler.** Everything the old page hid
+    became an accordion item: what we look for, how we work, what the culture
+    is, how we hire. Putting "we give the salary upfront" in a page section
+    commits the company to it in a way a job description does not.
+  </Prose>
+
+  <Prose>
+    What I could not solve: real photography. Every person block is a labelled
+    placeholder, and a hiring page whose warmth depends on photos of real
+    people is only as good as the shoot that has not happened yet. The final
+    build also happens in Webflow rather than in my code, so these three are
+    the design argument and not the artifact that ships.
+  </Prose>
+</Section>
+
+<Section id="reflection" title="Reflection">
+  <Prose>
+    **Three finished pages beat one page and two directions described.** Nobody
+    in review had to imagine anything, and the conversation went straight to
+    which one, which is the conversation I wanted.
+
+    **A recruitment page is a product surface.** The FAQ is doing the same job
+    as the decline copy in the onboarding redesign: answering the question
+    somebody is actually asking, at the moment they are asking it, instead of
+    making them find out later.
+  </Prose>
+</Section>

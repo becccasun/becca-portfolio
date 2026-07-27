@@ -1,0 +1,185 @@
+---
+title: Reconciling Loop's design system
+projectLabel: Design system
+subtitle: Loop's components lived in code with no design file to match. I rebuilt the system backwards out of Storybook, then audited it against itself.
+status: In progress
+year: "2026"
+role: Design systems
+tags: [Design tokens, Figma variables, Storybook]
+category: client
+tier: 1
+order: 1.1
+parent: loop
+cover: /work/loop/design-system.png
+sections:
+  - { id: overview, title: Overview }
+  - { id: inversion, title: The inversion }
+  - { id: audit, title: The audit }
+  - { id: ramp, title: The ramp }
+  - { id: library, title: The library }
+  - { id: reflection, title: Reflection }
+---
+
+<Section id="overview" title="What is Loop's blue, and who gets to answer?">
+  <Prose>
+    The brief I was given was to build the canonical Figma file: fork the
+    Untitled UI kit, restyle it into Loop's house style, publish it as a shared
+    library, and give the company somewhere to point when anyone asks what the
+    heading style is.
+
+    The problem with that brief is that Loop already had an answer to those
+    questions. It was just written in CSS. Four years of shipped product had
+    accumulated a real design system in `theme.css` and `variables.css`, and
+    the components consuming it were live in front of four thousand
+    businesses. A new Figma file would not have been the source of truth. It
+    would have been a second one.
+  </Prose>
+</Section>
+
+<Section id="inversion" title="I inverted the project in the first week, after seven conversations.">
+  <Prose>
+    I spent my first three days in 1:1s with the frontend engineers, a
+    technical PM, and my manager, mapping how design actually reached
+    production. What I found was that there was no handoff to speak of.
+    Engineers designed in code, and the components drifted from each other
+    because nothing held them to a common definition.
+
+    So the direction flipped. Instead of building a Figma library and pushing
+    it toward code, I forked *from* Storybook into Figma, component by
+    component, and treated every difference between the two as a finding
+    rather than an error to quietly fix.
+  </Prose>
+
+  <PullQuote>
+    The problem was never where the components lived. It was that nothing was
+    comparing them.
+  </PullQuote>
+
+  <Prose>
+    This reframe is the whole project. Putting the two side by side is what
+    makes drift visible, and visible drift is fixable drift. Both engineers I
+    ran it past backed it the same afternoon.
+  </Prose>
+</Section>
+
+<Section id="audit" title="Two success greens, one black brand color, and a greyscale numbered backwards.">
+  <Prose>
+    I compared three sources: the design-system summary I had written as
+    forward-looking intent, the live token files in the repo, and an earlier
+    DTCG token export. Every value quoted below is from the code, with a file
+    and line, because a reconciliation nobody can verify is just an opinion
+    with a table.
+  </Prose>
+
+  <Figure
+    src="/work/loop/design-system.png"
+    alt="The Loop Design System summary document, rendered in Loop's own system"
+    caption="The summary artifact, rendered in the system it documents. Two of the errors the audit caught are visible in this screenshot: the radius scale reads 14 to 34px when the code tops out at 28px, and the brand ramp is labelled 25 to 900 when the code runs 50 to 950."
+    wide
+  />
+
+  <Prose>
+    What came out of it, in severity order:
+
+    - **Status color forks by component.** The token layer resolves success to
+      Tailwind green `#00a63e`. The brand layer defines `--semantic-green`
+      `#30ac2e`, and AlertBanner and ErrorState consume that one. Whether
+      "succeeded" is one green or the other depends on which screen you land
+      on. Same story for the two reds.
+    - **Typography disagrees with itself in three places.** The documented
+      direction is DM Sans and DM Mono. The code loads Inter and Roboto Mono.
+      Articulat CF, the legacy face, is still attached to `<main>`. The type
+      *scale* matched perfectly, which is what made the family mismatch easy
+      to miss.
+    - **Dark Green is a brand primary with no token.** `#02271B` is in the
+      brand guidelines and nowhere in the code.
+    - **The greyscale is numbered in opposite directions.** Brand guidelines
+      say Grey 45 is darker than Grey 35. `variables.css` says the reverse.
+      Both are in use.
+    - **The semantic layer is doubled.** `--color-bg-*` and
+      `--background-color-*` mirror each other for most roles, which is the
+      exact drift the project exists to kill, reproduced inside the token file.
+
+    None of this was surprising. A four-year-old codebase with no design owner
+    is going to drift, and I would have bet on most of these before I opened a
+    file. What made the audit worth doing was not discovering that drift
+    existed. It was that half of these are shipping defects rather than
+    documentation problems, and you cannot tell which half without checking
+    every value against the code.
+  </Prose>
+</Section>
+
+<Section id="ramp" title="The brand ramp turned the primary brand color into black.">
+  <Prose>
+    The worst finding needed math to confirm. Loop's brand ramp is not authored
+    by hand. It is derived in OKLCH from a single anchor, Loop Green `#045B3F`,
+    with each step moving lightness by 0.1 and clamping at the ends.
+
+    Loop Green measures L 0.418. Five steps down from the anchor is L 0.018,
+    and six is zero. So `brand-900` and `brand-950` both compute to pure black,
+    and `brand-800` lands at `#000d00`, which is black with a rumour of green
+    in it. `--color-text-brand-primary` is aliased to `brand-900`. Loop's
+    primary brand text renders black.
+  </Prose>
+
+  <Figure
+    src="/work/loop/brand-ramp.svg"
+    alt="Loop's brand ramp as derived versus re-spaced, eleven steps each"
+    caption="I recomputed the ramp from the anchor to confirm the crush was in the derivation rather than in how I was reading it. The bottom row is the proposed fix."
+    wide
+  />
+
+  <Prose>
+    The fix is not a clamp. Clamping the bottom of the ramp keeps it black, it
+    just stops it going further. The dark end has to be re-spaced with smaller
+    per-step deltas so it stays chromatic all the way down, and the natural
+    place to land it is the Dark Green that was already a brand primary and
+    already missing from the code. `#02271B` measures L 0.243, which is
+    *lighter* than the current computed `brand-700`, so this is a genuine
+    re-derivation rather than a tweak.
+  </Prose>
+</Section>
+
+<Section id="library" title="Seven of the conflicts were not mine to resolve.">
+  <Prose>
+    The audit produced sixteen findings. I tagged each one with who has to
+    move: correct the document, correct the code, or an owner has to pick. Nine
+    were unambiguous and I wrote the fix. Seven were real forks with no
+    technically correct answer, and I did not decide those.
+
+    Whether `natural-grey-*` gets retired in favour of Tailwind neutral is a
+    brand call. Which direction the grey numbering runs is a convention that
+    other people's muscle memory depends on. Which green means success is a
+    decision someone has to still agree with in two years. I wrote them up as a
+    pick-one list with a recommendation each and took them to the owner, which
+    took longer than deciding unilaterally and is the only reason the decisions
+    will hold after my internship ends.
+  </Prose>
+
+  <Prose>
+    What exists now: an audit of the 260 color tokens in Storybook, a Figma
+    variables library with primitives and semantic light and dark mappings
+    built from the reconciled values, and light and dark screenshots of every
+    staging page mapped back to the Storybook components that produced them.
+    The typography change is the first piece to go out internally.
+  </Prose>
+</Section>
+
+<Section id="reflection" title="Reflection">
+  <Prose>
+    **Source of truth does not mean correct.** The rule I set was that
+    Storybook wins where the two disagree, and it is a good rule, but the ramp
+    finding is a case where the source of truth was the thing that was broken.
+    Deciding *who has to move* per finding turned out to matter more than
+    deciding which artifact ranks higher.
+
+    **The boring findings were the expensive ones.** A duplicate alias family
+    and an inverted numbering convention are not interesting to write up. They
+    are also what makes a component library slowly stop being a system, because
+    each one gives the next person a defensible reason to pick either.
+
+    **Talking to people changed the work more than iterating did.** I inverted
+    the entire project after three days of conversations, not after three days
+    of design. That has been true of nearly everything I have done here since.
+  </Prose>
+</Section>

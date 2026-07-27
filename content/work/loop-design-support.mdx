@@ -1,0 +1,83 @@
+---
+title: Design support
+projectLabel: Design support
+subtitle: The one-off requests nobody plans for, and what they keep revealing about the system.
+status: Ongoing
+year: "2026"
+role: Product design
+tags: [Email design, Marketing, Design systems]
+category: client
+tier: 1
+order: 1.5
+parent: loop
+cover: /work/loop/design-support.svg
+sections:
+  - { id: overview, title: Overview }
+  - { id: email, title: Email templates }
+  - { id: plans, title: Plan options }
+  - { id: signal, title: The signal }
+---
+
+<Section id="overview" title="Being the only designer means being the person everyone pings.">
+  <Prose>
+    Alongside the four named projects, the frontend team, sales and leadership
+    surface design needs continuously: a screen that was never specced, a
+    tricky interaction, a deck that needs assembling, a one-pager for a
+    customer call. These are tracked in Linear under a design label
+    specifically so the pattern of what gets asked for is visible rather than
+    anecdotal.
+
+    Three of them were substantial enough to be their own work.
+  </Prose>
+</Section>
+
+<Section id="email" title="Loop sends a lot of email and all of it looked different.">
+  <Prose>
+    Verification codes, payment confirmations, statement notifications, KYC
+    updates. Each had accumulated its own layout, and together they made a
+    regulated financial institution look improvised at exactly the moments a
+    customer is checking whether something went wrong.
+
+    The work is one template with variable slots rather than a set of designs:
+    designed in Figma, built as HTML, and wired into SendGrid as a dynamic
+    template so an engineer adds a new email type by supplying content rather
+    than by building a layout. Tested across the clients that break email, which
+    means Gmail, Outlook on desktop, Outlook on web, Apple Mail and iOS Mail.
+
+    The constraint that shaped it is that email HTML cannot use the design
+    system. No CSS custom properties, no shared components, no modern layout.
+    Every token has to be inlined by hand, which makes the template a
+    hand-maintained copy of the system that will drift from it the moment the
+    system moves. Naming that out loud was more useful than pretending
+    otherwise, because it makes the template something to review when tokens
+    change rather than something to forget.
+  </Prose>
+</Section>
+
+<Section id="plans" title="Pricing needed a fourth plan that was not one of the three.">
+  <Prose>
+    Loop's site presents three subscription plans. Sales needed the All In
+    platform option presented alongside them for a specific client, with its
+    description held word for word, which meant a comparison layout that
+    accommodates a fourth column without implying the fourth is simply the
+    biggest of four tiers.
+  </Prose>
+</Section>
+
+<Section id="signal" title="A request the system cannot serve is a system requirement in disguise.">
+  <Prose>
+    This is the reason the support work is on the portfolio at all rather than
+    filed as miscellaneous. The instruction I was given at the start of the
+    internship was to treat every incoming request as a test of the design
+    system: if an existing component cannot serve it, that is a signal the
+    system needs to grow.
+
+    It holds up. The pricing comparison needed a table variant that did not
+    exist. The email template exposed that the token layer stops at the
+    boundary of the product. The decks needed brand primitives that lived in
+    nobody's file. Each of those went back into the reconciliation work as a
+    gap rather than getting solved once and forgotten, which is the difference
+    between doing design support and building a design system while doing
+    design support.
+  </Prose>
+</Section>

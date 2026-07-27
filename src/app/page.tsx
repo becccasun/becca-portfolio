@@ -1,11 +1,11 @@
 import Link from "next/link";
 import PostcardHero from "@/components/postcards/PostcardHero";
 import WorkGrid from "@/components/WorkGrid";
-import { getAllWork } from "@/lib/work";
+import { getTopLevelWork } from "@/lib/work";
 import styles from "./page.module.css";
 
 export default function HomePage() {
-  const work = getAllWork();
+  const work = getTopLevelWork();
 
   return (
     <>

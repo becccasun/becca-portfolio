@@ -16,7 +16,77 @@
   gap: var(--s-4);
 }
 
+/* ------------------------------------------------------------------ */
+/*  Stacked cover: umbrella projects (Loop) show skeleton cards behind  */
+/*  the thumbnail so the tile reads as a set, not a single case study.  */
+/* ------------------------------------------------------------------ */
+
+.coverStack {
+  position: relative;
+}
+
+/* Room for the skeletons that sit below the thumbnail. */
+.tile[data-stacked] .coverStack {
+  margin-bottom: 28px;
+}
+
+.ghostBack,
+.ghostFront {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: var(--r-md);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  transition: transform 0.4s var(--ease-out), border-color 0.25s var(--ease-out);
+}
+
+/* Narrower and pushed down, so each layer shows as a band below the
+   thumbnail rather than hiding exactly behind it. */
+.ghostFront {
+  transform: translateY(12px) scaleX(0.955);
+}
+
+.ghostBack {
+  transform: translateY(24px) scaleX(0.905);
+  opacity: 0.75;
+}
+
+/* Hover fans the stack: the skeletons slide out sideways and tilt. */
+.tile:hover .ghostFront {
+  transform: translate(16px, 14px) rotate(1.5deg) scaleX(0.97);
+  border-color: var(--accent);
+}
+
+.tile:hover .ghostBack {
+  transform: translate(-16px, 24px) rotate(-2deg) scaleX(0.94);
+}
+
+.countChip {
+  position: absolute;
+  z-index: 2;
+  top: var(--s-3);
+  right: var(--s-3);
+  padding: var(--s-1) var(--s-3);
+  border-radius: 999px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  font-size: var(--fs-eyebrow);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  transition: color 0.2s var(--ease-out), border-color 0.2s var(--ease-out);
+}
+
+.tile:hover .countChip {
+  color: var(--accent-press);
+  border-color: var(--accent);
+}
+
 .cover {
+  position: relative;
+  z-index: 1;
   aspect-ratio: 16 / 10;
   border-radius: var(--r-md);
   background: var(--surface);

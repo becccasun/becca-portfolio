@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
-import { getAllWork, getWork } from "@/lib/work";
+import { getAllWork, getChildren, getSiblings, getWork } from "@/lib/work";
 import Toc from "@/components/case/Toc";
+import ProjectRail, { ProjectChips } from "@/components/case/ProjectRail";
+import ProjectIndex, { ProjectNav } from "@/components/case/ProjectIndex";
 import {
   Section,
   Prose,
@@ -49,6 +51,33 @@ export default async function CaseStudyPage({
   if (!work) notFound();
   const { meta, content } = work;
 
+  // Three shapes share this route: a standalone case study, an umbrella
+  // hub (has children), and a sub-project (has a parent). The last two
+  // swap the table of contents for the project switcher.
+  const children = getChildren(slug);
+  const isHub = children.length > 0;
+  const umbrella = isHub || Boolean(meta.parent);
+
+  const siblings = umbrella ? getSiblings(meta) : [];
+  const parentMeta = meta.parent ? getWork(meta.parent)?.meta : meta;
+  const railProps = {
+    parent: {
+      slug: parentMeta?.slug ?? slug,
+      title: parentMeta?.title ?? meta.title,
+    },
+    projects: siblings.map((s) => ({
+      slug: s.slug,
+      label: s.projectLabel ?? s.title,
+      sections: s.sections,
+    })),
+    activeSlug: isHub ? null : slug,
+  };
+
+  const index = siblings.findIndex((s) => s.slug === slug);
+  const prev = index > 0 ? siblings[index - 1] : undefined;
+  const next =
+    index >= 0 && index < siblings.length - 1 ? siblings[index + 1] : undefined;
+
   return (
     <article className={styles.page}>
       <div className={styles.hero}>
@@ -59,9 +88,19 @@ export default async function CaseStudyPage({
       </div>
 
       <div className={`container ${styles.layout}`}>
-        <Toc sections={meta.sections} />
+        {umbrella ? (
+          <ProjectRail {...railProps} />
+        ) : (
+          <Toc sections={meta.sections} />
+        )}
         <div className={styles.body}>
+          {umbrella && <ProjectChips {...railProps} />}
           <header className={styles.head}>
+            {meta.parent && parentMeta && (
+              <p className="eyebrow">
+                {parentMeta.title} · Project {index + 1} of {siblings.length}
+              </p>
+            )}
             <h1 className={`serif ${styles.title}`}>{meta.title}</h1>
             <p className={styles.subtitle}>{meta.subtitle}</p>
             <p className={styles.tags}>
@@ -69,6 +108,8 @@ export default async function CaseStudyPage({
             </p>
           </header>
           <MDXRemote source={content} components={mdxComponents} />
+          {isHub && <ProjectIndex items={children} />}
+          <ProjectNav prev={prev} next={next} />
         </div>
       </div>
     </article>
