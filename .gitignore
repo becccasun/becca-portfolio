@@ -9,4 +9,5 @@ next-env.d.ts
 
 .next-verify/
 dev.log
+dev-server.log
 data/

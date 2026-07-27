@@ -10,6 +10,7 @@ import styles from "./Nav.module.css";
 const LINKS = [
   { href: "/#work", activePrefix: "/work", label: "Works" },
   { href: "/play", activePrefix: "/play", label: "Play" },
+  { href: "/blogs", activePrefix: "/blogs", label: "Blogs" },
   { href: "/about", activePrefix: "/about", label: "About" },
 ];
 
