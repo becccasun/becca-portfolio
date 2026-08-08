@@ -57,6 +57,10 @@
   padding-left: var(--s-6);
 }
 
+.isHorizontal .wideFrame {
+  width: min(820px, 56vw);
+}
+
 .isHorizontal .photoFrame {
   width: min(480px, 36vw);
   padding: 0;
@@ -99,6 +103,18 @@
   font-size: var(--fs-h2);
   line-height: 1.35;
   max-width: 22ch;
+}
+
+/* Several paragraphs of prose, where .body carries a single line. Sits a
+   step down the scale so the whole passage clears a viewport-height frame
+   without the panel needing to scroll on its own. */
+.bodyLong {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+  font-size: var(--fs-h3);
+  line-height: 1.5;
+  max-width: 46ch;
 }
 
 .accented {
@@ -182,5 +198,8 @@ a.tRow:hover .tTitle {
   }
   .body {
     font-size: var(--fs-h3);
+  }
+  .bodyLong {
+    font-size: var(--fs-body);
   }
 }

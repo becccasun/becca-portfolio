@@ -100,15 +100,36 @@ export default function AboutScroller() {
             />
           </section>
 
-          <section className={styles.frame}>
+          {/* The only frame carrying long-form copy, so it runs wider and a
+              step down the type scale — see .wideFrame / .bodyLong. */}
+          <section className={`${styles.frame} ${styles.wideFrame}`}>
             <p className="eyebrow">Who</p>
-            <p className={styles.body}>
-              I&apos;m Rebecca, a design engineer studying at the University
-              of Michigan. I care about interfaces that are{" "}
-              <span className={styles.accented}>fast to understand</span> and
-              feel considered, and I like owning the whole path from a Figma
-              frame to a deployed component.
-            </p>
+            <div className={styles.bodyLong}>
+              <p>
+                I started my career in the fine arts, detoured into
+                architecture school, and quickly realized I wasn&apos;t built
+                for a single lane. I transferred into product design, picking
+                up lessons in technical development, user psychology, and
+                creative problem solving along the way.
+              </p>
+              <p>
+                For a while it felt like wandering, until I saw the pattern.
+                I&apos;m a multidisciplinary designer with a knack for
+                connecting dots across creative mediums.{" "}
+                <span className={styles.accented}>
+                  The in-between spaces are where I do my best work.
+                </span>
+              </p>
+              <p>
+                Currently I&apos;m proud to be leading the design team at{" "}
+                <a href="/work/mhacks" className={styles.accented}>
+                  MHacks
+                </a>
+                , consulting for up-and-coming YC startups through Atlas
+                Digital, and building a product of my own in Shift Creator
+                Space.
+              </p>
+            </div>
           </section>
 
           <section className={styles.frame}>
