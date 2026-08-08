@@ -69,6 +69,23 @@ function normalizeImage(url: string): string {
   );
 }
 
+/**
+ * Medium closes every RSS body with a 1x1 tracking pixel on medium.com
+ * itself (`/_/stat?event=post.clientViewed`). It is not artwork, and on
+ * a post with no real images it would otherwise be picked up as the
+ * cover — which throws in next/image, since only the image CDNs below
+ * are allowed hosts. Match those hosts and nothing else.
+ */
+const IMAGE_HOSTS = ["cdn-images-1.medium.com", "miro.medium.com"];
+
+function isContentImage(src: string): boolean {
+  try {
+    return IMAGE_HOSTS.includes(new URL(src).hostname);
+  } catch {
+    return false;
+  }
+}
+
 const PUBLICATIONS: Record<string, string> = {
   shiftcreatorspace: "Shift Creator Space",
 };
@@ -133,7 +150,9 @@ export function sanitizeBody(html: string): string {
 
       if (tag === "img") {
         const src = attr(attrs, "src");
-        if (!src || !/^https?:\/\//i.test(src)) return "";
+        // Drops the trailing tracking pixel along with anything else
+        // that isn't hosted on an image CDN we can actually proxy.
+        if (!src || !isContentImage(normalizeImage(src))) return "";
         const alt = attr(attrs, "alt") ?? "";
         return `<img src="${proxied(src)}" alt="${alt}" loading="lazy" />`;
       }
@@ -154,7 +173,10 @@ function parseItems(xml: string): BlogArticle[] {
       const body = tag(block, "content:encoded");
       const published = new Date(tag(block, "pubDate"));
       const words = body.replace(/<[^>]+>/g, " ").split(/\s+/).filter(Boolean).length;
-      const firstImage = body.match(/<img[^>]+src="([^"]+)"/);
+      const cover =
+        [...body.matchAll(/<img[^>]+src="([^"]+)"/g)]
+          .map((m) => normalizeImage(m[1]))
+          .find(isContentImage) ?? null;
 
       // "[Design Notebook #3] The Noise Around AI Design" splits into a
       // series chip and a title; posts without a marker keep the whole line.
@@ -174,7 +196,7 @@ function parseItems(xml: string): BlogArticle[] {
         publication: publicationFrom(link),
         minutes: Math.max(1, Math.round(words / 220)),
         excerpt: excerptFrom(body),
-        image: firstImage ? normalizeImage(firstImage[1]) : null,
+        image: cover,
         tags: [...block.matchAll(/<category>([\s\S]*?)<\/category>/g)].map((m) =>
           m[1].replace(/^<!\[CDATA\[/, "").replace(/\]\]>$/, "")
         ),
