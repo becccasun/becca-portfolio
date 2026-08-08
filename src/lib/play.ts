@@ -9,7 +9,14 @@ export type PlayItem = {
   year: string;
   href: string;
   /** Where the link goes; drives the cursor label ("View on Devpost"). */
-  source: "Devpost" | "Medium" | "GitHub" | "Figma" | "YouTube" | "Live site";
+  source:
+    | "Devpost"
+    | "Medium"
+    | "GitHub"
+    | "Figma"
+    | "YouTube"
+    | "Dropbox"
+    | "Live site";
   image: string;
   category: PlayCategory;
   /** Which gallery wall the piece hangs on (0 = ahead at load, then clockwise). */
@@ -35,16 +42,21 @@ export const PLAY_CATEGORIES: { id: PlayCategory; label: string }[] = [
 export const GRID_ORDER: PlayCategory[] = ["digital", "crafts", "photo"];
 
 /**
- * 18 placeholder pieces, salon-hung across the room's four walls with
- * staggered heights. Writing used to hang on a fourth wall and now lives
- * at /blogs, so the remaining pieces are spread 5/5/4/4 rather than
- * leaving a bare wall. Swap titles, hrefs, and images for the real work.
+ * 18 pieces, salon-hung across the room's four walls with staggered
+ * heights. Writing used to hang on a fourth wall and now lives at
+ * /blogs, so the pieces are spread 5/5/4/4 rather than leaving a bare
+ * wall. The print work on wall 0 is real; the rest are still
+ * placeholders — swap titles, hrefs, and images as the work lands.
+ *
+ * Wall 0 runs print-first: the magazine, then both design journals.
+ * These are landscape where the placeholders are portrait, so they hang
+ * shorter than their neighbours at the same width.
  */
 export const PLAY_ITEMS: PlayItem[] = [
   // Wall 0
-  { id: "poster-01", added: 15, title: "Poster study 01", year: "2025", href: "#", source: "Figma", image: "/play/poster-01.svg", category: "crafts", wall: 0, x: 90, y: -70, w: 320 },
-  { id: "zine-spread", added: 6, title: "Zine spread", year: "2024", href: "#", source: "Medium", image: "/play/zine-spread.svg", category: "crafts", wall: 0, x: 480, y: 90, w: 280 },
-  { id: "riso-print", added: 5, title: "Risograph print", year: "2024", href: "#", source: "Live site", image: "/play/riso-print.svg", category: "crafts", wall: 0, x: 850, y: -110, w: 240 },
+  { id: "asquared", added: 27, title: "a/squared Magazine", year: "2024–2026", href: "https://www.asquaredmag.org/", source: "Live site", image: "/play/asquared/cover.png", category: "crafts", wall: 0, x: 90, y: -70, w: 380 },
+  { id: "agree-to-disagree", added: 26, title: "Agree to Disagree: Design Journal", year: "2025", href: "https://www.dropbox.com/scl/fi/ql0l8afskotungcwwlpgx/Rebecca-Sun-2025-Creative-Notebook.pdf?rlkey=3qx5oxgkpkqsmoxf4ha6p6oom&st=h8czd0xf&dl=0", source: "Dropbox", image: "/play/agree-to-disagree.png", category: "crafts", wall: 0, x: 480, y: 90, w: 360 },
+  { id: "map-the-mind", added: 25, title: "Map the Mind: Design Journal", year: "2024", href: "https://www.dropbox.com/scl/fi/ltcp4n49u5c2syp5eqelj/Rebecca-Sun-Fall-2024-Notebook.pdf?rlkey=rea0pv7fh2vtjmgehbe9p9hdh&st=0c9xxtp1&dl=0", source: "Dropbox", image: "/play/map-the-mind.png", category: "crafts", wall: 0, x: 850, y: -110, w: 340 },
   { id: "sticker-sheet", added: 16, title: "Sticker sheet", year: "2025", href: "#", source: "Live site", image: "/play/sticker-sheet.svg", category: "crafts", wall: 0, x: 1200, y: 70, w: 300 },
   { id: "mural-mockup", added: 4, title: "Mural mockup", year: "2024", href: "#", source: "Live site", image: "/play/mural-mockup.svg", category: "crafts", wall: 0, x: 1560, y: -80, w: 260 },
 
