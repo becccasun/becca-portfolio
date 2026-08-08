@@ -1,19 +1,74 @@
 ---
 title: AgentMail
-subtitle: Awaiting real case-study content from Rebecca.
+subtitle: "One outreach email, shown from three sides: the salesperson, the system, and the person who receives it."
 year: "2025"
-role: Product engineering
-tags: [Engineering, AI]
+role: Product design
+tags: [Weekend Project, AI Design, Developer Tools]
 category: client
-tier: 2
-order: 6
+tier: 1
+order: 4
+cover: /work/agentmail/cover.png
 sections:
-  - { id: overview, title: Overview }
+  - { id: concept, title: The concept }
+  - { id: views, title: Three views }
+  - { id: decisions, title: Decisions }
+  - { id: next, title: Unresolved }
 ---
 
-<Section id="overview" title="Overview">
+<Section id="concept" title="AgentMail gives AI agents real inboxes. The hard part is proving the mail is real.">
   <Prose>
-    Content pending. Rebecca will paste the AgentMail case study in chat;
-    drop it into this file using the shared media blocks.
+    A weekend on the "Try our product" section of the marketing site. The
+    question I was designing against: how do you show an agent sending email
+    without it looking like a screenshot of a chatbot?
+  </Prose>
+</Section>
+
+<Section id="views" title="Three views.">
+  <Prose>
+    A toggle switches whose screen you are looking at. Same email throughout.
+  </Prose>
+
+  <Gallery
+    images={[
+      { src: "/work/agentmail/user.png", alt: "User view: the salesperson's AgentMail inbox" },
+      { src: "/work/agentmail/system.png", alt: "System view: the engine working through the queue" },
+    ]}
+  />
+
+  <Figure
+    src="/work/agentmail/client.png"
+    alt="Client view: the outreach email as it arrives in an ordinary Gmail inbox"
+    wide
+  />
+</Section>
+
+<Section id="decisions" title="Decisions.">
+  <Prose>
+    **The toggle switches vantage points, not features.** Three tabs for one
+    event, so the demo argues the thing works end to end rather than listing
+    what it can do.
+
+    **The recipient's view has no product in it.** The client tab is a plain
+    Gmail thread. Putting AgentMail chrome on that screen would contradict the
+    promise, which is that the mail arrives as ordinary mail.
+
+    **The SDK rail never leaves.** Code sits beside every state, scrolling
+    against the demo, so a developer evaluating this never loses sight of what
+    they would actually be writing.
+
+    **The manager's nudge starts the clock.** A pinned message asking for
+    fifty sales by end of day gives the demo a reason to be running. Without
+    it, an inbox full of sent mail is just an inbox.
+  </Prose>
+</Section>
+
+<Section id="next" title="Unresolved.">
+  <Prose>
+    - The three states do not animate between each other. They should read as
+      one continuous scene viewed from three angles.
+    - No mobile layout. The SDK rail and the inbox panel cannot sit side by
+      side on a narrow screen.
+    - The email copy is written to look plausible rather than tested against
+      anything a salesperson would actually send.
   </Prose>
 </Section>

@@ -3,9 +3,8 @@ import {
   appendPostcard,
   listApprovedPostcards,
   PRESET_CARDS,
-  BG_OPTIONS,
-  FG_OPTIONS,
-  DECO_OPTIONS,
+  ART_OPTIONS,
+  STAMP_OPTIONS,
   type PostcardDesign,
 } from "@/lib/postcards";
 import { moderateMessage } from "@/lib/moderate";
@@ -15,6 +14,8 @@ export const dynamic = "force-dynamic";
 
 const MAX_TEXT = 240;
 const MAX_NAME = 24;
+const MAX_CITY = 32;
+const MAX_ROLE = 32;
 
 // One postcard per IP per half minute, per server instance.
 const lastPost = new Map<string, number>();
@@ -27,19 +28,23 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
-  let text: string, name: string, design: PostcardDesign;
+  let text: string, name: string, city: string, role: string;
+  let design: PostcardDesign;
   try {
     const body = await req.json();
     text = String(body.text ?? "").trim();
     name = String(body.name ?? "").trim();
+    city = String(body.city ?? "").trim();
+    role = String(body.role ?? "").trim();
     design = body.design;
     if (
       text.length < 2 ||
       text.length > MAX_TEXT ||
       name.length > MAX_NAME ||
-      !BG_OPTIONS.some((o) => o.id === design?.bg) ||
-      !FG_OPTIONS.some((o) => o.id === design?.fg) ||
-      !DECO_OPTIONS.some((o) => o.id === design?.deco)
+      city.length > MAX_CITY ||
+      role.length > MAX_ROLE ||
+      !ART_OPTIONS.some((o) => o.id === design?.art) ||
+      !STAMP_OPTIONS.some((o) => o.id === design?.stamp)
     ) {
       throw new Error("bad shape");
     }
@@ -57,13 +62,20 @@ export async function POST(req: Request) {
   }
   lastPost.set(ip, now);
 
-  const approved = await moderateMessage(text, name);
+  // City and role are free text on a public card, so they go through
+  // the same moderation gate as the message and the name.
+  const approved = await moderateMessage(
+    text,
+    [name, city, role].filter(Boolean).join(" · ")
+  );
   try {
     await appendPostcard({
       id: crypto.randomUUID(),
-      design: { bg: design.bg, fg: design.fg, deco: design.deco },
+      design: { art: design.art, stamp: design.stamp },
       text,
       name,
+      city,
+      role,
       approved,
       createdAt: new Date().toISOString(),
     });

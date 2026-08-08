@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import { type PostcardData } from "./postcards-client";
+import { normalizeDesign, type PostcardData } from "./postcards-client";
 
 export * from "./postcards-client";
 
@@ -35,9 +35,14 @@ export async function appendPostcard(card: StoredPostcard) {
       headers: supabaseHeaders(),
       body: JSON.stringify({
         id: card.id,
-        bg: card.design.bg,
-        fg: card.design.fg,
-        deco: card.design.deco,
+        // The table predates the art/stamp catalogs: `bg` holds the
+        // picture and `fg` the stamp. Renaming the columns is a pending
+        // migration, not a behaviour change.
+        bg: card.design.art,
+        fg: card.design.stamp,
+        // `deco` is the only spare column, so it carries the two new
+        // sender fields until the table gains real ones.
+        deco: JSON.stringify({ city: card.city ?? "", role: card.role ?? "" }),
         text: card.text,
         name: card.name,
         approved: card.approved,
@@ -61,18 +66,33 @@ export async function listApprovedPostcards(
     if (!res.ok) return [];
     const rows: {
       id: string;
-      bg: PostcardData["design"]["bg"];
-      fg: PostcardData["design"]["fg"];
-      deco: PostcardData["design"]["deco"];
+      bg: string;
+      fg: string;
+      deco: string | null;
       text: string;
       name: string;
     }[] = await res.json();
-    return rows.reverse().map((r) => ({
-      id: r.id,
-      design: { bg: r.bg, fg: r.fg, deco: r.deco },
-      text: r.text,
-      name: r.name,
-    }));
+    return rows.reverse().map((r) => {
+      // Rows written before the sender fields existed hold a plain
+      // decoration id here rather than JSON.
+      let city = "";
+      let role = "";
+      try {
+        const extra = JSON.parse(r.deco ?? "{}");
+        city = String(extra.city ?? "");
+        role = String(extra.role ?? "");
+      } catch {
+        /* legacy row */
+      }
+      return {
+        id: r.id,
+        design: normalizeDesign({ art: r.bg, stamp: r.fg }),
+        text: r.text,
+        name: r.name,
+        city,
+        role,
+      };
+    });
   }
   return listLocal(limit);
 }
@@ -101,5 +121,12 @@ function listLocal(limit: number): PostcardData[] {
   return readAll()
     .filter((c) => c.approved)
     .slice(-limit)
-    .map(({ id, design, text, name }) => ({ id, design, text, name }));
+    .map(({ id, design, text, name, city, role }) => ({
+      id,
+      design: normalizeDesign(design),
+      text,
+      name,
+      city: city ?? "",
+      role: role ?? "",
+    }));
 }

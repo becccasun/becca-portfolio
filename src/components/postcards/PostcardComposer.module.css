@@ -122,22 +122,47 @@
   color: var(--accent-press);
 }
 
+/* Sources are squarish; crop them to the card's shape so the swatches
+   line up in a even grid. */
 .thumb {
   display: block;
   width: 100%;
-  height: auto;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
   border: 1px solid var(--border);
   border-radius: var(--r-sm);
   transition: border-color 0.2s var(--ease-out);
 }
 
-.option:hover .thumb {
+/* Stamps keep their own proportions and sit on the paper, so they get a
+   stock-coloured well instead of a border. */
+.stampThumb {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: contain;
+  padding: var(--s-2);
+  background: #fcfaf3;
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  transition: border-color 0.2s var(--ease-out);
+}
+
+.option:hover .thumb,
+.option:hover .stampThumb {
   border-color: var(--text-muted);
 }
 
-.optionActive .thumb {
+.optionActive .thumb,
+.optionActive .stampThumb {
   border-color: var(--accent);
   outline: 1px solid var(--accent);
+}
+
+.hint {
+  font-size: var(--fs-small);
+  color: var(--text-muted);
+  margin-bottom: var(--s-1);
 }
 
 /* message */

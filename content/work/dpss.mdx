@@ -1,19 +1,141 @@
 ---
 title: DPSS
-subtitle: Awaiting real case-study content from Rebecca.
+subtitle: Michigan's public safety division was hiring, and the hardest part of applying was finding out how.
 year: "2025"
-role: Design & research
-tags: [Research, Design]
-category: sprints
-tier: 2
-order: 5
+role: Product design
+tags: [Design System, Public Sector, Client Work]
+category: client
+tier: 1
+order: 3
+cover: /work/dpss/cover.png
 sections:
   - { id: overview, title: Overview }
+  - { id: problem, title: The problem }
+  - { id: work, title: What I designed }
+  - { id: system, title: The design system }
+  - { id: outcome, title: Where it landed }
+  - { id: reflection, title: Reflection }
 ---
 
-<Section id="overview" title="Overview">
+<Section id="overview" title="A division that runs 24/7 across three campuses, recruiting through a page that explained none of it.">
   <Prose>
-    Content pending. Rebecca will paste the DPSS case study in chat; drop it
-    into this file using the shared media blocks.
+    The University of Michigan's Division of Public Safety and Security runs
+    police, security and emergency management across Ann Arbor, Dearborn and
+    Flint. They came to Atlas Digital, a student consultancy at Michigan, to
+    rebuild the hiring experience they call "A Great Place to Work."
+
+    Five of us worked on it: a project manager, a lead designer, and three
+    designers. I was one of the designers. I owned the hiring landing page and
+    the design system, and shared the job listing and saved-applications
+    screens with another designer.
+  </Prose>
+</Section>
+
+<Section id="problem" title="Applying meant logging in to find out you could not.">
+  <Prose>
+    We audited the existing site and worked through the DPSS team's own view of
+    who they were trying to reach. Three problems kept surfacing.
+
+    The copy repeated itself across pages without answering the question an
+    applicant actually has. Navigation gave no reliable sense of where you
+    were. And the application flow put a university login in front of external
+    candidates, which is a wall standing exactly where DPSS said it least
+    wanted one.
+
+    None of it was a visual problem. It was a sequencing problem: what a
+    candidate needs in order to decide sat behind a process built for people
+    who had already decided.
+  </Prose>
+</Section>
+
+<Section id="work" title="I put the hiring process, with its real durations, on the landing page.">
+  <Prose>
+    The strongest move was the least decorative. DPSS hires in four phases:
+    first interview, panel interview, background check, administrative panel.
+    Each carries a genuine duration, and background investigation for a public
+    safety role runs to weeks rather than days.
+
+    That timeline used to be invisible until you were already inside it.
+    Putting it on the landing page as four labelled phases with their durations
+    stated answers the question every candidate has and most career pages
+    avoid printing. It also reframes a slow process as a thorough one, which is
+    the honest reading for a division that runs armed patrol.
+  </Prose>
+
+  <Figure
+    src="/work/dpss/landing.png"
+    alt="DPSS hiring landing page with hero, benefits, four-phase hiring process, testimonials and FAQ"
+    caption="The landing page. Benefits, the four-phase process with durations, testimonials from people who work alongside DPSS, and an FAQ covering what the old site left candidates to guess."
+    wide
+  />
+
+  <Prose>
+    On the listing side the constraint was volume. DPSS posts a wide spread of
+    roles, from operations analysts to control systems technicians to safety
+    outreach. Filters for location, job type and date posted do the narrowing,
+    and each posting can be saved or shared from its own row.
+
+    Saving is the part that answers the login wall. A candidate can gather what
+    interests them and track what they have submitted through a "My
+    Applications" tab, without an account being the price of entry.
+  </Prose>
+
+  <Gallery
+    images={[
+      { src: "/work/dpss/opportunities.png", alt: "Job opportunities listing with filters and save actions" },
+      { src: "/work/dpss/saved.png", alt: "My Applications tab showing tracked postings" },
+    ]}
+    caption="Listing and saved views. Filters and pagination carry the volume; save and share sit on each row so tracking a role never requires a detour."
+  />
+</Section>
+
+<Section id="system" title="Four people drawing screens in parallel needed one file to agree on.">
+  <Prose>
+    The risk in a team this size is four plausible interfaces that do not look
+    related. I built the design system that held them together: the palette
+    anchored on Michigan maize and navy, three button tiers, a type scale, and
+    the components that recur across every screen.
+
+    It is not a large system and it did not need to be. It needed to exist
+    early enough that nobody had to invent a button.
+  </Prose>
+
+  <Figure
+    src="/work/dpss/design-system.png"
+    alt="DPSS design system: brand colours, button tiers, logo, type scale and components"
+    caption="Eight brand colours, three button tiers, the type ladder, and the shared components the other screens pull from."
+    wide
+  />
+</Section>
+
+<Section id="outcome" title="Where it landed.">
+  <Prose>
+    We delivered personas, wireframes, three high-fidelity prototypes and the
+    design system, presented to DPSS at a final review. The engagement was
+    scoped to design rather than build, so what DPSS took away was an argument
+    in prototype form for what their hiring experience could be.
+
+    Feasibility shaped it throughout. We asked in every client meeting what
+    their platform and their team could actually carry, because a
+    recommendation that cannot be built on the system they already run is not a
+    recommendation.
+  </Prose>
+</Section>
+
+<Section id="reflection" title="Reflection">
+  <Prose>
+    **The most useful thing I designed was a table of durations.** Not the
+    hero, not the palette. Telling candidates that a background check takes
+    about two weeks is the kind of detail organisations omit by reflex, and
+    stating it publicly does more for trust than any amount of photography.
+
+    **A design system's value is in when it arrives, not how complete it is.**
+    Mine was small. It landed before the other screens were drawn, which is the
+    only reason four designers' work reads as one product.
+
+    **Public sector constraints are the brief, not an obstacle.** Accessibility
+    requirements and the limits of the existing platform were fixed before we
+    started. Treating them as the shape of the problem rather than a tax on it
+    is what made the handoff something DPSS could act on.
   </Prose>
 </Section>

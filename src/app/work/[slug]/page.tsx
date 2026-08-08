@@ -103,9 +103,18 @@ export default async function CaseStudyPage({
             )}
             <h1 className={`serif ${styles.title}`}>{meta.title}</h1>
             <p className={styles.subtitle}>{meta.subtitle}</p>
-            <p className={styles.tags}>
-              {[`${meta.year} · ${meta.role}`, ...meta.tags].join(" · ")}
+            <p className={styles.meta}>
+              {meta.year} · {meta.role}
             </p>
+            {meta.tags.length > 0 && (
+              <ul className={`pills ${styles.tags}`}>
+                {meta.tags.map((t) => (
+                  <li key={t} className="pill">
+                    {t}
+                  </li>
+                ))}
+              </ul>
+            )}
           </header>
           <MDXRemote source={content} components={mdxComponents} />
           {isHub && <ProjectIndex items={children} />}

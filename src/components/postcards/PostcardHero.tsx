@@ -5,6 +5,11 @@ import Link from "next/link";
 import * as THREE from "three";
 import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
 import {
+  ART_OPTIONS,
+  STAMP_OPTIONS,
+  preloadPostcardImage,
+  readyImage,
+  stampSrc,
   drawPostcardFront,
   drawPostcardBack,
   PRESET_CARDS,
@@ -30,20 +35,6 @@ const FADE_SPAN = 0.3;
 // the card's shadow is still on screen, so the stream repeats its source
 // cards up to this count instead of leaving a gap in the arc.
 const MIN_STREAM = 9;
-
-/**
- * Placeholder artwork for the card fronts. All roughly square, so each
- * is cover-cropped to the card's 3:2. `focusY` biases that crop when the
- * subject isn't centred (0 = keep the top, 1 = keep the bottom).
- */
-const ART = [
-  { src: "/postcards/water-sparkle.jpg", focusY: 0.5 },
-  { src: "/postcards/forest-light.jpg", focusY: 0.45 },
-  { src: "/postcards/tree-sun.jpg", focusY: 0.4 },
-  { src: "/postcards/lily-of-the-valley.jpg", focusY: 0.5 },
-  { src: "/postcards/aurora-walk.jpg", focusY: 0.72 },
-  { src: "/postcards/green-ripple.jpg", focusY: 0.5 },
-];
 
 type CardState = {
   mesh: THREE.Mesh;
@@ -92,44 +83,6 @@ export default function PostcardHero() {
       tex.colorSpace = THREE.SRGBColorSpace;
       tex.anisotropy = 8;
       return tex;
-    }
-
-    /**
-     * Cover-crop a square-ish source into the card's 3:2 texture: scale
-     * to fill, then slide the overflowing axis to the artwork's focal
-     * point. Nothing is squashed, and no bars are left at the edges.
-     */
-    function makeArtTexture(image: HTMLImageElement, focusY: number) {
-      const canvas = document.createElement("canvas");
-      canvas.width = 1200;
-      canvas.height = 800;
-      const ctx = canvas.getContext("2d")!;
-      const scale = Math.max(
-        canvas.width / image.naturalWidth,
-        canvas.height / image.naturalHeight
-      );
-      const w = image.naturalWidth * scale;
-      const h = image.naturalHeight * scale;
-      ctx.drawImage(
-        image,
-        (canvas.width - w) / 2,
-        (canvas.height - h) * focusY,
-        w,
-        h
-      );
-      const tex = new THREE.CanvasTexture(canvas);
-      tex.colorSpace = THREE.SRGBColorSpace;
-      tex.anisotropy = 8;
-      return tex;
-    }
-
-    function loadImage(src: string) {
-      return new Promise<HTMLImageElement | null>((resolve) => {
-        const img = new Image();
-        img.onload = () => resolve(img);
-        img.onerror = () => resolve(null);
-        img.src = src;
-      });
     }
 
     /**
@@ -254,13 +207,12 @@ export default function PostcardHero() {
       fill.position.set(6, -1.5, 5);
       scene.add(fill);
 
-      // Load the artwork up front, then deal it out in a shuffled order
-      // so the arc looks different on each visit. Cards outnumber the
-      // art, so the deck wraps.
-      const artImages = await Promise.all(ART.map((a) => loadImage(a.src)));
-      const deck = ART.map((art, i) => ({ art, image: artImages[i] }))
-        .filter((entry) => entry.image !== null)
-        .sort(() => Math.random() - 0.5);
+      // Decode every picture and stamp before building textures, so each
+      // card renders the pair its author actually chose.
+      await Promise.all([
+        ...ART_OPTIONS.map((o) => preloadPostcardImage(o.src)),
+        ...STAMP_OPTIONS.map((o) => preloadPostcardImage(o.src)),
+      ]);
       if (disposed || !mount) return;
 
       const geometry = new THREE.BoxGeometry(CARD_W, CARD_H, 0.02);
@@ -288,20 +240,22 @@ export default function PostcardHero() {
           bumpScale: 0.5,
           metalness: 0,
         };
-        const dealt = deck.length ? deck[i % deck.length] : null;
         const front = new THREE.MeshStandardMaterial({
-          map: dealt
-            ? makeArtTexture(dealt.image!, dealt.art.focusY)
-            : // No artwork reached the browser: fall back to the drawn
-              // design so the arc is never a row of blank cards.
-              makeTexture((ctx, w, h) =>
-                drawPostcardFront(ctx, w, h, card.design)
-              ),
+          map: makeTexture((ctx, w, h) =>
+            drawPostcardFront(ctx, w, h, card.design)
+          ),
           ...paper,
         });
         const back = new THREE.MeshStandardMaterial({
           map: makeTexture((ctx, w, h) =>
-            drawPostcardBack(ctx, w, h, card.text, card.name)
+            drawPostcardBack(
+              ctx,
+              w,
+              h,
+              card.text,
+              { name: card.name, city: card.city, role: card.role },
+              readyImage(stampSrc(card.design.stamp))
+            )
           ),
           ...paper,
         });

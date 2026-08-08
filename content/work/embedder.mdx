@@ -1,42 +1,202 @@
 ---
 title: Embedder
-subtitle: Design engineering for a developer-facing embedding platform.
+subtitle: A hardware-aware AI coding tool that nobody could tell was hardware-aware. Twenty usability sessions on why, and seven recommendations to fix it.
 year: "Spring 2026"
-role: Design engineering
-tags: [Design engineering, TypeScript, Developer tools]
+role: UX research & product definition
+tags: [UX Research, Developer Tools, Client Work]
 category: client
 tier: 1
 order: 2
 cover: /work/embedder.svg
 sections:
   - { id: overview, title: Overview }
-  - { id: problem, title: The problem }
-  - { id: solution, title: Solution }
-  - { id: outcome, title: Outcome }
+  - { id: outcome, title: What changed }
+  - { id: method, title: How we ran it }
+  - { id: finding, title: The finding }
+  - { id: recommendations, title: Recommendations }
+  - { id: limits, title: What we could not test }
+  - { id: reflection, title: Reflection }
 ---
 
-<Section id="overview" title="Overview">
+<Section id="overview" title="What do you do when your product's whole advantage is invisible for the first ten minutes?">
   <Prose>
-    Placeholder copy. What Embedder is, what I owned, and the timeframe.
+    Embedder is a Y Combinator-backed AI assistant built for firmware and
+    embedded systems work. General coding tools are software-first: they have
+    no datasheet awareness, no register-level understanding, no idea what
+    board you are talking to. Embedder does. It reads hardware context and
+    runs in the terminal alongside the device, which is the entire reason it
+    exists.
+
+    None of that was visible when you installed it.
+
+    Embedder's founder brought this to Atlas Digital Technology Consulting at
+    the University of Michigan as a research question rather than a design
+    brief. Not "make this prettier" but "why do people bounce off it, and what
+    is realistic to promise them?" Six of us worked on it from February to
+    April 2026. I was one of two project managers, and I owned the client
+    relationship and scope, designed the research, ran sessions and coded
+    transcripts, and worked on the synthesis and the final report.
   </Prose>
-  <Figure src="/work/embedder.svg" alt="Embedder overview" caption="Cover placeholder." wide />
 </Section>
 
-<Section id="problem" title="The problem">
+<Section id="outcome" title="What changed.">
   <Prose>
-    Placeholder copy. The problem statement and why it mattered.
+    Embedder used the findings to shape their next round of onboarding
+    updates. The research also fed two decisions beyond the immediate
+    interface: whether a native app was worth building, and how to structure
+    user research going forward so they could keep doing this without us.
+
+    That last one is the outcome I did not expect and value most. We were
+    hired to answer a question about onboarding. What the client also took
+    from it was a way of asking questions.
   </Prose>
 </Section>
 
-<Section id="solution" title="Solution">
+<Section id="method" title="We narrowed the brief before we ran a single session.">
   <Prose>
-    Placeholder copy. What I designed and built, with figures as evidence.
+    The founder's opening ask was product-market fit across 50 to 100
+    participants, weighted toward professional automotive engineers in
+    Detroit. Data saturation in qualitative work tends to arrive around
+    twenty, and we had ten weeks and six people, most of us new to firmware.
+    Chasing the larger number would have bought us a thinner version of the
+    same answer.
+
+    So we cut it. The engagement became onboarding and feature discovery,
+    scoped to the first ten minutes, and the participant target came down to
+    a number we could actually reach and code properly. I took that back to
+    the client rather than quietly under-delivering on the original.
+
+    What we ran:
+
+    - **Twenty usability sessions**, remote over Zoom, with CE, EE and
+      robotics students and firmware engineers. Participants installed
+      Embedder themselves and worked through tasks built on real embedded
+      debugging scenarios: I2C, Timer and PWM, EXTI interrupts.
+    - **A comparative analysis** against Cursor, Codex and Claude Code,
+      scored on twelve criteria drawn from the interviews rather than from a
+      feature list.
+    - **A heuristic evaluation** of both the terminal and the VS Code
+      extension, run in parallel against Nielsen's heuristics.
+
+    Before any of it, I spent a session with an embedded engineer learning
+    what firmware development actually involves end to end. The client had
+    been explicit that general CS majors were not suitable participants
+    because they would not know the specifics. The same applied to us. A
+    researcher who cannot tell a serial monitor from a chat panel cannot hear
+    what a participant is telling them.
   </Prose>
-  <Figure src="/work/placeholder-b.svg" alt="Solution detail" caption="Solution placeholder." />
 </Section>
 
-<Section id="outcome" title="Outcome">
+<Section id="finding" title="Every participant reached for the same word: wrapper.">
   <Prose>
-    Placeholder copy. Results and reflection.
+    Users described Embedder as a "Claude wrapper", as "just a chat box", as
+    something you "could replicate on your own quite easily". One put it
+    flatly: they saw no advantage in using Embedder over Claude Code in any
+    of the trials they had just run.
+
+    They were wrong. But they were wrong for a reason the product handed
+    them. Over 60% never found slash commands, mode switching or the
+    attachments menu on their own. Half flagged the Monitor or console as
+    confusing, unable to tell the device-facing surface from the AI chat. One
+    participant said the Monitor confused them because it sat separate from
+    everything else and they still could not work out what it did. Another
+    only made sense of it by mapping it onto something he already knew,
+    assuming it must be a serial monitor.
+
+    None of this was surprising on its own. Onboarding is rough in most early
+    products, and we expected to find friction. What made it worth the ten
+    weeks was the second-order effect.
+  </Prose>
+
+  <PullQuote>
+    When the differentiator is invisible, users do not conclude the product is
+    confusing. They conclude it is redundant, and price it against tools they
+    already have for free.
+  </PullQuote>
+
+  <Prose>
+    That reframed the whole engagement. We came in treating this as a
+    usability problem and left describing it as a positioning problem
+    expressed through the interface. The features mostly worked once people
+    found them. Nothing in the product argued for itself.
+
+    The heuristic evaluation sharpened it further. Embedder is built for
+    developers who live in a terminal, and yet filtering, clearing, switching
+    panels and approving permissions all required a mouse. A tool that claims
+    to be built for developers and then breaks their most basic expectation
+    is not just adding friction. It is telling them it does not understand
+    them.
+  </Prose>
+</Section>
+
+<Section id="recommendations" title="Seven recommendations, ordered by what they would cost to ignore.">
+  <Prose>
+    We delivered seven, each tied to the sessions and heuristics that
+    produced it rather than to taste. The load-bearing ones:
+
+    - **A guided first-run flow, plus a walkthrough video on the marketplace
+      listing.** Users arrived with no mental model of the console, the chat
+      or the hardware requirement, and competitors already set the
+      expectation of being handed one.
+    - **Separate and relabel the two surfaces.** "Send to device" against
+      "Ask Embedder", so nobody has to guess which panel talks to hardware.
+    - **A keyboard path to everything.** A command palette, shortcuts and
+      autocomplete for slash commands, so the differentiated features are
+      reachable by the users most likely to appreciate them.
+    - **Align to the conventions users already carry.** Their mental models
+      come from Claude Code, Copilot, Cursor and the Arduino IDE. Embedder
+      does not need to invent interaction patterns, and every place it did
+      cost a feature discovery.
+    - **Start people in Plan mode.** Act mode executed file changes by
+      default and most participants did not know it was on. A review layer
+      nobody knows about is not a review layer.
+
+    The through-line is that almost none of this asks for new features. It
+    asks for the existing ones to be legible.
+  </Prose>
+</Section>
+
+<Section id="limits" title="We tested a hardware tool without hardware.">
+  <Prose>
+    This is the honest limit of the study and it belongs in the middle of the
+    page rather than buried in an appendix. Sessions ran remotely with no
+    board connected. Participants installed Embedder, explored the interface
+    and worked through debugging scenarios as written tasks, but never
+    watched the tool actually read a device.
+
+    Which means we studied the first ten minutes thoroughly and never studied
+    the moment the product proves itself. Our central finding is that users
+    could not see what made Embedder different. We had built a study in which
+    the most convincing evidence was unavailable to them. Some part of the
+    "wrapper" reaction is a real product problem and some part is an artifact
+    of how we tested, and this study cannot separate the two.
+
+    I flagged it in the report rather than letting the findings read as
+    stronger than they were.
+  </Prose>
+</Section>
+
+<Section id="reflection" title="Reflection">
+  <Prose>
+    **Get hardware in the room, or say plainly what the absence costs.** If I
+    ran this again I would fight harder for even two or three sessions with a
+    board connected, as a check on the other twenty. The constraint was real,
+    and I still under-weighted how much it shaped the headline finding.
+
+    **Learn the domain before writing the guide, not during.** The client
+    ruled out participants who did not know firmware. Applying that same bar
+    to the research team changed the questions we asked. You cannot follow up
+    on an interesting answer you did not recognise as interesting.
+
+    **A scope cut you take to the client is a different object than one you
+    make quietly.** Narrowing from a hundred participants to twenty could
+    have read as falling short. Framed as a choice, with saturation as the
+    reasoning, it became the thing that let the work go deep enough to be
+    worth acting on.
+
+    **The most durable deliverable was not the report.** They used the
+    findings for onboarding, which is what we were hired for. They also took
+    a structure for running research themselves, which nobody asked for and
+    which outlasts every specific recommendation in the document.
   </Prose>
 </Section>

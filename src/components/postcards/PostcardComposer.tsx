@@ -3,14 +3,16 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import {
-  BG_OPTIONS,
-  FG_OPTIONS,
-  DECO_OPTIONS,
+  ART_OPTIONS,
+  STAMP_OPTIONS,
+  artSrc,
+  stampSrc,
   drawPostcardFront,
   drawPostcardBack,
-  type BgId,
-  type FgId,
-  type DecoId,
+  preloadPostcardImage,
+  readyImage,
+  type ArtId,
+  type StampId,
   type PostcardDesign,
 } from "@/lib/postcards-client";
 import styles from "./PostcardComposer.module.css";
@@ -38,33 +40,39 @@ function PreviewCanvas({
   );
 }
 
-function Thumb({ design }: { design: PostcardDesign }) {
-  const ref = useRef<HTMLCanvasElement>(null);
-  useEffect(() => {
-    const ctx = ref.current?.getContext("2d");
-    if (ctx) drawPostcardFront(ctx, 144, 96, design);
-  }, [design]);
-  return <canvas ref={ref} width={144} height={96} className={styles.thumb} />;
-}
-
 /**
- * "Leave your own postcard": the front is assembled from preset
- * components (background, foreground, decoration) — a predictable
- * formula the visitor still owns their combination of — and the back
- * carries their message, signed or anonymous. Approved cards join the
+ * "Leave your own postcard": pick the picture for the front and the
+ * stamp for the back, then write the message. Approved cards join the
  * stream on the home hero.
  */
 export default function PostcardComposer() {
-  const [bg, setBg] = useState<BgId>("shore");
-  const [fg, setFg] = useState<FgId>("bloom");
-  const [deco, setDeco] = useState<DecoId>("stamp");
+  const [art, setArt] = useState<ArtId>("water");
+  const [stamp, setStamp] = useState<StampId>("bamboo");
   const [text, setText] = useState("");
   const [name, setName] = useState("");
+  const [city, setCity] = useState("");
+  const [role, setRole] = useState("");
   const [side, setSide] = useState<"front" | "back">("front");
   const [busy, setBusy] = useState(false);
   const [sent, setSent] = useState(false);
+  // Bumped once every image is decoded, so the canvases redraw with
+  // artwork instead of blank stock on first paint.
+  const [loaded, setLoaded] = useState(0);
 
-  const design: PostcardDesign = { bg, fg, deco };
+  const design: PostcardDesign = { art, stamp };
+
+  useEffect(() => {
+    let live = true;
+    Promise.all([
+      ...ART_OPTIONS.map((o) => preloadPostcardImage(o.src)),
+      ...STAMP_OPTIONS.map((o) => preloadPostcardImage(o.src)),
+    ]).then(() => {
+      if (live) setLoaded((n) => n + 1);
+    });
+    return () => {
+      live = false;
+    };
+  }, []);
 
   async function send() {
     if (busy || text.trim().length < 2) return;
@@ -73,7 +81,7 @@ export default function PostcardComposer() {
       await fetch("/api/postcards", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text, name, design }),
+        body: JSON.stringify({ text, name, city, role, design }),
       });
       setSent(true);
     } catch {
@@ -107,8 +115,8 @@ export default function PostcardComposer() {
       <header className={styles.head}>
         <h1 className={`serif ${styles.title}`}>Leave your own postcard</h1>
         <p className={styles.sub}>
-          Compose the front, write the back. It joins the stream for the next
-          visitor to find.
+          Pick the picture and the stamp, write the back. It joins the stream
+          for the next visitor to find.
         </p>
       </header>
 
@@ -117,13 +125,22 @@ export default function PostcardComposer() {
           <div className={styles.previewFrame}>
             {side === "front" ? (
               <PreviewCanvas
-                key={`f-${bg}-${fg}-${deco}`}
+                key={`f-${art}-${loaded}`}
                 draw={(ctx, w, h) => drawPostcardFront(ctx, w, h, design)}
               />
             ) : (
               <PreviewCanvas
-                key={`b-${text}-${name}`}
-                draw={(ctx, w, h) => drawPostcardBack(ctx, w, h, text, name)}
+                key={`b-${stamp}-${text}-${name}-${city}-${role}-${loaded}`}
+                draw={(ctx, w, h) =>
+                  drawPostcardBack(
+                    ctx,
+                    w,
+                    h,
+                    text,
+                    { name, city, role },
+                    readyImage(stampSrc(stamp))
+                  )
+                }
               />
             )}
           </div>
@@ -145,21 +162,22 @@ export default function PostcardComposer() {
 
         <div className={styles.controls}>
           <fieldset className={styles.group}>
-            <legend className={styles.legend}>Background</legend>
+            <legend className={styles.legend}>Postcard</legend>
             <div className={styles.options}>
-              {BG_OPTIONS.map((o) => (
+              {ART_OPTIONS.map((o) => (
                 <button
                   key={o.id}
                   className={`${styles.option} ${
-                    bg === o.id ? styles.optionActive : ""
+                    art === o.id ? styles.optionActive : ""
                   }`}
                   onClick={() => {
-                    setBg(o.id);
+                    setArt(o.id);
                     setSide("front");
                   }}
-                  aria-pressed={bg === o.id}
+                  aria-pressed={art === o.id}
                 >
-                  <Thumb design={{ bg: o.id, fg, deco }} />
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={artSrc(o.id)} alt="" className={styles.thumb} />
                   <span>{o.label}</span>
                 </button>
               ))}
@@ -167,43 +185,26 @@ export default function PostcardComposer() {
           </fieldset>
 
           <fieldset className={styles.group}>
-            <legend className={styles.legend}>Foreground</legend>
+            <legend className={styles.legend}>Stamp</legend>
             <div className={styles.options}>
-              {FG_OPTIONS.map((o) => (
+              {STAMP_OPTIONS.map((o) => (
                 <button
                   key={o.id}
                   className={`${styles.option} ${
-                    fg === o.id ? styles.optionActive : ""
+                    stamp === o.id ? styles.optionActive : ""
                   }`}
                   onClick={() => {
-                    setFg(o.id);
-                    setSide("front");
+                    setStamp(o.id);
+                    setSide("back");
                   }}
-                  aria-pressed={fg === o.id}
+                  aria-pressed={stamp === o.id}
                 >
-                  <Thumb design={{ bg, fg: o.id, deco }} />
-                  <span>{o.label}</span>
-                </button>
-              ))}
-            </div>
-          </fieldset>
-
-          <fieldset className={styles.group}>
-            <legend className={styles.legend}>Decoration</legend>
-            <div className={styles.options}>
-              {DECO_OPTIONS.map((o) => (
-                <button
-                  key={o.id}
-                  className={`${styles.option} ${
-                    deco === o.id ? styles.optionActive : ""
-                  }`}
-                  onClick={() => {
-                    setDeco(o.id);
-                    setSide("front");
-                  }}
-                  aria-pressed={deco === o.id}
-                >
-                  <Thumb design={{ bg, fg, deco: o.id }} />
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={stampSrc(o.id)}
+                    alt=""
+                    className={styles.stampThumb}
+                  />
                   <span>{o.label}</span>
                 </button>
               ))}
@@ -222,17 +223,42 @@ export default function PostcardComposer() {
               onFocus={() => setSide("back")}
               maxLength={240}
               rows={3}
-              placeholder="Something kind for the next visitor…"
+              placeholder="What are you currently working on?"
               aria-label="Postcard message"
             />
+          </fieldset>
+
+          <fieldset className={styles.group}>
+            <legend className={styles.legend}>Sender</legend>
+            <p className={styles.hint}>
+              All optional. Leave the first line blank to stay anonymous.
+            </p>
             <input
               className={styles.nameInput}
               value={name}
               onChange={(e) => setName(e.target.value)}
               onFocus={() => setSide("back")}
               maxLength={24}
-              placeholder="Initials or first name (optional, blank = anonymous)"
-              aria-label="Signature (optional)"
+              placeholder="First name, initials, or alias"
+              aria-label="Name (optional)"
+            />
+            <input
+              className={styles.nameInput}
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+              onFocus={() => setSide("back")}
+              maxLength={32}
+              placeholder="City"
+              aria-label="City (optional)"
+            />
+            <input
+              className={styles.nameInput}
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
+              onFocus={() => setSide("back")}
+              maxLength={32}
+              placeholder="Role (student, designer, developer…)"
+              aria-label="Role (optional)"
             />
           </fieldset>
 

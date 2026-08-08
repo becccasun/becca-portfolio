@@ -23,24 +23,15 @@ export default function WorkGrid({
     <div className={styles.wrap}>
       <div className={styles.grid}>
         {primary.map((w) => {
-          const stacked = (w.childCount ?? 0) > 1;
+          const isUmbrella = (w.childCount ?? 0) > 1;
           return (
             <Link
               key={w.slug}
               href={`/work/${w.slug}`}
               className={styles.tile}
               data-cursor-label="View"
-              data-stacked={stacked || undefined}
             >
-              {/* Umbrella projects sit on a stack of skeleton cards, so the
-                  tile reads as several projects before anyone clicks it. */}
               <div className={styles.coverStack}>
-                {stacked && (
-                  <>
-                    <span className={styles.ghostBack} aria-hidden="true" />
-                    <span className={styles.ghostFront} aria-hidden="true" />
-                  </>
-                )}
                 <div className={styles.cover}>
                   {w.cover ? (
                     /* eslint-disable-next-line @next/next/no-img-element */
@@ -51,12 +42,25 @@ export default function WorkGrid({
                     </span>
                   )}
                 </div>
-                {stacked && (
+                {isUmbrella && (
                   <span className={styles.countChip}>
                     {w.childCount} projects
                   </span>
                 )}
               </div>
+
+              {/* Keywords sit between the frame and the title, so every
+                  tile is the same shape whatever it carries. */}
+              {w.tags.length > 0 && (
+                <span className="pills">
+                  {w.tags.map((t) => (
+                    <span key={t} className="pill">
+                      {t}
+                    </span>
+                  ))}
+                </span>
+              )}
+
               <div className={styles.tileMeta}>
                 <h3 className={styles.tileTitle}>{w.title}</h3>
                 <p className={styles.tileSubtitle}>{w.subtitle}</p>

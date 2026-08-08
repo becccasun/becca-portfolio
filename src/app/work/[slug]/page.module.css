@@ -48,9 +48,13 @@
   line-height: 1.4;
 }
 
-.tags {
+.meta {
   font-size: var(--fs-small);
   color: var(--text-muted);
+}
+
+.tags {
+  padding-top: var(--s-2);
 }
 
 @media (max-width: 960px) {

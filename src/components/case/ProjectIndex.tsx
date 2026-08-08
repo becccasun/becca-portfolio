@@ -39,6 +39,16 @@ export default function ProjectIndex({
                 </span>
               )}
             </div>
+
+            {p.tags.length > 0 && (
+              <span className="pills">
+                {p.tags.map((t) => (
+                  <span key={t} className="pill">
+                    {t}
+                  </span>
+                ))}
+              </span>
+            )}
             <div className={styles.meta}>
               {p.status && <p className={styles.status}>{p.status}</p>}
               <h3 className={styles.title}>{p.title}</h3>

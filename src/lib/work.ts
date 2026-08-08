@@ -37,6 +37,8 @@ export type WorkMeta = {
 
 const WORK_DIR = path.join(process.cwd(), "content", "work");
 
+export const MAX_TAGS = 3;
+
 function toMeta(slug: string, data: Record<string, unknown>): WorkMeta {
   return {
     slug,
@@ -44,7 +46,10 @@ function toMeta(slug: string, data: Record<string, unknown>): WorkMeta {
     subtitle: (data.subtitle as string) ?? "",
     year: (data.year as string) ?? "",
     role: (data.role as string) ?? "",
-    tags: (data.tags as string[]) ?? [],
+    // Three is the ceiling by design: past that the pills stop reading as
+    // labels and start reading as a list. Enforced here so no template
+    // has to remember it.
+    tags: ((data.tags as string[]) ?? []).slice(0, MAX_TAGS),
     tier: ((data.tier as 1 | 2) ?? 2) as 1 | 2,
     order: (data.order as number) ?? 99,
     category: ((data.category as WorkCategory) ?? "personal") as WorkCategory,

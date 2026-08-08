@@ -48,9 +48,9 @@ export const TIMELINE: TimelineEntry[] = [
     href: "/work/agentmail",
   },
   {
+    // Case study pulled for now; the entry stays, the dead link doesn't.
     date: "2024",
     title: "Nezha",
     detail: "Founding design",
-    href: "/work/nezha",
   },
 ];
