@@ -1,0 +1,170 @@
+---
+title: MHacks 2026
+subtitle: Michigan's flagship hackathon needed an identity that felt alive, so the site became a garden you can click around in.
+year: "2026"
+role: Design Chair
+tags: [Brand, Marketing Site, Design Engineering]
+category: client
+tier: 1
+order: 3
+cover: /work/mhacks/cover.jpg
+sections:
+  - { id: overview, title: Overview }
+  - { id: concept, title: The concept }
+  - { id: identity, title: Identity and type }
+  - { id: canvas, title: The interactive canvas }
+  - { id: sections, title: Designing the page }
+  - { id: agent, title: Applying with an agent }
+  - { id: build, title: Design engineering }
+  - { id: outcome, title: Where it landed }
+  - { id: reflection, title: Reflection }
+---
+
+<Section id="overview" title="A hackathon that runs once a year, introduced by a page most applicants only ever see once.">
+  <Prose>
+    MHacks is the University of Michigan's flagship hackathon: 24 hours of
+    creative engineering, design, building, and prototyping, drawing 1,000+
+    student builders to Ann Arbor. The 2026 edition runs October 3–4.
+
+    For most applicants the marketing site *is* MHacks until the doors open.
+    It has to explain what the event is, when to apply, and why it's worth a
+    weekend, and it has to do that in the few minutes between a link and a
+    decision. I led design for the 2026 cycle as Design Chair.
+  </Prose>
+  <Figure
+    src="/work/mhacks/cover.jpg"
+    alt="MHacks 2026 hero: a large serif wordmark over a blurred green garden photograph"
+    caption="The hero. Blurred foliage, a countdown to the next deadline, and the year set in a display serif."
+    wide
+  />
+</Section>
+
+<Section id="concept" title="Build something that grows.">
+  <Prose>
+    The whole site hangs off one line — *build something that grows* — and one
+    metaphor: a digital garden. A hackathon project starts as something small
+    and half-finished, and the good ones keep going after the weekend ends.
+    The garden gives that idea a form you can actually draw.
+
+    The plants aren't generic. Every flower on the page is a Michigan
+    species, labelled the way a botanical garden labels a specimen: common
+    name, Latin binomial, and a status line. Apple Blossom *(Malus
+    domestica,* introduced, state flower). Lily of the Valley *(Convallaria
+    majalis,* invasive groundcover). Black-Eyed Susan *(Rudbeckia hirta,*
+    native wildflower). Dwarf Lake Iris *(Iris lacustris,* native, state
+    wildflower). Michigan Lily *(Lilium michiganense,* native wildflower).
+
+    It's a small piece of writing that does a lot of work: it roots a
+    national event in the specific place it happens, and it rewards the
+    person who slows down enough to read a caption.
+  </Prose>
+  <Gallery
+    images={[
+      { src: "/work/mhacks/garland-blossom.webp", alt: "Apple blossom garland illustration" },
+      { src: "/work/mhacks/garland-susan.webp", alt: "Black-eyed susan garland illustration" },
+      { src: "/work/mhacks/garland-lily.webp", alt: "Michigan lily garland illustration" },
+    ]}
+    caption="Garlands mark the section breaks. Each one is a different Michigan species, painted in the same grainy, hand-textured style."
+  />
+</Section>
+
+<Section id="identity" title="A display serif over photography, and monospace for anything factual.">
+  <Prose>
+    The type system splits along a clear line. Anything expressive — the
+    wordmark, section headings — is set in a high-contrast display serif.
+    Anything factual — the countdown, deadline times, the plant labels, the
+    MCP server URL — is monospace, letterspaced, and small. The reader can
+    tell at a glance which register they're in.
+
+    Colour stays in a narrow band: a deep forest green, a warm off-white, and
+    the illustration palette on top. Sections alternate between the two
+    grounds and are separated by large rounded corners, so scrolling the page
+    feels like moving between beds in a garden rather than down a document.
+  </Prose>
+  <Figure
+    src="/work/mhacks/site-about.jpg"
+    alt="The About MHacks section, with polaroid photographs of past events"
+    caption="About. Polaroid-framed photography from past events, hand-annotated, over the dotted paper ground."
+    wide
+  />
+</Section>
+
+<Section id="canvas" title="Click around the canvas for some fun.">
+  <Prose>
+    Content pending. This section is for the interactive canvas — what it
+    does, why an easter egg earned space on a page whose main job is
+    conversion, and how you kept it from getting in the way of applying.
+  </Prose>
+</Section>
+
+<Section id="sections" title="Timeline, sponsors, FAQ.">
+  <Prose>
+    The timeline is the most utilitarian thing on the page and gets the most
+    typographic weight: five dates from applications opening on June 22
+    through regular decisions on September 19, each one a large date on the
+    left and a small monospace label on the right. Deadline times are spelled
+    out to the minute and timezone, because that is the single most-asked
+    question of any application cycle.
+
+    The FAQ answers the next six: who can apply, cost, teams, what to build,
+    when applications close, where it happens. Both sections are built to be
+    scanned, not read.
+  </Prose>
+  <Figure
+    src="/work/mhacks/site-timeline.jpg"
+    alt="The MHacks 2026 timeline section"
+    caption="Timeline. Dates carry the display face; labels and times stay monospace."
+    wide
+  />
+  <Figure
+    src="/work/mhacks/site-faq.jpg"
+    alt="The frequently asked questions section with polaroids and iris illustrations"
+    caption="FAQ. Six questions, closed by default, with the Dwarf Lake Iris marking the section."
+    wide
+  />
+</Section>
+
+<Section id="agent" title="An application you can hand to your agent.">
+  <Prose>
+    MHacks 2026 ships an MCP server at `mhacks.org/mcp`. An applicant can
+    connect Claude, Codex, or any MCP-capable client, and the agent reads the
+    application schema, drafts answers with them, and submits — tied to their
+    real MHacks login, with the MLH terms reviewed before anything is sent.
+
+    Designing that meant designing for a reader who may never see the form.
+    The section shows a real terminal transcript rather than a screenshot of
+    a UI: the prompt, two tool calls resolving, and the agent stopping to ask
+    for the school and t-shirt size it doesn't have. It sets the expectation
+    that this is a conversation with checkpoints, not a black box that
+    applies on your behalf.
+  </Prose>
+  <Figure
+    src="/work/mhacks/site-agent.jpg"
+    alt="The Apply with your agent section, showing a terminal transcript of an MCP session"
+    caption="Apply with your agent. The transcript is the interface — there's no form to screenshot."
+    wide
+  />
+</Section>
+
+<Section id="build" title="Design engineering.">
+  <Prose>
+    Content pending. This section is for how the site was actually built and
+    what you did hands-on versus directed — the stack, the scroll-driven
+    section transitions, the illustration pipeline, and how the design team
+    was organised for the cycle.
+  </Prose>
+</Section>
+
+<Section id="outcome" title="Where it landed.">
+  <Prose>
+    Content pending. Numbers you'd want here: applications received against
+    previous cycles, traffic, sponsor conversion, anything the team tracked
+    through the season.
+  </Prose>
+</Section>
+
+<Section id="reflection" title="Reflection.">
+  <Prose>
+    Content pending.
+  </Prose>
+</Section>
