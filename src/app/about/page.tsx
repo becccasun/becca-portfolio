@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import AboutScroller from "@/components/AboutScroller";
+import AboutCarousel from "@/components/about/AboutCarousel";
 
 export const metadata: Metadata = {
   title: "About",
@@ -7,5 +7,5 @@ export const metadata: Metadata = {
 };
 
 export default function AboutPage() {
-  return <AboutScroller />;
+  return <AboutCarousel />;
 }

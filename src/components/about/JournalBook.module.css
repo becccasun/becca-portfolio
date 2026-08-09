@@ -1,0 +1,119 @@
+/* The footprint of the book when open. Shut, the paper occupies only the
+   right half of it and the left half is bare canvas. */
+.book {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1200 / 851;
+  background: none;
+}
+
+.stage {
+  position: absolute;
+  inset: 0;
+  perspective: 1600px;
+  /* Above the page block. Stated rather than left to DOM order, since a
+     turning leaf projects outside the book's flat bounds. */
+  z-index: 1;
+}
+
+/* The paper. The only thing carrying the drop shadow, so the shadow
+   belongs to the book rather than to the turning page, and the only
+   thing that takes pointer events — the footprint around it is bare
+   canvas while the book is shut. */
+.sheet {
+  pointer-events: auto;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 50%;
+  display: flex;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 22px 44px -24px rgba(26, 26, 31, 0.55);
+}
+
+.sheetOpen {
+  left: 0;
+}
+
+.page {
+  flex: 1 1 50%;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-color: #fff;
+}
+
+/* The turning leaf, hinged on the spine. It sits over the right half of
+   the open footprint whether the book is open or shut, so the cover
+   swings from the same axis every page does. */
+.leaf {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  transform-origin: left center;
+  transform-style: preserve-3d;
+  animation: turn 0.72s cubic-bezier(0.42, 0, 0.32, 1) forwards;
+  z-index: 3;
+}
+
+@keyframes turn {
+  from {
+    transform: rotateY(0deg);
+  }
+  to {
+    transform: rotateY(-180deg);
+  }
+}
+
+/* No shading on the faces: it could only appear when the leaf mounts and
+   vanish when it unmounts, which read as a shadow blinking on and off. */
+.face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  background-repeat: no-repeat;
+  background-color: #fff;
+}
+
+.back {
+  transform: rotateY(180deg);
+}
+
+.gutter {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 5%;
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 2;
+  background: linear-gradient(
+    90deg,
+    rgba(26, 26, 31, 0) 0%,
+    rgba(26, 26, 31, 0.14) 45%,
+    rgba(26, 26, 31, 0.2) 50%,
+    rgba(26, 26, 31, 0.14) 55%,
+    rgba(26, 26, 31, 0) 100%
+  );
+}
+
+/* The block of uncut pages under the paper, tracking its width. */
+.spine {
+  position: absolute;
+  z-index: 0;
+  left: 51.5%;
+  right: 1.5%;
+  bottom: -6px;
+  height: 6px;
+  border-radius: 0 0 3px 3px;
+  background: linear-gradient(180deg, #e8e4dc, #cfcabf);
+}
+
+.spineOpen {
+  left: 1.5%;
+}
