@@ -15,7 +15,10 @@ export default function HomePage() {
         <div className={styles.sectionHead}>
           <p className="eyebrow">Featured Works</p>
         </div>
-        <WorkGrid items={work} />
+        {/* Featured is tier 1 only. Tier 2 still renders as the lighter
+            list elsewhere, but the home page shouldn't be the place any
+            archived project is found. */}
+        <WorkGrid items={work} showSecondary={false} />
         <div className={styles.sectionFoot}>
           <Link href="/work" className="link">
             See All Works
