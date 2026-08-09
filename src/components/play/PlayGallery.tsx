@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { PLAY_ITEMS, ROOM } from "@/lib/play";
+import { PLAY_ITEMS, ROOM, type PlayItem } from "@/lib/play";
 import styles from "./PlayGallery.module.css";
 
 const WALLS: (0 | 1 | 2 | 3)[] = [0, 1, 2, 3];
@@ -21,15 +21,44 @@ const HUNG = [...PLAY_ITEMS]
   .map((item, i) => ({ ...item, ...SLOTS[i] }));
 const DEG = 180 / Math.PI;
 const PITCH_LIMIT = 32;
+/** Perspective distance at the width the room was composed for. */
 const PERSP = 760;
-const LUCKY_ZOOM = 1.7;
+const PERSP_AT = 1440;
 
 /**
- * A first-person gallery room built from CSS 3D planes: four walls, a
- * floor, and a ceiling around the camera. Dragging (or scrolling) turns
- * the camera; the works are real links hung on the walls, so cursor
- * labels and clicks behave like anywhere else on the site.
- * "I'm feeling lucky" swings the camera to a random piece.
+ * Objects project at persp / distance, so a fixed perspective on a narrow
+ * window shows the same slice of wall blown up until a single frame fills
+ * the screen. Scaling it with the viewport keeps roughly the same amount
+ * of room in view at any size.
+ */
+function perspFor(width: number) {
+  return PERSP * Math.min(1, Math.max(0.42, width / PERSP_AT));
+}
+/** How far the camera pushes in when a single piece is selected. */
+const FOCUS_ZOOM = 2.1;
+
+const CATEGORY_LABEL = {
+  crafts: "Arts & crafts",
+  digital: "Digital exploration",
+  photo: "Photography & video",
+} as const;
+
+/**
+ * Walls sit at yaw = -wall * 90, so turning right (yaw +90) from wall 0
+ * lands on wall 3 — the wall physically on your right. Yaw accumulates
+ * rather than wrapping, so the camera turns the way the key implies
+ * instead of taking the short way round.
+ */
+function wallAt(steps: number): 0 | 1 | 2 | 3 {
+  return (((-steps % 4) + 4) % 4) as 0 | 1 | 2 | 3;
+}
+
+/**
+ * A first-person gallery room built from CSS 3D planes: four plaster
+ * walls, a floor and a ceiling around the camera. Dragging (or
+ * scrolling) turns the camera; Q and R snap it a wall at a time.
+ * Clicking a piece pulls the camera onto it and opens its wall label —
+ * the link out lives in that panel, so the frame itself never navigates.
  */
 export default function PlayGallery() {
   const worldRef = useRef<HTMLDivElement>(null);
@@ -40,7 +69,12 @@ export default function PlayGallery() {
   const target = useRef({ yaw: 0, pitch: 0, zoom: 1 });
   const current = useRef({ yaw: 0, pitch: 0, zoom: 1 });
   const dragged = useRef(false);
-  const [luckyId, setLuckyId] = useState<string | null>(null);
+  // Signed count of quarter-turns from wall 0.
+  const steps = useRef(0);
+  const [wall, setWall] = useState<0 | 1 | 2 | 3>(0);
+  const [selected, setSelected] = useState<PlayItem | null>(null);
+  /** Base perspective for the current viewport; the camera zoom multiplies it. */
+  const basePersp = useRef(PERSP);
 
   useEffect(() => {
     const viewport = viewportRef.current;
@@ -55,7 +89,7 @@ export default function PlayGallery() {
       c.yaw += (t.yaw - c.yaw) * 0.1;
       c.pitch += (t.pitch - c.pitch) * 0.1;
       c.zoom += (t.zoom - c.zoom) * 0.06;
-      const persp = PERSP * c.zoom;
+      const persp = basePersp.current * c.zoom;
       if (sceneRef.current) {
         sceneRef.current.style.perspective = `${persp}px`;
       }
@@ -66,20 +100,41 @@ export default function PlayGallery() {
     };
     raf = requestAnimationFrame(tick);
 
+    // The room is laid out in fixed pixels, so the only thing that has to
+    // react to a resize is how much of it the camera can see. Observing
+    // the viewport rather than the window catches every case: window
+    // resizes, orientation changes, and the element being resized by
+    // anything else on the page.
+    const ro = new ResizeObserver(([entry]) => {
+      const w = entry.contentRect.width;
+      if (w > 0) basePersp.current = perspFor(w);
+    });
+    ro.observe(viewport);
+
     let panning = false;
+    let captured = 0 | 0;
     let last = { x: 0, y: 0 };
 
     const down = (e: PointerEvent) => {
       panning = true;
       dragged.current = false;
       last = { x: e.clientX, y: e.clientY };
-      viewport.setPointerCapture(e.pointerId);
+      // Deliberately NOT capturing here. Capturing on pointerdown routes
+      // the following click to the viewport instead of the piece under
+      // the cursor, so every click on a frame would be swallowed. Capture
+      // only once the pointer has actually moved far enough to be a drag.
     };
     const move = (e: PointerEvent) => {
       if (!panning) return;
       const dx = e.clientX - last.x;
       const dy = e.clientY - last.y;
-      if (Math.abs(dx) + Math.abs(dy) > 3) dragged.current = true;
+      if (Math.abs(dx) + Math.abs(dy) > 3) {
+        dragged.current = true;
+        if (!captured) {
+          viewport.setPointerCapture(e.pointerId);
+          captured = e.pointerId;
+        }
+      }
       last = { x: e.clientX, y: e.clientY };
       target.current.yaw += dx * 0.14;
       target.current.pitch = clampPitch(target.current.pitch - dy * 0.1);
@@ -87,13 +142,21 @@ export default function PlayGallery() {
     };
     const up = () => {
       panning = false;
+      if (captured) {
+        try {
+          viewport.releasePointerCapture(captured);
+        } catch {
+          /* pointer already gone */
+        }
+        captured = 0;
+      }
     };
     const wheel = (e: WheelEvent) => {
       e.preventDefault();
       target.current.yaw += e.deltaX * 0.08 + e.deltaY * 0.08;
       target.current.zoom = 1;
     };
-    // A drag should turn the camera, not follow the link under it.
+    // A drag should turn the camera, not select the piece under it.
     const click = (e: MouseEvent) => {
       if (dragged.current) {
         e.preventDefault();
@@ -116,6 +179,7 @@ export default function PlayGallery() {
       viewport.removeEventListener("pointercancel", up);
       viewport.removeEventListener("wheel", wheel);
       viewport.removeEventListener("click", click, { capture: true });
+      ro.disconnect();
     };
   }, []);
 
@@ -123,69 +187,119 @@ export default function PlayGallery() {
     return Math.max(-PITCH_LIMIT, Math.min(PITCH_LIMIT, v));
   }
 
-  function feelingLucky() {
-    const item = HUNG[Math.floor(Math.random() * HUNG.length)];
-    const half = ROOM.size / 2;
+  function reducedMotion() {
+    return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  }
 
-    // Yaw that faces the piece: the wall's angle plus the piece's
-    // horizontal offset from the wall's center, as seen from the room's
-    // middle. Take the equivalent angle nearest the current yaw.
+  function aim(next: { yaw: number; pitch: number; zoom: number }) {
+    target.current = next;
+    if (reducedMotion()) current.current = { ...next };
+  }
+
+  /** Yaw and pitch that put a piece in the middle of the frame. */
+  function framing(item: PlayItem) {
+    const half = ROOM.size / 2;
     const offAngle = Math.atan((item.x + item.w / 2 - half) / half) * DEG;
     const baseYaw = -item.wall * 90 + offAngle;
     const yawNow = target.current.yaw;
-    const yaw = baseYaw + Math.round((yawNow - baseYaw) / 360) * 360;
-    const pitch = clampPitch(-Math.atan(item.y / half) * DEG);
-
-    const reduced = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
-    target.current = { yaw, pitch, zoom: LUCKY_ZOOM };
-    if (reduced) current.current = { yaw, pitch, zoom: LUCKY_ZOOM };
-
-    setLuckyId(null);
-    window.setTimeout(() => setLuckyId(item.id), reduced ? 50 : 700);
+    return {
+      yaw: baseYaw + Math.round((yawNow - baseYaw) / 360) * 360,
+      pitch: clampPitch(-Math.atan(item.y / half) * DEG),
+    };
   }
 
+  function selectPiece(item: PlayItem) {
+    setSelected(item);
+    aim({ ...framing(item), zoom: FOCUS_ZOOM });
+  }
+
+  function deselect() {
+    setSelected(null);
+    target.current.zoom = 1;
+    if (reducedMotion()) current.current.zoom = 1;
+  }
+
+  /* Q and R turn a wall at a time. Turning drops any selection: you
+     can't be looking closely at one piece and facing another wall. */
   useEffect(() => {
-    if (!luckyId) return;
-    // Hold on the piece, then ease the zoom back out.
-    const t = setTimeout(() => {
-      setLuckyId(null);
-      target.current.zoom = 1;
-    }, 2600);
-    return () => clearTimeout(t);
-  }, [luckyId]);
+    const turn = (dir: 1 | -1) => {
+      steps.current += dir;
+      setWall(wallAt(steps.current));
+      setSelected(null);
+      aim({ yaw: steps.current * 90, pitch: 0, zoom: 1 });
+    };
+
+    const key = (e: KeyboardEvent) => {
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      const el = e.target as HTMLElement | null;
+      if (el && /^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName)) return;
+      const k = e.key.toLowerCase();
+      if (k === "escape") {
+        deselect();
+        return;
+      }
+      if (k !== "q" && k !== "r") return;
+      e.preventDefault();
+      turn(k === "r" ? 1 : -1);
+    };
+
+    window.addEventListener("keydown", key);
+    return () => window.removeEventListener("keydown", key);
+  }, []);
+
+  /* Clicking anywhere that isn't the focused piece or its label leaves
+     the focused view. Bound only while something is selected, so the
+     rest of the time it costs nothing. */
+  useEffect(() => {
+    if (!selected) return;
+    const viewport = viewportRef.current;
+    if (!viewport) return;
+
+    const onClick = (e: MouseEvent) => {
+      if (dragged.current) return;
+      const el = e.target as HTMLElement | null;
+      // Another piece selects itself; the label owns its own controls.
+      if (el?.closest(`.${styles.piece}`) || el?.closest(`.${styles.label}`)) {
+        return;
+      }
+      deselect();
+    };
+
+    viewport.addEventListener("click", onClick);
+    return () => viewport.removeEventListener("click", onClick);
+  }, [selected]);
 
   return (
-    <div className={styles.viewport} ref={viewportRef} data-cursor>
+    <div className={styles.viewport} ref={viewportRef}>
       <div className={styles.scene} ref={sceneRef}>
         <div className={styles.world} ref={worldRef}>
-          {WALLS.map((wall) => (
+          {WALLS.map((w) => (
             <div
-              key={wall}
+              key={w}
               className={styles.wall}
               style={{
-                transform: `rotateY(${wall * 90}deg) translateZ(${
+                transform: `rotateY(${w * 90}deg) translateZ(${
                   -ROOM.size / 2
                 }px)`,
               }}
             >
-              {HUNG.filter((i) => i.wall === wall).map((item) => (
-                <a
+              {HUNG.filter((i) => i.wall === w).map((item) => (
+                <button
                   key={item.id}
-                  href={item.href}
-                  target="_blank"
-                  rel="noreferrer"
+                  type="button"
                   draggable={false}
                   className={`${styles.piece} ${
-                    luckyId === item.id ? styles.lucky : ""
+                    selected && selected.id !== item.id ? styles.dimmed : ""
                   }`}
                   style={{
                     left: item.x,
                     top: `calc(50% + ${item.y}px)`,
                     width: item.w,
                   }}
-                  data-cursor-label={`View on ${item.source}`}
+                  aria-pressed={selected?.id === item.id}
+                  onClick={() =>
+                    selected?.id === item.id ? deselect() : selectPiece(item)
+                  }
                 >
                   <span className={styles.frame}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -194,7 +308,7 @@ export default function PlayGallery() {
                   <span className={styles.plaque}>
                     {item.title} · {item.year}
                   </span>
-                </a>
+                </button>
               ))}
             </div>
           ))}
@@ -203,14 +317,64 @@ export default function PlayGallery() {
         </div>
       </div>
 
+      {/* One hint bar at the foot of the room, swapping to the way out
+          while a piece is focused. */}
       <p className={styles.hint} aria-hidden="true">
-        Scroll and drag to look around
+        {selected ? (
+          <>
+            <span className={styles.hintKeys}>
+              <kbd>Esc</kbd>
+            </span>
+            or click anywhere to step back
+          </>
+        ) : (
+          <>
+            Wall {wall + 1} of 4
+            <span className={styles.hintKeys}>
+              <kbd>Q</kbd>
+              <kbd>R</kbd> to turn · drag to look
+            </span>
+          </>
+        )}
       </p>
-      <div className={styles.luckyBar}>
-        <button className={styles.luckyBtn} onClick={feelingLucky}>
-          I&apos;m feeling lucky
-        </button>
-      </div>
+      <p className="sr-only" aria-live="polite">
+        {selected ? selected.title : `Facing wall ${wall + 1} of 4`}
+      </p>
+
+      {/* Wall label. Sits beside the piece rather than over it, and owns
+          the link out so the frame itself never navigates. */}
+      {selected && (
+        <aside className={styles.label}>
+          <button
+            type="button"
+            className={styles.close}
+            onClick={deselect}
+            aria-label="Close"
+          >
+            ×
+          </button>
+          <p className="eyebrow">{CATEGORY_LABEL[selected.category]}</p>
+          <h2 className={`serif ${styles.labelTitle}`}>{selected.title}</h2>
+          <p className={styles.labelMeta}>{selected.year}</p>
+          {selected.blurb && (
+            <p className={styles.labelBlurb}>{selected.blurb}</p>
+          )}
+          {selected.href && selected.href !== "#" ? (
+            <a
+              className={styles.labelLink}
+              href={selected.href}
+              target="_blank"
+              rel="noreferrer"
+            >
+              View on {selected.source}
+              <span aria-hidden="true"> ↗</span>
+            </a>
+          ) : (
+            <p className={styles.labelSoon}>Nothing to link to yet.</p>
+          )}
+        </aside>
+      )}
+
     </div>
   );
 }
