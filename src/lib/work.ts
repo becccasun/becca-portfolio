@@ -33,19 +33,42 @@ export type WorkMeta = {
   status?: string;
   /** Populated by getTopLevelWork(); how many sub-projects live under this. */
   childCount?: number;
+
+  /* --- Case-study header facts (see ProjectFacts) --------------------- */
+
+  /** The central idea, in a sentence or two. Falls back to `subtitle`. */
+  concept: string;
+  /** `role` split into stacked lines. Frontmatter may give either. */
+  roles: string[];
+  /** How long the project ran, e.g. "Feb – Apr 2026". Falls back to `year`. */
+  duration: string;
+  /** Disciplines the project actually covered. */
+  scope: string[];
+  /** What it produced. Empty when the case study doesn't yet say. */
+  outcome: string[];
+  /** Live site or clickable prototype, when one exists publicly. */
+  prototype?: { href: string; label: string; note?: string };
 };
 
 const WORK_DIR = path.join(process.cwd(), "content", "work");
 
 export const MAX_TAGS = 3;
 
+/** Frontmatter may write a single string or a list; the header wants a list. */
+function toList(value: unknown): string[] {
+  if (Array.isArray(value)) return value.map(String).filter(Boolean);
+  if (typeof value === "string" && value.trim()) return [value.trim()];
+  return [];
+}
+
 function toMeta(slug: string, data: Record<string, unknown>): WorkMeta {
+  const role = (data.role as string) ?? "";
   return {
     slug,
     title: (data.title as string) ?? slug,
     subtitle: (data.subtitle as string) ?? "",
     year: (data.year as string) ?? "",
-    role: (data.role as string) ?? "",
+    role,
     // Three is the ceiling by design: past that the pills stop reading as
     // labels and start reading as a list. Enforced here so no template
     // has to remember it.
@@ -58,6 +81,13 @@ function toMeta(slug: string, data: Record<string, unknown>): WorkMeta {
     parent: data.parent as string | undefined,
     projectLabel: data.projectLabel as string | undefined,
     status: data.status as string | undefined,
+
+    concept: ((data.concept as string) ?? (data.subtitle as string) ?? "").trim(),
+    roles: toList(data.roles ?? role),
+    duration: ((data.duration as string) ?? (data.year as string) ?? "").trim(),
+    scope: toList(data.scope),
+    outcome: toList(data.outcome),
+    prototype: data.prototype as WorkMeta["prototype"],
   };
 }
 

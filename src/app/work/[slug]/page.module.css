@@ -29,17 +29,19 @@
   min-width: 0;
 }
 
+/* Not capped at the reading width: the facts grid and the link-out card
+   want the whole body column. Prose-width things inside cap themselves. */
 .head {
   display: flex;
   flex-direction: column;
   gap: var(--s-3);
-  max-width: var(--reading-w);
   padding-bottom: var(--s-12);
 }
 
 .title {
   font-size: var(--fs-h1);
   line-height: 1.1;
+  max-width: var(--reading-w);
 }
 
 .subtitle {

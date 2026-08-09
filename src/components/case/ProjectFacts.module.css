@@ -1,0 +1,118 @@
+/* Central idea — set off by a rule rather than a box, so it reads as a
+   pulled-out line of the header and not as a callout. */
+.concept {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+  border-left: 1px solid var(--border);
+  padding-left: var(--s-4);
+  margin-top: var(--s-4);
+  max-width: var(--reading-w);
+}
+
+.conceptText {
+  font-size: var(--fs-h3);
+  line-height: 1.45;
+  color: var(--text-muted);
+}
+
+/* Four columns in a fixed order, so the same fact sits in the same place
+   on every case study. Wraps to two columns before it wraps to one. */
+.facts {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--s-8) var(--s-6);
+  margin-top: var(--s-12);
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+  min-width: 0;
+}
+
+.col dt {
+  margin-bottom: var(--s-1);
+}
+
+.value {
+  font-size: var(--fs-body);
+  line-height: 1.45;
+  margin: 0;
+}
+
+.empty {
+  color: var(--text-muted);
+}
+
+/* Link out to the live thing. Full-width card so it reads as the last
+   step of the header rather than an inline link lost in the prose. */
+.cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-6);
+  margin-top: var(--s-12);
+  padding: var(--s-4) var(--s-6);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  background: var(--surface);
+  transition: border-color 0.2s var(--ease-out),
+    background 0.2s var(--ease-out);
+}
+
+.cta:hover {
+  border-color: var(--accent);
+  background: var(--bg);
+}
+
+.ctaText {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-1);
+  min-width: 0;
+}
+
+.ctaLabel {
+  font-size: var(--fs-h3);
+}
+
+.ctaAction {
+  flex: 0 0 auto;
+  font-size: var(--fs-body);
+  color: var(--text-muted);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+}
+
+.cta:hover .ctaAction {
+  color: var(--accent);
+}
+
+.arrow {
+  transition: transform 0.2s var(--ease-out);
+}
+
+.cta:hover .arrow {
+  transform: translate(2px, -2px);
+}
+
+@media (max-width: 960px) {
+  .facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .facts {
+    grid-template-columns: 1fr;
+    gap: var(--s-6);
+  }
+  .cta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--s-3);
+  }
+}

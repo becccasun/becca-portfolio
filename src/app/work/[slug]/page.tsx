@@ -5,6 +5,7 @@ import { getAllWork, getChildren, getSiblings, getWork } from "@/lib/work";
 import Toc from "@/components/case/Toc";
 import ProjectRail, { ProjectChips } from "@/components/case/ProjectRail";
 import ProjectIndex, { ProjectNav } from "@/components/case/ProjectIndex";
+import ProjectFacts from "@/components/case/ProjectFacts";
 import {
   Section,
   Prose,
@@ -101,20 +102,11 @@ export default async function CaseStudyPage({
                 {parentMeta.title} · Project {index + 1} of {siblings.length}
               </p>
             )}
-            <h1 className={`serif ${styles.title}`}>{meta.title}</h1>
-            <p className={styles.subtitle}>{meta.subtitle}</p>
-            <p className={styles.meta}>
-              {meta.year} · {meta.role}
-            </p>
-            {meta.tags.length > 0 && (
-              <ul className={`pills ${styles.tags}`}>
-                {meta.tags.map((t) => (
-                  <li key={t} className="pill">
-                    {t}
-                  </li>
-                ))}
-              </ul>
-            )}
+            <h1 className={`display ${styles.title}`}>{meta.title}</h1>
+            {/* Central idea, then role/duration/scope/outcome, then the
+                link out. Scope replaces the tag pills that used to sit
+                here — the two said the same thing twice. */}
+            <ProjectFacts meta={meta} />
           </header>
           <MDXRemote source={content} components={mdxComponents} />
           {isHub && <ProjectIndex items={children} />}
