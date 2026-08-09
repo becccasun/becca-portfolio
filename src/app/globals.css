@@ -128,6 +128,15 @@ button {
   font-weight: 400;
 }
 
+/* Page headers. Sans at header sizes needs a little more weight and a
+   tighter track than body copy, or it reads as oversized paragraph text
+   rather than as a title. */
+.display {
+  font-family: var(--font-figtree), system-ui, sans-serif;
+  font-weight: 500;
+  letter-spacing: -0.022em;
+}
+
 .eyebrow {
   font-size: var(--fs-eyebrow);
   font-weight: 600;
@@ -187,6 +196,16 @@ main {
 /* Gallery view owns the whole viewport; no footer, no page scroll. */
 body[data-play-view="gallery"] footer {
   display: none;
+}
+
+/* The About carousel measures itself against the viewport, so main must
+   not add the nav's 64px on top — that made the scroller taller than the
+   screen and let the next panel peek in under the current one. The
+   footer stays: scrolling past the last panel chains out of the carousel
+   and reveals it, as on every other page. */
+body[data-about-carousel="true"] main {
+  padding-top: 0;
+  min-height: 0;
 }
 
 body[data-play-view="gallery"] main {

@@ -18,7 +18,7 @@ export default function WorkArchivePage() {
   return (
     <div className={`container ${styles.page}`}>
       <header className={styles.head}>
-        <h1 className={`serif ${styles.title}`}>All work</h1>
+        <h1 className={`display ${styles.title}`}>All work</h1>
         <nav className={styles.toc} aria-label="Work categories">
           {groups.map((g) => (
             <a key={g.id} href={`#${g.id}`} className={styles.tocLink}>

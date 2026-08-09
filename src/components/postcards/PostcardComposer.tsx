@@ -98,7 +98,7 @@ export default function PostcardComposer() {
           <PreviewCanvas
             draw={(ctx, w, h) => drawPostcardFront(ctx, w, h, design)}
           />
-          <h1 className={`serif ${styles.title}`}>It&apos;s in the mail.</h1>
+          <h1 className={`display ${styles.title}`}>It&apos;s in the mail.</h1>
           <p className={styles.sub}>
             Your postcard is headed for the stream on the front page.
           </p>
@@ -113,7 +113,7 @@ export default function PostcardComposer() {
   return (
     <div className={`container ${styles.page}`}>
       <header className={styles.head}>
-        <h1 className={`serif ${styles.title}`}>Leave your own postcard</h1>
+        <h1 className={`display ${styles.title}`}>Leave your own postcard</h1>
         <p className={styles.sub}>
           Pick the picture and the stamp, write the back. It joins the stream
           for the next visitor to find.

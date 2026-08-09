@@ -14,7 +14,7 @@ export default async function BlogList() {
   return (
     <div className={`container ${styles.page}`}>
       <header className={styles.head}>
-        <h1 className={`serif ${styles.title}`}>
+        <h1 className={`display ${styles.title}`}>
           Writing about design, and about learning to build.
         </h1>
         <a

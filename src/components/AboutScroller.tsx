@@ -82,7 +82,7 @@ export default function AboutScroller() {
       <div className={styles.viewport}>
         <div ref={trackRef} className={styles.track}>
           <section className={styles.frame}>
-            <h1 className={`serif ${styles.title}`}>About Me</h1>
+            <h1 className={`display ${styles.title}`}>About Me</h1>
             <p className={styles.subtext}>
               Get a glimpse into the way I design, build, and grow.
             </p>

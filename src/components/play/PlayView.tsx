@@ -38,7 +38,7 @@ export default function PlayView() {
       {view === "grid" ? (
         <>
           <header className={`container ${styles.head}`}>
-            <h1 className={`serif ${styles.title}`}>
+            <h1 className={`display ${styles.title}`}>
               Playing and experimenting with new ideas.
             </h1>
             <nav className={styles.shortcuts} aria-label="Play categories">

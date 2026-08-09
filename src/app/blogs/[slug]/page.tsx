@@ -49,7 +49,7 @@ export default async function BlogArticlePage({
 
       <header className={styles.head}>
         {article.series && <p className="eyebrow">{article.series}</p>}
-        <h1 className={`serif ${styles.title}`}>{article.title}</h1>
+        <h1 className={`display ${styles.title}`}>{article.title}</h1>
         <p className={styles.meta}>
           <time dateTime={article.date}>{article.dateLabel}</time>
           {" · "}
