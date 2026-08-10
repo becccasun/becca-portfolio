@@ -6,52 +6,64 @@
   pointer-events: none;
 }
 
+/* The dot and the label pill are one box. A 999px radius already reads as
+   a circle at 10px and as a pill once it widens, so the shape itself never
+   animates — size carries the whole change. Everything here is a
+   transition rather than a keyframe animation: transitions run both ways
+   from wherever the value currently is, so collapsing mirrors expanding,
+   and skimming between two links re-aims mid-flight instead of restarting.
+   Width is set from the measured label via --pill-w. */
 .dot {
   position: absolute;
   top: 0;
   left: 0;
   width: 10px;
   height: 10px;
-  border-radius: 50%;
+  border-radius: 999px;
   background: var(--text);
-  transform: translate(-50%, -50%) scale(1);
+  transform: translate(-50%, -50%);
   transform-origin: center;
-  transition: transform 0.3s var(--ease-out), background 0.3s var(--ease-out);
   display: flex;
   align-items: center;
   justify-content: center;
+  /* Clips the label as the pill closes around it. */
+  overflow: hidden;
+  transition: width 0.32s var(--ease-out), height 0.32s var(--ease-out),
+    background 0.3s var(--ease-out);
 }
 
-/* Hover: the expansion animates via scale; color does the heavy lifting. */
+/* Hover without a label: the same circle, one size up. */
 .grown {
-  transform: translate(-50%, -50%) scale(1.6);
+  width: 16px;
+  height: 16px;
   background: var(--accent);
 }
 
+/* Must stay after .grown — equal specificity, so source order decides
+   which wins on an element that is both. */
 .labeled {
-  width: auto;
-  height: auto;
-  padding: 6px 12px;
-  border-radius: var(--r-lg);
+  width: var(--pill-w, 96px);
+  height: 28px;
   background: var(--accent);
-  transform: translate(-50%, -50%) scale(1);
-  animation: labelIn 0.3s var(--ease-out);
 }
 
-@keyframes labelIn {
-  from {
-    transform: translate(-50%, -50%) scale(0.5);
-    opacity: 0.4;
-  }
-  to {
-    transform: translate(-50%, -50%) scale(1);
-    opacity: 1;
-  }
-}
-
+/* Kept mounted after the label clears so the pill has something to close
+   around; the text fades out instead of vanishing on the first frame.
+   flex: none keeps its natural width while the box around it animates,
+   which is also what makes it measurable. */
 .label {
+  flex: none;
   font-size: var(--fs-eyebrow);
   font-weight: 600;
   color: #fff;
   white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.16s var(--ease-out);
+}
+
+.labeled .label {
+  opacity: 1;
+  /* Let the pill open a little before the text arrives; on the way out it
+     leaves immediately, so the box is never caught clipping solid text. */
+  transition-delay: 0.07s;
 }

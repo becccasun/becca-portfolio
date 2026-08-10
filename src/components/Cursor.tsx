@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import styles from "./Cursor.module.css";
 
 /**
@@ -11,9 +11,19 @@ import styles from "./Cursor.module.css";
  */
 export default function Cursor() {
   const dotRef = useRef<HTMLDivElement>(null);
+  const labelRef = useRef<HTMLSpanElement>(null);
   const [enabled, setEnabled] = useState(false);
   const [grown, setGrown] = useState(false);
   const [label, setLabel] = useState("");
+  /**
+   * The rendered text outlives the label that asked for it. It stays put
+   * while the pill closes — otherwise React would unmount it on the first
+   * frame and the collapse would have nothing to animate around — and is
+   * only replaced once a new label arrives.
+   */
+  const [shown, setShown] = useState("");
+  /** Measured pill width: the text plus 12px of padding either side. */
+  const [pillW, setPillW] = useState(0);
 
   useEffect(() => {
     const fine = window.matchMedia("(pointer: fine)").matches;
@@ -46,8 +56,10 @@ export default function Cursor() {
       const target = (e.target as HTMLElement).closest(
         "a, button, [data-cursor]"
       ) as HTMLElement | null;
+      const next = target?.dataset.cursorLabel ?? "";
       setGrown(!!target);
-      setLabel(target?.dataset.cursorLabel ?? "");
+      setLabel(next);
+      if (next) setShown(next);
     };
 
     window.addEventListener("mousemove", onMove, { passive: true });
@@ -60,6 +72,18 @@ export default function Cursor() {
     };
   }, []);
 
+  /* Measure once the text is on screen and hand the width to CSS. The
+     span keeps its natural width whatever the pill is doing, so this
+     reads the same value whether the cursor is open or closed. Re-run on
+     every hover, not just on new text: the first measurement can land
+     before the web font swaps in, and rounding down would clip the last
+     character. */
+  useEffect(() => {
+    if (!shown || !labelRef.current) return;
+    const text = labelRef.current.getBoundingClientRect().width;
+    setPillW(Math.ceil(text) + 24);
+  }, [shown, label]);
+
   if (!enabled) return null;
 
   return (
@@ -68,8 +92,13 @@ export default function Cursor() {
         className={`${styles.dot} ${grown ? styles.grown : ""} ${
           label ? styles.labeled : ""
         }`}
+        style={
+          pillW ? ({ "--pill-w": `${pillW}px` } as CSSProperties) : undefined
+        }
       >
-        {label && <span className={styles.label}>{label}</span>}
+        <span ref={labelRef} className={styles.label}>
+          {shown}
+        </span>
       </div>
     </div>
   );
