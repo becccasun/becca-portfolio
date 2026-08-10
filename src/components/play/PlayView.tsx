@@ -39,7 +39,8 @@ export default function PlayView() {
         <>
           <header className={`container ${styles.head}`}>
             <h1 className={`display ${styles.title}`}>
-              Playing and experimenting with new ideas.
+              Building, tinkering, and connecting the dots between tech +
+              creativity.
             </h1>
             <nav className={styles.shortcuts} aria-label="Play categories">
               {(["all", ...GRID_ORDER] as const).map((id) => {

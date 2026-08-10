@@ -15,8 +15,11 @@ function hash(s: string) {
   return h;
 }
 
-const SLOTS = PLAY_ITEMS.map(({ wall, x, y, w }) => ({ wall, x, y, w }));
-const HUNG = [...PLAY_ITEMS]
+// Pieces that opt out take their slot with them, so the wall closes up
+// instead of leaving a hole where they used to hang.
+const HANGING = PLAY_ITEMS.filter((i) => i.hangs !== false);
+const SLOTS = HANGING.map(({ wall, x, y, w }) => ({ wall, x, y, w }));
+const HUNG = [...HANGING]
   .sort((a, b) => hash(a.id + "salt") - hash(b.id + "salt"))
   .map((item, i) => ({ ...item, ...SLOTS[i] }));
 const DEG = 180 / Math.PI;
@@ -240,6 +243,10 @@ export default function PlayGallery() {
       }
       if (k !== "q" && k !== "r") return;
       e.preventDefault();
+      // Holding the key auto-repeats keydown, which used to stack a
+      // quarter-turn per repeat and spin the room. A held key is still
+      // one turn: only the press that starts the run counts.
+      if (e.repeat) return;
       turn(k === "r" ? 1 : -1);
     };
 
@@ -355,10 +362,16 @@ export default function PlayGallery() {
           </button>
           <p className="eyebrow">{CATEGORY_LABEL[selected.category]}</p>
           <h2 className={`serif ${styles.labelTitle}`}>{selected.title}</h2>
-          <p className={styles.labelMeta}>{selected.year}</p>
+          <p className={styles.labelMeta}>
+            {selected.medium
+              ? `${selected.medium} · ${selected.year}`
+              : selected.year}
+          </p>
           {selected.blurb && (
             <p className={styles.labelBlurb}>{selected.blurb}</p>
           )}
+          {/* Originals end at the label: the piece is the thing, so there
+              is no "yet" to promise. Placeholders still say so. */}
           {selected.href && selected.href !== "#" ? (
             <a
               className={styles.labelLink}
@@ -369,7 +382,7 @@ export default function PlayGallery() {
               View on {selected.source}
               <span aria-hidden="true"> ↗</span>
             </a>
-          ) : (
+          ) : selected.medium ? null : (
             <p className={styles.labelSoon}>Nothing to link to yet.</p>
           )}
         </aside>
