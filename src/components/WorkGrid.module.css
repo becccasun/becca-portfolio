@@ -47,7 +47,10 @@
 .cover {
   position: relative;
   z-index: 1;
-  aspect-ratio: 16 / 10;
+  /* Matches the demo recordings so a clip fills the frame exactly rather
+     than being cropped to fit. Defined once in globals — change it there
+     and every tile follows. */
+  aspect-ratio: var(--thumb-ratio);
   border-radius: var(--r-md);
   background: var(--surface);
   border: 1px solid var(--border);
@@ -58,18 +61,33 @@
   transition: border-color 0.25s var(--ease-out);
 }
 
-.cover img {
+.cover img,
+.coverVideo {
   width: 100%;
   height: 100%;
   object-fit: cover;
   transition: transform 0.5s var(--ease-out);
 }
 
+/* Sits over the still and fades in once it is actually playing, so the
+   swap never shows a black or half-decoded first frame. */
+.coverVideo {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.35s var(--ease-out), transform 0.5s var(--ease-out);
+}
+
+.coverVideoOn {
+  opacity: 1;
+}
+
 .tile:hover .cover {
   border-color: var(--accent);
 }
 
-.tile:hover .cover img {
+.tile:hover .cover img,
+.tile:hover .coverVideo {
   transform: scale(1.02);
 }
 

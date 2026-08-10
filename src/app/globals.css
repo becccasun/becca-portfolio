@@ -44,6 +44,11 @@
   /* layout */
   --max-w: 1200px;
   --reading-w: 680px;
+  /* Work-tile frame. Set to the shape the demo screen recordings come out
+     of (1910×1080, a hair wider than 16:9) so a clip fills its tile with
+     nothing cropped. Every grid frame reads this, so re-recording at a
+     different size is a one-line change here. */
+  --thumb-ratio: 1910 / 1080;
 
   /* motion */
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);

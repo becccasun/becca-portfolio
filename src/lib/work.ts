@@ -24,6 +24,18 @@ export type WorkMeta = {
   order: number;
   category: WorkCategory;
   cover?: string;
+  /**
+   * Grid tile art, when it should differ from `cover`. `cover` doubles as
+   * the case study's hero, so a project that wants its own tile image
+   * without changing that hero sets this instead of overwriting it.
+   */
+  thumbnail?: string;
+  /**
+   * Silent clip that replaces the tile image while the pointer is on it.
+   * Shot at the tile's own aspect ratio (see --thumb-ratio) and left at
+   * preload="none", so it costs nothing until someone hovers.
+   */
+  thumbnailVideo?: string;
   sections: WorkSection[];
   /** Slug of the umbrella project this sits under (e.g. "loop"). */
   parent?: string;
@@ -77,6 +89,8 @@ function toMeta(slug: string, data: Record<string, unknown>): WorkMeta {
     order: (data.order as number) ?? 99,
     category: ((data.category as WorkCategory) ?? "personal") as WorkCategory,
     cover: data.cover as string | undefined,
+    thumbnail: data.thumbnail as string | undefined,
+    thumbnailVideo: data.thumbnailVideo as string | undefined,
     sections: (data.sections as WorkSection[]) ?? [],
     parent: data.parent as string | undefined,
     projectLabel: data.projectLabel as string | undefined,

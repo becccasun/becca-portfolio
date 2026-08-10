@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { WorkMeta } from "@/lib/work";
+import WorkTileCover from "./WorkTileCover";
 import styles from "./WorkGrid.module.css";
 
 /**
@@ -24,6 +25,9 @@ export default function WorkGrid({
       <div className={styles.grid}>
         {primary.map((w) => {
           const isUmbrella = (w.childCount ?? 0) > 1;
+          // A project can give the grid its own art; most just reuse the
+          // case study's cover.
+          const art = w.thumbnail ?? w.cover;
           return (
             <Link
               key={w.slug}
@@ -32,16 +36,11 @@ export default function WorkGrid({
               data-cursor-label="View"
             >
               <div className={styles.coverStack}>
-                <div className={styles.cover}>
-                  {w.cover ? (
-                    /* eslint-disable-next-line @next/next/no-img-element */
-                    <img src={w.cover} alt="" loading="lazy" />
-                  ) : (
-                    <span className={`serif ${styles.coverFallback}`}>
-                      {w.title}
-                    </span>
-                  )}
-                </div>
+                <WorkTileCover
+                  image={art}
+                  video={w.thumbnailVideo}
+                  fallback={w.title}
+                />
                 {isUmbrella && (
                   <span className={styles.countChip}>
                     {w.childCount} projects
