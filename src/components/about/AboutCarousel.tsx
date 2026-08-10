@@ -124,6 +124,41 @@ export default function AboutCarousel() {
     };
   }, []);
 
+  /* Two scrollers overlap on this route: the panels here, and the page
+     itself, whose entire scroll length is the footer drawer (main is one
+     viewport tall, so scrollY > 0 means the drawer is open). Left alone,
+     an upward flick does whichever of the two the pointer happens to be
+     over — closing the drawer from the footer, but paging the carousel
+     from anywhere above it. Claim the gesture while the drawer is open so
+     it always closes first, whatever the cursor is on top of. Capture
+     phase, because the scroller would otherwise consume it first. */
+  useEffect(() => {
+    /* Wheel deltas arrive in pixels, lines or pages depending on the
+       device; normalise before handing them to scrollBy. */
+    const toPixels = (e: WheelEvent) =>
+      e.deltaMode === 1
+        ? e.deltaY * 16
+        : e.deltaMode === 2
+        ? e.deltaY * window.innerHeight
+        : e.deltaY;
+
+    const onWheel = (e: WheelEvent) => {
+      if (e.deltaY >= 0 || window.scrollY <= 0) return;
+      e.preventDefault();
+      // Closes by the same distance the gesture would have scrolled, so
+      // it retracts the way it was pulled open. Clamped at 0 by scrollBy;
+      // once shut, later events fall through to the carousel. "instant"
+      // is required: html sets scroll-behavior: smooth, which would turn
+      // every wheel tick into its own easing animation and leave the
+      // drawer lagging behind the hand instead of tracking it.
+      window.scrollBy({ top: toPixels(e), behavior: "instant" });
+    };
+
+    const opts = { passive: false, capture: true } as const;
+    window.addEventListener("wheel", onWheel, opts);
+    return () => window.removeEventListener("wheel", onWheel, opts);
+  }, []);
+
   /* Two things have to survive a resize: the scrapbook needs its canvas
      size to place pieces, and the scroller has to stay on a whole panel
      rather than being left straddling two of them. */
