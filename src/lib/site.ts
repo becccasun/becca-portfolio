@@ -1,6 +1,7 @@
 export const SITE = {
   name: "Rebecca Sun",
   wordmark: "REBECCA SUN",
+  role: "PRODUCT DESIGNER",
   tagline:
     "Product design at Loop Financial, studying UX and AI at the University of Michigan.",
   email: "beccasun@umich.edu",

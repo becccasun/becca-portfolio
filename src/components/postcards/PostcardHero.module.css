@@ -5,29 +5,16 @@
   margin-top: -64px;
   height: 100svh;
   overflow: hidden;
-  /* Matches the lit backdrop in the scene so there's no colour jump
-     before the canvas fades in. */
-  background: #ececed;
+  /* The canvas is transparent and the scene paints no backdrop, so this
+     is the hero's actual background — the same --bg as every other page. */
+  background: var(--bg);
   border-bottom: 1px solid var(--border);
   scroll-snap-align: start;
   scroll-margin-top: 64px;
 }
 
-/* Lens falloff over the whole set. Subtle, and it sits above the canvas
-   but below the copy. */
-.hero::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  background: radial-gradient(
-    115% 85% at 42% 34%,
-    rgba(255, 255, 255, 0.16) 0%,
-    rgba(255, 255, 255, 0) 45%,
-    rgba(28, 28, 32, 0.09) 100%
-  );
-}
+/* The lens falloff that used to sit here is gone: its corner darkening
+   was the last thing keeping the hero from matching the page colour. */
 
 /* invisible until the first frame renders, then eases in */
 .canvas {
@@ -66,7 +53,9 @@
   font-size: var(--fs-small);
   letter-spacing: 0.02em;
   color: var(--text);
-  transition: color 0.2s var(--ease-out);
+  /* Set on the link so the label and the hexagon fade as one unit. */
+  opacity: 0.5;
+  transition: color 0.2s var(--ease-out), opacity 0.2s var(--ease-out);
 }
 
 .ctaHex {
@@ -74,8 +63,11 @@
   transition: color 0.2s var(--ease-out), transform 0.3s var(--ease-out);
 }
 
-.cta:hover {
+/* Comes up to full on hover so the target still confirms it's live. */
+.cta:hover,
+.cta:focus-visible {
   color: var(--accent-press);
+  opacity: 1;
 }
 
 .cta:hover .ctaHex {

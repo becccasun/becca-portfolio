@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Instrument_Serif, Figtree } from "next/font/google";
 import { SITE } from "@/lib/site";
-import Preloader from "@/components/Preloader";
 import Cursor from "@/components/Cursor";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
@@ -39,7 +38,6 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${instrument.variable} ${figtree.variable}`}>
       <body>
-        <Preloader />
         <Cursor />
         <Nav />
         <main id="main">{children}</main>

@@ -10,11 +10,14 @@ export default function WorkGrid({
   items,
   showSecondary = true,
   flat = false,
+  showSubtitle = true,
 }: {
   items: WorkMeta[];
   showSecondary?: boolean;
   /** Render every item as a tile, ignoring tiers (used by the archive). */
   flat?: boolean;
+  /** Off on the home page, where tiles carry title and year/role only. */
+  showSubtitle?: boolean;
 }) {
   const primary = flat ? items : items.filter((w) => w.tier === 1);
   const secondary = flat ? [] : items.filter((w) => w.tier === 2);
@@ -63,7 +66,9 @@ export default function WorkGrid({
 
               <div className={styles.tileMeta}>
                 <h3 className={styles.tileTitle}>{w.title}</h3>
-                <p className={styles.tileSubtitle}>{w.subtitle}</p>
+                {showSubtitle && (
+                  <p className={styles.tileSubtitle}>{w.subtitle}</p>
+                )}
                 <p className="eyebrow">
                   {w.year} · {w.role}
                 </p>

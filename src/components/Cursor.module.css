@@ -6,52 +6,69 @@
   pointer-events: none;
 }
 
+/* One element in three states — dot, grown dot, pill. Every property
+   that separates them is transitioned, so the cursor morphs between
+   them rather than cutting. Pill-shaped from the start: at 10px a
+   999px radius is a circle, so the corners never have to animate. */
 .dot {
   position: absolute;
   top: 0;
   left: 0;
-  width: 10px;
+  min-width: 10px;
   height: 10px;
-  border-radius: 50%;
+  padding: 0;
+  border-radius: 999px;
   background: var(--text);
   transform: translate(-50%, -50%) scale(1);
   transform-origin: center;
-  transition: transform 0.3s var(--ease-out), background 0.3s var(--ease-out);
+  transition: height 0.34s var(--ease-out), min-width 0.34s var(--ease-out),
+    padding 0.34s var(--ease-out), background 0.3s var(--ease-out),
+    transform 0.3s var(--ease-out);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-/* Hover: the expansion animates via scale; color does the heavy lifting. */
+/* Hover over a plain link or button: 5px radius out to 8px, and that's
+   all. Grown by real size rather than a scale transform — scaling a
+   filled circle reads as a pop, and it would also blow up the label's
+   type in the pill state below. */
 .grown {
-  transform: translate(-50%, -50%) scale(1.6);
+  min-width: 16px;
+  height: 16px;
   background: var(--accent);
 }
 
+/* Wins over .grown by coming later: a labelled target opens into the
+   pill instead of scaling the dot up. */
 .labeled {
-  width: auto;
-  height: auto;
-  padding: 6px 12px;
-  border-radius: var(--r-lg);
+  height: 28px;
+  padding: 0 14px;
   background: var(--accent);
   transform: translate(-50%, -50%) scale(1);
-  animation: labelIn 0.3s var(--ease-out);
 }
 
-@keyframes labelIn {
-  from {
-    transform: translate(-50%, -50%) scale(0.5);
-    opacity: 0.4;
-  }
-  to {
-    transform: translate(-50%, -50%) scale(1);
-    opacity: 1;
-  }
-}
-
+/* The label is clipped to zero and opened by max-width. A 0fr-to-1fr
+   grid track is the tidier trick, but its width resolves to zero inside
+   a flex parent like .dot, which left the pill stuck as a blank circle.
+   The cap is in ch so it sits just past the longest label rather than
+   miles past it — overshoot is dead travel the close has to cross
+   before the text starts moving. */
 .label {
+  max-width: 0;
+  overflow: hidden;
   font-size: var(--fs-eyebrow);
   font-weight: 600;
   color: #fff;
   white-space: nowrap;
+  opacity: 0;
+  transition: max-width 0.34s var(--ease-out),
+    /* Only a beat behind the pill: any longer and the cursor spends
+       the opening as a blank blue lozenge. */ opacity 0.2s
+      var(--ease-out) 0.04s;
+}
+
+.labeled .label {
+  max-width: 12ch;
+  opacity: 1;
 }

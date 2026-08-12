@@ -26,6 +26,13 @@ export default function Nav() {
           <span className={styles.wordmark}>{SITE.wordmark}</span>
         </Link>
 
+        {/* Sits outside the brand link: it labels the name, it isn't a
+            second way to click home. */}
+        <span className={styles.role}>
+          <span className={styles.dot} aria-hidden="true" />
+          {SITE.role}
+        </span>
+
         <nav className={styles.nav} aria-label="Primary">
           {LINKS.map((l) => (
             <Link
@@ -39,20 +46,6 @@ export default function Nav() {
             </Link>
           ))}
         </nav>
-
-        {/* The agent is a stamp rather than a labelled pill: present in the
-            corner, but not competing with the nav for attention. The
-            accessible name carries what the label used to say. */}
-        <button
-          className={styles.ask}
-          onClick={() => window.dispatchEvent(new CustomEvent("chat:open"))}
-          aria-label="Ask Rebecca's Agent"
-          title="Rebecca's Agent"
-          data-cursor-label="Chat"
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/nav-stamp.png" alt="" className={styles.stamp} />
-        </button>
       </div>
     </header>
   );

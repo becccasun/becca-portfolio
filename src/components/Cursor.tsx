@@ -11,9 +11,12 @@ import styles from "./Cursor.module.css";
  */
 export default function Cursor() {
   const dotRef = useRef<HTMLDivElement>(null);
+  const lastLabel = useRef("");
   const [enabled, setEnabled] = useState(false);
   const [grown, setGrown] = useState(false);
   const [label, setLabel] = useState("");
+  /** Set imperatively by canvas scenes, which have no DOM to hover. */
+  const [forced, setForced] = useState<string | null>(null);
 
   useEffect(() => {
     const fine = window.matchMedia("(pointer: fine)").matches;
@@ -50,26 +53,39 @@ export default function Cursor() {
       setLabel(target?.dataset.cursorLabel ?? "");
     };
 
+    const onForce = (e: Event) => {
+      const detail = (e as CustomEvent<{ label: string | null }>).detail;
+      setForced(detail?.label || null);
+    };
+
     window.addEventListener("mousemove", onMove, { passive: true });
     window.addEventListener("mouseover", onOver, { passive: true });
+    window.addEventListener("cursor:label", onForce);
     return () => {
       window.removeEventListener("mousemove", onMove);
       window.removeEventListener("mouseover", onOver);
+      window.removeEventListener("cursor:label", onForce);
       delete document.body.dataset.customCursor;
       if (raf) cancelAnimationFrame(raf);
     };
   }, []);
+
+  // A canvas label wins over whatever the DOM last reported.
+  const active = forced ?? label;
+  // Keep the outgoing text mounted so the pill can animate shut around
+  // it; unmounting it would collapse the width in a single frame.
+  if (active) lastLabel.current = active;
 
   if (!enabled) return null;
 
   return (
     <div ref={dotRef} className={styles.cursor} aria-hidden="true">
       <div
-        className={`${styles.dot} ${grown ? styles.grown : ""} ${
-          label ? styles.labeled : ""
+        className={`${styles.dot} ${grown || forced ? styles.grown : ""} ${
+          active ? styles.labeled : ""
         }`}
       >
-        {label && <span className={styles.label}>{label}</span>}
+        <span className={styles.label}>{active || lastLabel.current}</span>
       </div>
     </div>
   );
