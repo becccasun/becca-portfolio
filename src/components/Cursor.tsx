@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import styles from "./Cursor.module.css";
 
 /**
@@ -8,15 +8,27 @@ import styles from "./Cursor.module.css";
  * can show a label via [data-cursor-label]. Fine pointers only; disabled
  * for touch and reduced motion. The native cursor remains the base layer
  * until this mounts.
+ *
+ * Canvas scenes have no DOM under the pointer to carry a label, so they
+ * ask for one directly with a "cursor:label" window event.
  */
 export default function Cursor() {
   const dotRef = useRef<HTMLDivElement>(null);
-  const lastLabel = useRef("");
+  const labelRef = useRef<HTMLSpanElement>(null);
   const [enabled, setEnabled] = useState(false);
   const [grown, setGrown] = useState(false);
   const [label, setLabel] = useState("");
-  /** Set imperatively by canvas scenes, which have no DOM to hover. */
+  /** Set imperatively by canvas scenes; wins over the DOM's answer. */
   const [forced, setForced] = useState<string | null>(null);
+  /**
+   * The rendered text outlives the label that asked for it. It stays put
+   * while the pill closes — otherwise React would unmount it on the first
+   * frame and the collapse would have nothing to animate around — and is
+   * only replaced once a new label arrives.
+   */
+  const [shown, setShown] = useState("");
+  /** Measured pill width: the text plus 12px of padding either side. */
+  const [pillW, setPillW] = useState(0);
 
   useEffect(() => {
     const fine = window.matchMedia("(pointer: fine)").matches;
@@ -49,13 +61,18 @@ export default function Cursor() {
       const target = (e.target as HTMLElement).closest(
         "a, button, [data-cursor]"
       ) as HTMLElement | null;
+      const next = target?.dataset.cursorLabel ?? "";
       setGrown(!!target);
-      setLabel(target?.dataset.cursorLabel ?? "");
+      setLabel(next);
+      if (next) setShown(next);
     };
 
+    // Same contract as onOver: the text outlives the request, so the pill
+    // has something to close around once the scene withdraws its label.
     const onForce = (e: Event) => {
-      const detail = (e as CustomEvent<{ label: string | null }>).detail;
-      setForced(detail?.label || null);
+      const next = (e as CustomEvent<{ label: string | null }>).detail?.label;
+      setForced(next || null);
+      if (next) setShown(next);
     };
 
     window.addEventListener("mousemove", onMove, { passive: true });
@@ -70,13 +87,22 @@ export default function Cursor() {
     };
   }, []);
 
-  // A canvas label wins over whatever the DOM last reported.
-  const active = forced ?? label;
-  // Keep the outgoing text mounted so the pill can animate shut around
-  // it; unmounting it would collapse the width in a single frame.
-  if (active) lastLabel.current = active;
+  /* Measure once the text is on screen and hand the width to CSS. The
+     span keeps its natural width whatever the pill is doing, so this
+     reads the same value whether the cursor is open or closed. Re-run on
+     every hover, not just on new text: the first measurement can land
+     before the web font swaps in, and rounding down would clip the last
+     character. */
+  useEffect(() => {
+    if (!shown || !labelRef.current) return;
+    const text = labelRef.current.getBoundingClientRect().width;
+    setPillW(Math.ceil(text) + 24);
+  }, [shown, label, forced]);
 
   if (!enabled) return null;
+
+  // A scene's label takes precedence over whatever the DOM last reported.
+  const active = forced ?? label;
 
   return (
     <div ref={dotRef} className={styles.cursor} aria-hidden="true">
@@ -84,8 +110,13 @@ export default function Cursor() {
         className={`${styles.dot} ${grown || forced ? styles.grown : ""} ${
           active ? styles.labeled : ""
         }`}
+        style={
+          pillW ? ({ "--pill-w": `${pillW}px` } as CSSProperties) : undefined
+        }
       >
-        <span className={styles.label}>{active || lastLabel.current}</span>
+        <span ref={labelRef} className={styles.label}>
+          {shown}
+        </span>
       </div>
     </div>
   );
