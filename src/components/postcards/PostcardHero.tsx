@@ -57,6 +57,14 @@ const MIN_STREAM = 9;
 // own card, at the same depth, the offset is identical everywhere.
 const SHADOW_OFFSET = { x: 0.3, y: -0.34 };
 const SHADOW_DEPTH = -0.06; // just behind the card, so overlap hides it
+// Shadows render in their own pass, on this layer, before the cards. A
+// flipping card rotates about its own Y axis, so half of it swings back
+// past 0.06 — at anything beyond ~3° of flip its rear edge is already
+// behind the shadow plane, and depth testing then drew the shadow
+// slicing across the card. Painting all the shadows first and clearing
+// depth means a card can never intersect one, however far it turns,
+// while the offset stays small enough to keep left and right symmetric.
+const SHADOW_LAYER = 1;
 const SHADOW_PAD = 0.55; // room around the card for the blur to spread
 const SHADOW_OPACITY = 0.22;
 
@@ -202,6 +210,9 @@ export default function PostcardHero() {
       renderer.toneMappingExposure = 1;
       // No shadow map: the cards carry their own shadow quads, which
       // keeps the offset even across the frame (see SHADOW_OFFSET).
+      // The frame is drawn in two passes, so clearing is done by hand —
+      // otherwise the second pass would wipe the first.
+      renderer.autoClear = false;
       mount.appendChild(renderer.domElement);
 
       // Soft indirect bounce, so matte surfaces aren't lit by direct
@@ -254,9 +265,10 @@ export default function PostcardHero() {
       const hitGeometry = new THREE.PlaneGeometry(CARD_W, CARD_H);
       const hitMaterial = new THREE.MeshBasicMaterial({ visible: false });
 
-      // One geometry and one material for every card's shadow. Sitting
-      // 0.06 behind its own card, the overlap is hidden by depth and
-      // only the offset penumbra shows.
+      // One geometry and one material for every card's shadow. Drawn in
+      // the earlier pass, so the card paints over the part it covers and
+      // only the offset penumbra shows — no depth test involved, which
+      // is what lets a card flip through this plane cleanly.
       const shadowGeometry = new THREE.PlaneGeometry(
         CARD_W + SHADOW_PAD * 2,
         CARD_H + SHADOW_PAD * 2
@@ -306,8 +318,17 @@ export default function PostcardHero() {
         });
         // BoxGeometry material order: +x, -x, +y, -y, +z (front), -z (back)
         const mesh = new THREE.Mesh(geometry, [edge, edge, edge, edge, front, back]);
+        // Lean last, flip first. Three's default XYZ order works out to
+        // Ry(flip) · Rz(tilt), so a half-turn about Y lands after the lean
+        // and mirrors it: the card's up went from (-sin t, cos t) to
+        // (+sin t, cos t), leaving a flipped card leaning the opposite way
+        // to its own shadow. ZYX gives Rz(tilt) · Ry(flip) instead — the
+        // flip happens in the card's own frame and the lean is applied to
+        // the result, so the tilt is the same whichever face is showing.
+        mesh.rotation.order = "ZYX";
         const hitPlane = new THREE.Mesh(hitGeometry, hitMaterial);
         const shadow = new THREE.Mesh(shadowGeometry, shadowMaterial);
+        shadow.layers.set(SHADOW_LAYER);
         const state: CardState = {
           mesh,
           hitPlane,
@@ -465,7 +486,6 @@ export default function PostcardHero() {
             SHADOW_DEPTH
           );
           s.shadow.rotation.z = tilt;
-          s.shadow.scale.setScalar(scale);
 
           // A card that has gone around the bend resets, so it doesn't
           // come back around still showing its message.
@@ -474,9 +494,26 @@ export default function PostcardHero() {
           s.targetFlip = s.flipped ? Math.PI : 0;
           s.flip += (s.targetFlip - s.flip) * (reduced ? 1 : FLIP_EASE);
           s.mesh.rotation.y = s.flip;
+
+          // Turning card, narrowing shadow: what it casts follows the
+          // width the card actually presents, so an edge-on card isn't
+          // left sitting in front of a full-width rectangle. Floored so
+          // the matrix never collapses to zero scale.
+          const facing = Math.max(0.08, Math.abs(Math.cos(s.flip)));
+          s.shadow.scale.set(scale * facing, scale, 1);
         }
 
         mount.style.cursor = hovered ? "pointer" : "default";
+
+        // Shadows, then depth wiped, then cards on top. Two passes rather
+        // than one sorted scene: transparent objects always draw after
+        // opaque ones, so render order alone couldn't put a shadow behind
+        // a card it intersects.
+        renderer.clear();
+        camera.layers.set(SHADOW_LAYER);
+        renderer.render(scene, camera);
+        renderer.clearDepth();
+        camera.layers.set(0);
         renderer.render(scene, camera);
         if (firstFrame) {
           firstFrame = false;
