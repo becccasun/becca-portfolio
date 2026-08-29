@@ -3,9 +3,16 @@
 }
 
 /* Full-bleed product hero across the viewport. */
+/* The cover reads in one screen: thumbnail, then title and the four
+   facts beside the contents menu, with nothing important below the
+   fold. The header block is close to a fixed height whatever the
+   project, so the hero takes the viewport minus that block rather than
+   a percentage — a percentage would push the facts under on short
+   windows and strand whitespace on tall ones. svh, not vh, so mobile
+   browser chrome doesn't cost the facts their room. */
 .hero {
   width: 100%;
-  height: clamp(320px, 55vh, 640px);
+  height: clamp(220px, calc(100svh - 436px), 620px);
   background: var(--surface);
   border-bottom: 1px solid var(--border);
   overflow: hidden;
@@ -22,7 +29,7 @@
   grid-template-columns: 220px 1fr;
   gap: var(--s-16);
   align-items: start;
-  padding-top: var(--s-12);
+  padding-top: var(--s-8);
 }
 
 .body {
@@ -35,7 +42,7 @@
   display: flex;
   flex-direction: column;
   gap: var(--s-3);
-  padding-bottom: var(--s-12);
+  padding-bottom: var(--s-16);
 }
 
 .title {

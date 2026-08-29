@@ -10,9 +10,13 @@
   max-width: var(--reading-w);
 }
 
+/* Body size rather than h3: at h3 this ran to three tall lines and was
+   single-handedly pushing the four facts under the fold. The eyebrow
+   and the rule beside it already mark it as the header's lead, so it
+   does not also need the size to say so. */
 .conceptText {
-  font-size: var(--fs-h3);
-  line-height: 1.45;
+  font-size: var(--fs-body);
+  line-height: 1.5;
   color: var(--text-muted);
 }
 
@@ -21,8 +25,8 @@
 .facts {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: var(--s-8) var(--s-6);
-  margin-top: var(--s-12);
+  gap: var(--s-6);
+  margin-top: var(--s-8);
 }
 
 .col {
