@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 import { SITE } from "@/lib/site";
 import styles from "./Nav.module.css";
 
@@ -16,9 +17,23 @@ const LINKS = [
 
 export default function Nav() {
   const pathname = usePathname();
+  /* The hero says when a postcard is being read up close; the bar draws
+     itself up out of the frame for as long as that lasts, and comes
+     back down on the way out. */
+  const [retracted, setRetracted] = useState(false);
+
+  useEffect(() => {
+    const onFocus = (e: Event) => {
+      setRetracted(Boolean((e as CustomEvent).detail?.focused));
+    };
+    window.addEventListener("hero:focus", onFocus);
+    return () => window.removeEventListener("hero:focus", onFocus);
+  }, []);
 
   return (
-    <header className={styles.header}>
+    <header
+      className={`${styles.header} ${retracted ? styles.headerUp : ""}`}
+    >
       <div className={`container ${styles.inner}`}>
         <Link href="/" className={styles.brand}>
           {/* eslint-disable-next-line @next/next/no-img-element */}

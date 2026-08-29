@@ -38,41 +38,55 @@
   left: 50%;
   bottom: 14%;
   transform: translateX(-50%);
-  display: flex;
-  justify-content: center;
+  /* Both bands occupy the same cell rather than replacing one another
+     in the flow, so the swap is a crossfade in place and the block
+     never jumps height between states. */
+  display: grid;
+  justify-items: center;
+  align-items: center;
   pointer-events: none;
 }
 
-/* Bare text + hexagon arrow, no button chrome. */
-.cta {
-  pointer-events: auto;
-  display: flex;
-  align-items: center;
-  gap: var(--s-4);
-  font-family: ui-monospace, "SF Mono", Menlo, monospace;
-  font-size: var(--fs-small);
-  letter-spacing: 0.02em;
-  color: var(--text);
-  /* Set on the link so the label and the hexagon fade as one unit. */
-  opacity: 0.5;
-  transition: color 0.2s var(--ease-out), opacity 0.2s var(--ease-out);
+/* Fog, not a fade: the outgoing line blurs and lifts as it goes, and
+   the incoming one settles out of the same haze. The delay on the way
+   in is the buffer — one line has finished dissolving before the next
+   starts to gather, so the two never read as a hard swap. */
+.band {
+  grid-area: 1 / 1;
+  transition: opacity 0.34s var(--ease-out), filter 0.34s var(--ease-out),
+    transform 0.34s var(--ease-out);
 }
 
-.ctaHex {
-  color: var(--text-muted);
-  transition: color 0.2s var(--ease-out), transform 0.3s var(--ease-out);
+.bandOut {
+  opacity: 0;
+  filter: blur(7px);
+  transform: translateY(5px);
+  pointer-events: none;
+  transition-delay: 0s;
 }
 
-/* Comes up to full on hover so the target still confirms it's live. */
-.cta:hover,
-.cta:focus-visible {
-  color: var(--accent-press);
+.bandIn {
   opacity: 1;
+  filter: blur(0);
+  transform: translateY(0);
+  transition-delay: 0.26s;
 }
 
-.cta:hover .ctaHex {
-  color: var(--accent);
-  transform: translate(2px, -2px);
+
+/* The positioning line. Serif and quiet: it sits under the stream as a
+   caption to it, so it stays well below the scale of a page title and
+   never competes with the cards for the eye. */
+.tagline {
+  margin: 0;
+  max-width: 34ch;
+  text-align: center;
+  text-wrap: balance;
+  font-family: var(--font-figtree), system-ui, sans-serif;
+  font-size: clamp(1rem, 0.92rem + 0.45vw, 1.25rem);
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: -0.005em;
+  color: var(--text);
 }
 
 .corner {
@@ -81,6 +95,7 @@
   font-size: var(--fs-small);
   color: var(--text-muted);
   pointer-events: none;
+  transition: opacity 0.35s var(--ease-out);
 }
 
 .cornerLeft {
@@ -100,5 +115,91 @@
   }
   .cornerLeft {
     bottom: var(--s-12);
+  }
+}
+
+/* Sits where the statement was, once a card has been picked up, but
+   lower: the enlarged card needs air under it before the invitation
+   starts. The overlay stays click-through so the canvas behind it can
+   still be used to dismiss; only the link takes the pointer back. */
+/* The invitation, laid out on one line under the card: the words, the
+   hexagon, then the way out, in that reading order. It shares its grid
+   cell with the statement above, so the two crossfade in place instead
+   of one moving as the other arrives. */
+.focusBar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-8);
+}
+
+/* Bare text and a hexagon, no pill. Same face and tracking as the
+   invitation has always used, just carrying its own weight now that
+   there is no button behind it. */
+.build {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  font-family: var(--font-figtree), system-ui, sans-serif;
+  font-size: var(--fs-small);
+  font-weight: 400;
+  letter-spacing: -0.005em;
+  color: var(--text);
+  transition: color 0.2s var(--ease-out);
+}
+
+.buildHex {
+  color: var(--text);
+  transition: color 0.2s var(--ease-out), transform 0.3s var(--ease-out);
+}
+
+.build:hover,
+.build:focus-visible {
+  color: var(--accent-press);
+}
+
+.build:hover .buildHex {
+  color: var(--accent);
+  transform: translate(2px, -2px);
+}
+
+/* A footnote, not an instruction: smaller and finer than the
+   invitation beside it, so the eye takes the two in that order. */
+.dismiss {
+  margin: 0;
+  font-family: var(--font-figtree), system-ui, sans-serif;
+  font-size: var(--fs-eyebrow);
+  font-weight: 300;
+  letter-spacing: 0.02em;
+  color: var(--text-muted);
+  opacity: 0.5;
+}
+
+/* The corner notes belong to the stream. With one card held up close
+   they are just clutter around it, so they step back. */
+.cornerHidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+@media (max-width: 640px) {
+  .focusBar {
+    flex-direction: column;
+    gap: var(--s-2);
+  }
+}
+
+/* The crossfade is the whole effect; without motion it becomes a plain
+   swap rather than a fog, which is the right fallback. */
+@media (prefers-reduced-motion: reduce) {
+  .band {
+    transition: opacity 0.01s;
+  }
+  .bandIn,
+  .bandOut {
+    filter: none;
+    transform: none;
+    transition-delay: 0s;
   }
 }

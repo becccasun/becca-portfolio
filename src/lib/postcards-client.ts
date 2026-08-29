@@ -13,13 +13,45 @@
  * card's 3:2; `focusY` biases that crop when the subject isn't centred
  * (0 keeps the top, 1 keeps the bottom).
  */
+/**
+ * The picture side of a card: one of Rebecca's paintings.
+ *
+ * Five, and only five. Every card is the same landscape frame, and each
+ * painting is cropped to fill it rather than stretched — the sources
+ * are all within a few percent of the frame already, so the crop only
+ * ever takes a sliver off two edges.
+ */
 export const ART_OPTIONS = [
-  { id: "water", label: "Water", src: "/postcards/water-sparkle.jpg", focusY: 0.5 },
-  { id: "forest", label: "Forest", src: "/postcards/forest-light.jpg", focusY: 0.45 },
-  { id: "tree", label: "Tree", src: "/postcards/tree-sun.jpg", focusY: 0.4 },
-  { id: "lily", label: "Lily", src: "/postcards/lily-of-the-valley.jpg", focusY: 0.5 },
-  { id: "aurora", label: "Aurora", src: "/postcards/aurora-walk.jpg", focusY: 0.72 },
-  { id: "ripple", label: "Ripple", src: "/postcards/green-ripple.jpg", focusY: 0.5 },
+  {
+    id: "cosmos",
+    label: "Cosmos",
+    src: "/postcards/paintings/cosmos.jpg",
+    focusY: 0.5,
+  },
+  {
+    id: "lilypond",
+    label: "Lily pond",
+    src: "/postcards/paintings/lilypond.jpg",
+    focusY: 0.5,
+  },
+  {
+    id: "field",
+    label: "Field",
+    src: "/postcards/paintings/field.jpg",
+    focusY: 0.5,
+  },
+  {
+    id: "valley",
+    label: "Lily of the valley",
+    src: "/postcards/paintings/valley.jpg",
+    focusY: 0.5,
+  },
+  {
+    id: "orchids",
+    label: "Orchids",
+    src: "/postcards/paintings/orchids.jpg",
+    focusY: 0.5,
+  },
 ] as const;
 
 export const STAMP_OPTIONS = [
@@ -50,7 +82,7 @@ export type PostcardData = {
 /** What gets written on the three ruled lines, in order. */
 export type PostcardSender = Pick<PostcardData, "name" | "city" | "role">;
 
-export const DEFAULT_DESIGN: PostcardDesign = { art: "water", stamp: "bamboo" };
+export const DEFAULT_DESIGN: PostcardDesign = { art: "cosmos", stamp: "bamboo" };
 
 /**
  * Coerce whatever came out of storage into a design we can render.
@@ -172,6 +204,9 @@ export function drawPostcardFront(
   ctx.fillRect(0, 0, w, h);
   const option = artOption(design.art);
   const image = art ?? readyImage(option.src);
+  // Cover, always: the frame is already the nearer of the two shapes to
+  // the painting, so filling it crops a little off one pair of edges and
+  // never distorts what is in between.
   if (image) drawCover(ctx, image, w, h, option.focusY);
 }
 
@@ -272,53 +307,52 @@ function fit(ctx: CanvasRenderingContext2D, value: string, maxWidth: number) {
 }
 
 /** Rebecca's own cards, always in the stream. */
+/**
+ * One card per painting, and the order the carousel runs them in. The
+ * stream steps through this list and repeats it — no shuffling, so a
+ * visitor sees the same five come round in the same order every time.
+ */
 export const PRESET_CARDS: PostcardData[] = [
   {
-    id: "preset-1",
-    design: { art: "water", stamp: "bamboo" },
-    text: "Hi, I'm Rebecca. I make software feel a little less like software.",
+    id: "painting-cosmos",
+    design: { art: "cosmos", stamp: "sunrise" },
+    text: "Painted the whole sky before I worked out where the horizon went.",
     name: "Rebecca",
-    city: "Toronto",
+    city: "Ann Arbor",
     role: "Designer",
   },
   {
-    id: "preset-2",
-    design: { art: "aurora", stamp: "skis" },
-    text: "Design is the part you feel but never notice. That part takes the longest.",
+    id: "painting-lilypond",
+    design: { art: "lilypond", stamp: "bamboo" },
+    text: "Still water is the hardest thing to paint and the easiest to sit beside.",
     name: "Rebecca",
     city: "Ann Arbor",
-    role: "Design engineer",
-  },
-  {
-    id: "preset-3",
-    design: { art: "forest", stamp: "sunrise" },
-    text: "Most of my favorite work started as a question someone forgot to ask.",
-    name: "Rebecca",
-    city: "Toronto",
-    role: "Product design intern",
-  },
-  {
-    id: "preset-4",
-    design: { art: "lily", stamp: "lavender" },
-    text: "Wish you were here. Well, you are. Scroll down, I'll show you around.",
-    name: "Rebecca",
-    city: "Ann Arbor",
-    role: "Student",
-  },
-  {
-    id: "preset-5",
-    design: { art: "ripple", stamp: "alps" },
-    text: "Leave a postcard before you go. The next visitor will find it drifting by.",
-    name: "Rebecca",
-    city: "Toronto",
     role: "Designer",
   },
   {
-    id: "preset-6",
-    design: { art: "tree", stamp: "birdhouse" },
-    text: "Everything here was built twice: once to learn it, once to mean it.",
+    id: "painting-field",
+    design: { art: "field", stamp: "alps" },
+    text: "Spent an afternoon on the difference between wind in grass and grass in wind.",
     name: "Rebecca",
     city: "Ann Arbor",
-    role: "Student",
+    role: "Designer",
+  },
+  {
+    id: "painting-valley",
+    design: { art: "valley", stamp: "lavender" },
+    text: "Four bells on one stem. I kept the drawing and threw away the rules.",
+    name: "Rebecca",
+    city: "Ann Arbor",
+    role: "Designer",
+  },
+  {
+    id: "painting-orchids",
+    design: { art: "orchids", stamp: "skis" },
+    text: "Two whites on a blue that took longer than both of them together.",
+    name: "Rebecca",
+    city: "Ann Arbor",
+    role: "Designer",
   },
 ];
+
+

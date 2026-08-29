@@ -46,7 +46,7 @@ function PreviewCanvas({
  * stream on the home hero.
  */
 export default function PostcardComposer() {
-  const [art, setArt] = useState<ArtId>("water");
+  const [art, setArt] = useState<ArtId>("cosmos");
   const [stamp, setStamp] = useState<StampId>("bamboo");
   const [text, setText] = useState("");
   const [name, setName] = useState("");
@@ -126,12 +126,12 @@ export default function PostcardComposer() {
             {side === "front" ? (
               <PreviewCanvas
                 key={`f-${art}-${loaded}`}
-                draw={(ctx, w, h) => drawPostcardFront(ctx, w, h, design)}
+                    draw={(ctx, w, h) => drawPostcardFront(ctx, w, h, design)}
               />
             ) : (
               <PreviewCanvas
                 key={`b-${stamp}-${text}-${name}-${city}-${role}-${loaded}`}
-                draw={(ctx, w, h) =>
+                    draw={(ctx, w, h) =>
                   drawPostcardBack(
                     ctx,
                     w,

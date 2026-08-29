@@ -123,7 +123,7 @@
 }
 
 /* Sources are squarish; crop them to the card's shape so the swatches
-   line up in a even grid. */
+   line up in an even grid. */
 .thumb {
   display: block;
   width: 100%;

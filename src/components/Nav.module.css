@@ -16,6 +16,16 @@
   background: color-mix(in srgb, var(--bg) 50%, transparent);
   -webkit-backdrop-filter: blur(20px) saturate(1.5);
   backdrop-filter: blur(20px) saturate(1.5);
+  transition: transform 0.45s var(--ease-out), opacity 0.35s var(--ease-out);
+}
+
+/* Drawn up out of the frame while a postcard is being read. Opacity
+   fades slightly ahead of the travel so the bar reads as leaving rather
+   than as sliding under something. */
+.headerUp {
+  transform: translateY(-100%);
+  opacity: 0;
+  pointer-events: none;
 }
 
 /* logo + name left, page links right, all remaining space between them */
@@ -126,5 +136,11 @@
   }
   .nav {
     gap: var(--s-4);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .header {
+    transition: none;
   }
 }
