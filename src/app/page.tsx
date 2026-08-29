@@ -9,6 +9,11 @@ export default function HomePage() {
 
   return (
     <>
+      {/* The secret library (the pull string and its panel) is built and
+          parked, not deleted: src/components/library/ and src/lib/library.ts.
+          Re-mounting it here is the only step to bring it back. Held off
+          the launch because it wants real artwork and real builds behind
+          it, and the case studies come first. */}
       <PostcardHero />
 
       <section id="work" className={`container ${styles.section}`}>
