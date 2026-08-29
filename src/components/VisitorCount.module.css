@@ -1,0 +1,33 @@
+/* Sits with the colophon, in the same quiet register: a footnote about
+   the page, not a claim about the work. */
+.count {
+  color: var(--text-muted);
+  font-size: var(--fs-small);
+  margin-top: var(--s-2);
+  /* Arrives once the number comes back, so it fades in rather than
+     appearing mid-read. */
+  animation: visitor-in 0.5s var(--ease-out);
+}
+
+/* The one part worth looking at. Tabular figures so the number does not
+   jitter its own width as the tally grows. */
+.number {
+  color: var(--text);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+@keyframes visitor-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .count {
+    animation: none;
+  }
+}
