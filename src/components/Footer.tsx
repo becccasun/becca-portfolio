@@ -2,6 +2,8 @@
 
 import { useEffect, useRef } from "react";
 import { SITE } from "@/lib/site";
+import FortuneBottle from "./FortuneBottle";
+import VisitorCount from "./VisitorCount";
 import styles from "./Footer.module.css";
 
 /**
@@ -10,8 +12,8 @@ import styles from "./Footer.module.css";
  * footer's height as --footer-h, which main uses as bottom margin so
  * the scroll length accounts for the hidden drawer.
  *
- * The playful interaction concept is still TBD with Rebecca (spec
- * item 9); the reserved slot remains.
+ * The reserved interaction slot (spec item 9) is now the fortune
+ * bottle: corked, floating in the top right, holding a note.
  */
 export default function Footer() {
   const ref = useRef<HTMLElement>(null);
@@ -43,7 +45,9 @@ export default function Footer() {
           </p>
         </div>
 
-        <div className={styles.playSlot} data-footer-interaction-slot />
+        <div className={styles.playSlot} data-footer-interaction-slot>
+          <FortuneBottle />
+        </div>
 
         <div className={styles.meta}>
           <a href={`mailto:${SITE.email}`} className="link">
@@ -89,6 +93,9 @@ export default function Footer() {
           <p className={styles.colophon}>
             © {new Date().getFullYear()} {SITE.name}. Designed and built by me.
           </p>
+          {/* Renders nothing until it has a number, so the footer never
+              reserves space for a line that may not arrive. */}
+          <VisitorCount />
         </div>
       </div>
     </footer>

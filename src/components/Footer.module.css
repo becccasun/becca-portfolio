@@ -10,6 +10,9 @@
 }
 
 .inner {
+  /* Positioning context for the fortune bottle, which hangs in the top
+     right corner rather than taking a place in this column. */
+  position: relative;
   padding-top: var(--s-16);
   padding-bottom: var(--s-8);
   display: flex;

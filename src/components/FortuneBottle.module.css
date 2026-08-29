@@ -1,0 +1,157 @@
+/* Pinned to the top right of the footer drawer, inset from both edges.
+   Absolute rather than in flow: the brand row beside it is left
+   aligned, so this corner is empty space the bottle can occupy without
+   pushing anything down. */
+.slot {
+  position: absolute;
+  top: var(--s-8);
+  right: var(--s-6);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--s-3);
+}
+
+.bottle {
+  padding: 0;
+  border: 0;
+  background: none;
+  line-height: 0;
+  cursor: pointer;
+  /* The float. Small and slow: it should read as suspended in water,
+     not as something demanding to be clicked. */
+  animation: bob 5.5s ease-in-out infinite;
+}
+
+.bottle:hover .glass,
+.bottle:focus-visible .glass {
+  transform: translateY(-2px) rotate(-3deg);
+}
+
+.glass {
+  display: block;
+  overflow: visible;
+  transition: transform 0.35s var(--ease-out);
+}
+
+.cork {
+  fill: var(--text-muted);
+  opacity: 0.55;
+}
+
+.body {
+  fill: var(--accent-soft);
+  stroke: var(--accent);
+  stroke-width: 1.25;
+  opacity: 0.75;
+}
+
+.note {
+  fill: var(--bg);
+  stroke: var(--text-muted);
+  stroke-width: 1;
+  opacity: 0.9;
+}
+
+.shine {
+  fill: none;
+  stroke: var(--bg);
+  stroke-width: 2;
+  stroke-linecap: round;
+  opacity: 0.7;
+}
+
+/* The status region itself is a bare wrapper: giving it the card's box
+   would leave an empty bordered rectangle sitting in the corner
+   whenever no fortune is drawn. */
+.live {
+  display: contents;
+}
+
+.note_card {
+  max-width: 260px;
+  padding: var(--s-4) var(--s-4) var(--s-3);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  box-shadow: 0 6px 20px -10px rgba(26, 26, 31, 0.35);
+  /* Torn from the same paper as the postcards: a hair off square, so it
+     sits on the page rather than in a grid. */
+  transform: rotate(-1.2deg);
+  animation: unfurl 0.45s var(--ease-out);
+}
+
+.text {
+  font-size: var(--fs-body);
+  line-height: 1.45;
+  text-wrap: balance;
+  margin: 0 0 var(--s-2);
+}
+
+.close {
+  font-size: var(--fs-eyebrow);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  transition: color 0.2s var(--ease-out);
+}
+
+.close:hover,
+.close:focus-visible {
+  color: var(--accent-press);
+}
+
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-6px) rotate(2deg);
+  }
+}
+
+@keyframes unfurl {
+  from {
+    opacity: 0;
+    transform: rotate(-1.2deg) translateY(-6px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(-1.2deg) translateY(0) scale(1);
+  }
+}
+
+/* Narrow screens: the footer's brand row runs the full width, so the
+   corner is no longer empty. The bottle returns to normal flow and
+   sits at the right of its own row. */
+@media (max-width: 720px) {
+  .slot {
+    position: static;
+    align-items: flex-end;
+  }
+
+  .note_card {
+    max-width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bottle {
+    animation: none;
+  }
+
+  .note_card {
+    animation: none;
+  }
+
+  .glass {
+    transition: none;
+  }
+}
