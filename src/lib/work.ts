@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
+import { readImageSize } from "./image-size";
 
 export type WorkSection = { id: string; title: string };
 
@@ -45,6 +46,14 @@ export type WorkMeta = {
   status?: string;
   /** Populated by getTopLevelWork(); how many sub-projects live under this. */
   childCount?: number;
+  /**
+   * Intrinsic aspect ratio (width / height) of the tile's artwork,
+   * measured off the file at build time. The bento grid lays tiles out
+   * at their real shape and solves the two columns from these, so a
+   * swapped-in image re-solves the layout with no frontmatter to edit.
+   * Null when there is no art, or the format could not be read.
+   */
+  thumbRatio: number | null;
 
   /* --- Case-study header facts (see ProjectFacts) --------------------- */
 
@@ -63,6 +72,25 @@ export type WorkMeta = {
 };
 
 const WORK_DIR = path.join(process.cwd(), "content", "work");
+const PUBLIC_DIR = path.join(process.cwd(), "public");
+
+/**
+ * Measured once per image per process. getAllWork() runs for every page
+ * that lists work, and re-opening the same handful of files each time
+ * is pure waste.
+ */
+const ratioCache = new Map<string, number | null>();
+
+function thumbRatioFor(src?: string): number | null {
+  if (!src || !src.startsWith("/")) return null;
+  const cached = ratioCache.get(src);
+  if (cached !== undefined) return cached;
+  const size = readImageSize(path.join(PUBLIC_DIR, src));
+  const ratio =
+    size && size.height > 0 ? size.width / size.height : null;
+  ratioCache.set(src, ratio);
+  return ratio;
+}
 
 export const MAX_TAGS = 3;
 
@@ -102,6 +130,12 @@ function toMeta(slug: string, data: Record<string, unknown>): WorkMeta {
     scope: toList(data.scope),
     outcome: toList(data.outcome),
     prototype: data.prototype as WorkMeta["prototype"],
+    // The grid draws `thumbnail ?? cover`, so measure whichever it will
+    // actually show.
+    thumbRatio: thumbRatioFor(
+      (data.thumbnail as string | undefined) ??
+        (data.cover as string | undefined)
+    ),
   };
 }
 

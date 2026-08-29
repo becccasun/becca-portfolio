@@ -4,16 +4,33 @@
   gap: var(--s-12);
 }
 
-.grid {
+/* Two straight columns running as independent streams. Each column is
+   its own stack, so a tall tile on the left never drags its neighbour
+   down — the two only have to agree at the top and the bottom, and the
+   solver in WorkGrid.tsx is what makes them agree there. */
+.bento {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--s-8);
+  align-items: start;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-8);
+  min-width: 0;
+}
+
+.fullRow {
+  margin-top: var(--s-8);
 }
 
 .tile {
   display: flex;
   flex-direction: column;
   gap: var(--s-4);
+  min-width: 0;
 }
 
 /* Positioning context for the project-count chip. Every tile is the same
@@ -47,10 +64,11 @@
 .cover {
   position: relative;
   z-index: 1;
-  /* Matches the demo recordings so a clip fills the frame exactly rather
-     than being cropped to fit. Defined once in globals — change it there
-     and every tile follows. */
-  aspect-ratio: var(--thumb-ratio);
+  /* The ratio the solver worked out for this tile, which is the image's
+     own shape nudged by however much its column had to give to meet the
+     other one. Falls back to the old uniform frame if a tile is ever
+     rendered outside the grid. */
+  aspect-ratio: var(--tile-ratio, var(--thumb-ratio));
   border-radius: var(--r-md);
   background: var(--surface);
   border: 1px solid var(--border);
@@ -96,20 +114,66 @@
   color: var(--text-muted);
 }
 
+/* Fixed geometry, every tile the same. The flush bottom edge is solved
+   from image ratios alone, and that solve is only true while everything
+   below the image contributes the same height on both sides. So each
+   part below reserves its space whether or not it has content to put
+   in it, and anything that could run long is clamped rather than
+   allowed to push the column. */
 .tileMeta {
   display: flex;
   flex-direction: column;
   gap: var(--s-1);
 }
 
+/* One row, always exactly this tall: reserved when a project carries no
+   tags, and never allowed to become two rows when it carries three. A
+   wrapped pill row was the one thing below the image whose height still
+   varied between tiles, and it pulled the columns out of true by up to
+   a hundred pixels on a narrow window. */
+.tilePills {
+  flex-wrap: nowrap;
+  height: 26px;
+  overflow: hidden;
+  margin-bottom: var(--s-1);
+}
+
+/* Between the two-column threshold and a comfortably wide window there
+   is a band where three pills no longer fit on one line. Drop the third
+   rather than clip it — the tags are keywords, not a list, so the tile
+   reads fine with two. */
+@media (max-width: 1180px) {
+  .tilePills > :nth-child(3) {
+    display: none;
+  }
+}
+
 .tileTitle {
   font-size: var(--fs-h3);
   font-weight: 600;
+  line-height: 1.25;
+  /* Exactly two lines, always: most titles take one, the longest take
+     two, and every tile reserves both. */
+  height: 2.5em;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .tileSubtitle {
   color: var(--text-muted);
   font-size: var(--fs-small);
+  line-height: 1.45;
+  height: 2.9em;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.tileEyebrow {
+  line-height: 1.4;
 }
 
 .list {
@@ -146,9 +210,25 @@
   font-variant-numeric: tabular-nums;
 }
 
-@media (max-width: 720px) {
-  .grid {
-    grid-template-columns: 1fr;
+@media (max-width: 900px) {
+  /* One stream, so there is nothing to balance: tiles take their own
+     true shape and no image is cropped. The columns dissolve and the
+     tiles sort themselves back into reading order — stacking the
+     columns as they stand would list every odd project and then every
+     even one. */
+  .bento {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-8);
+  }
+  .column {
+    display: contents;
+  }
+  .tile {
+    order: var(--tile-order, 0);
+  }
+  .cover {
+    aspect-ratio: var(--tile-ratio-true, var(--tile-ratio, var(--thumb-ratio)));
   }
   .row {
     grid-template-columns: 1fr auto;
