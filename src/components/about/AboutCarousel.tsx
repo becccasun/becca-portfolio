@@ -1,11 +1,25 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { CLUBS, ROLES } from "@/lib/about";
+import { CLUBS, EDUCATION, ROLES, SPEAKING, TOOLKIT } from "@/lib/about";
 import JournalBook from "./JournalBook";
 import styles from "./AboutCarousel.module.css";
 
-const PANELS = ["Hello", "Experience", "Involvement"] as const;
+const PANELS = [
+  "Hello",
+  "Artist statement",
+  "Education and experience",
+  "Involvement",
+  "Toolkit",
+] as const;
+
+/**
+ * How long each slide holds before autoplay moves on. Per slide rather
+ * than one interval: the summary carries several hundred words and the
+ * involvement slide carries four cards, so a single number would rush
+ * the first and strand the last.
+ */
+const HOLD_MS = [20000, 13000, 10000, 9000, 11000];
 
 /**
  * Scrapbook pieces on the intro panel. Positions are percentages of the
@@ -14,7 +28,7 @@ const PANELS = ["Hello", "Experience", "Involvement"] as const;
  */
 type Piece = {
   id: string;
-  kind: "polaroid" | "note" | "card" | "tape" | "book";
+  kind: "polaroid" | "note" | "card" | "tape" | "book" | "strip" | "sheet";
   x: number;
   y: number;
   rotate: number;
@@ -26,62 +40,52 @@ type Piece = {
 };
 
 const PIECES: Piece[] = [
+  // The pair that swaps depth on hover. They overlap on purpose: which
+  // one is on top is the reader's to decide, by pointing at it.
   {
-    id: "intro",
-    kind: "card",
-    x: 2,
-    y: 11,
-    rotate: -1.2,
-    width: 26,
-    title: "Hi, I'm Rebecca.",
-    body: "I started in the fine arts, detoured into architecture school, and landed in product design. The in-between spaces are where I do my best work.",
-  },
-  {
-    id: "journal",
-    kind: "book",
-    x: 31,
-    y: 13,
-    rotate: -1.6,
-    width: 36,
+    id: "photo-1",
+    kind: "polaroid",
+    x: 5,
+    y: 12,
+    rotate: -4,
+    width: 16,
+    src: "/about/photo-1.jpg",
+    caption: "post box, winter",
   },
   {
     id: "photo-2",
     kind: "polaroid",
-    x: 71,
-    y: 8,
-    rotate: 3.2,
+    x: 16,
+    y: 27,
+    rotate: 3.5,
     width: 16,
     src: "/about/photo-2.jpg",
     caption: "ann arbor",
   },
   {
-    id: "photo-1",
-    kind: "polaroid",
-    x: 4,
-    y: 55,
-    rotate: -3.4,
-    width: 15,
-    src: "/about/photo-1.jpg",
-    caption: "post box, winter",
+    id: "tenet",
+    kind: "strip",
+    x: 3,
+    y: 83,
+    rotate: -1.5,
+    width: 24,
+    body: "There's a limit beyond the sky.",
   },
   {
-    id: "now",
-    kind: "note",
-    x: 69,
-    y: 57,
-    rotate: 1.8,
-    width: 25,
-    body: "Currently designing at Loop Financial, and studying UX and AI at the University of Michigan.",
+    id: "intro",
+    kind: "sheet",
+    x: 44,
+    y: 12,
+    rotate: 0.6,
+    width: 50,
   },
-  {
-    id: "drag-hint",
-    kind: "tape",
-    x: 33,
-    y: 76,
-    rotate: -2.5,
-    width: 15,
-    body: "drag me around",
-  },
+];
+
+/** The self-introduction, one paragraph per block of the sheet. */
+const INTRO: string[] = [
+  "I'm a product design student at the University of Michigan with minors in artificial intelligence and architecture. Understanding how to design for human pain points and prioritizing depth is at the heart of what I do. My strongest suit is in designing complex interactions and experiences, prototyping and building with AI, and obsessing over the final little details in Figma. My most recent role was serving as the sole design hire at a Series A fintech startup called Loop Financial. Previously, I've consulted for multiple Y Combinator companies, too. On campus, I am the director of design at MHacks, consulting for up-and-coming YC startups through Atlas Digital, and building a product of my own in Shift Creator Space.",
+  "In a past life, I was an aspiring architect. Moving between design methodologies has shaped how I think and make, and it taught me to treat reflection as part of the process. My ideas form through rapid iteration, each built on the last and always centered on the people I'm designing for.",
+  "When I'm not online, you'll find me working on an oil painting, going to local design workshops, or watching my favorite movies in the theaters.",
 ];
 
 /**
@@ -95,6 +99,9 @@ export default function AboutCarousel() {
   const scrollerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
+  /** Autoplay. Off by default: a deck that starts moving on its own is
+   *  a deck that moves while you are still reading the first slide. */
+  const [playing, setPlaying] = useState(false);
   const [canvas, setCanvas] = useState({ w: 0, h: 0 });
   /* Offsets are fractions of the canvas, not pixels: a pixel offset stops
      meaning the same thing the moment the window changes size, and pieces
@@ -267,6 +274,42 @@ export default function AboutCarousel() {
     moved.current = false;
   }
 
+  /* Autoplay advances one slide per hold, then stops at the end rather
+     than looping — the deck has a last word and should let it land.
+     Never runs for someone who asked for less motion. */
+  useEffect(() => {
+    if (!playing) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setPlaying(false);
+      return;
+    }
+    const id = window.setTimeout(() => {
+      const next = active + 1;
+      if (next >= PANELS.length) {
+        setPlaying(false);
+        return;
+      }
+      goTo(next);
+    }, HOLD_MS[active] ?? 10000);
+    return () => window.clearTimeout(id);
+  }, [playing, active]);
+
+  /* Any deliberate input hands control back. Autoplay that fights the
+     reader for the scroll position is worse than no autoplay. */
+  useEffect(() => {
+    if (!playing) return;
+    const stop = () => setPlaying(false);
+    const el = scrollerRef.current;
+    el?.addEventListener("wheel", stop, { passive: true });
+    el?.addEventListener("pointerdown", stop);
+    window.addEventListener("keydown", stop);
+    return () => {
+      el?.removeEventListener("wheel", stop);
+      el?.removeEventListener("pointerdown", stop);
+      window.removeEventListener("keydown", stop);
+    };
+  }, [playing]);
+
   function goTo(i: number) {
     const el = scrollerRef.current;
     if (!el) return;
@@ -328,6 +371,18 @@ export default function AboutCarousel() {
                       }}
                     />
                   )}
+                  {p.kind === "strip" && (
+                    <span className={styles.stripText}>{p.body}</span>
+                  )}
+                  {p.kind === "sheet" && (
+                    <>
+                      {INTRO.map((para, i) => (
+                        <p key={i} className={styles.sheetText}>
+                          {para}
+                        </p>
+                      ))}
+                    </>
+                  )}
                   {p.kind === "note" && <p>{p.body}</p>}
                   {p.kind === "tape" && <span>{p.body}</span>}
                 </div>
@@ -336,9 +391,72 @@ export default function AboutCarousel() {
           </div>
         </section>
 
+        {/* 2 — artist statement: the journal, and the talking */}
+        <section className={styles.panel} aria-label="Artist statement">
+          <div className={styles.statement}>
+            {/* Top left, and big enough to actually read: the journal is
+                the evidence that the making happens off the screen too. */}
+            <div className={styles.journalSlot}>
+              <JournalBook canFlip={() => true} />
+            </div>
+
+            <p className={`serif ${styles.statementText}`}>
+              I am happiest when I get to talk about my own work, so I only
+              ever aim to make work I would be proud to talk about.
+            </p>
+
+            {/* Bottom right, overlapping: hovering one lifts it and says
+                what it is. Placeholder frames until the photographs land. */}
+            <ul className={styles.shots}>
+              {SPEAKING.map((shot, i) => (
+                <li
+                  key={shot.id}
+                  className={styles.shot}
+                  style={
+                    {
+                      "--i": String(i),
+                      "--tilt": `${(i - 1) * 4}deg`,
+                    } as React.CSSProperties
+                  }
+                >
+                  {shot.src ? (
+                    /* eslint-disable-next-line @next/next/no-img-element */
+                    <img src={shot.src} alt="" draggable={false} />
+                  ) : (
+                    <span className={styles.shotEmpty} aria-hidden="true" />
+                  )}
+                  <span className={styles.shotContext}>{shot.context}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+
         {/* 2 — professional experience */}
-        <section className={styles.panel} aria-label="Experience">
-          <div className={styles.inner}>
+        <section
+          className={styles.panel}
+          aria-label="Education and experience"
+        >
+          <div className={`${styles.inner} ${styles.twoUp}`}>
+            <div>
+              <p className="eyebrow">Education</p>
+              <ol className={styles.roles}>
+                {EDUCATION.map((e) => (
+                  <li key={e.id} className={styles.roleRow}>
+                    <span className={styles.rolePeriod}>{e.period}</span>
+                    <span className={styles.roleText}>
+                      <span className={styles.roleOrg}>{e.school}</span>
+                      <span className={styles.roleTitle}>{e.credential}</span>
+                      {e.detail && (
+                        <span className={styles.roleDetail}>{e.detail}</span>
+                      )}
+                    </span>
+                  </li>
+                ))}
+              </ol>
+            </div>
+
+            <div>
             <p className="eyebrow">Experience</p>
             {/* A quick read of where she's been — deliberately not links,
                 and no descriptions: the case studies are what Works is for. */}
@@ -353,10 +471,11 @@ export default function AboutCarousel() {
                 </li>
               ))}
             </ol>
+            </div>
           </div>
         </section>
 
-        {/* 3 — campus involvement */}
+        {/* 4 — campus involvement */}
         <section className={styles.panel} aria-label="Campus involvement">
           <div className={styles.inner}>
             <p className="eyebrow">Campus involvements</p>
@@ -390,10 +509,81 @@ export default function AboutCarousel() {
           </div>
         </section>
 
+        {/* 5 — the toolkit, mapped rather than listed */}
+        <section className={styles.panel} aria-label="Toolkit">
+          <div className={`${styles.inner} ${styles.mapPanel}`}>
+            <p className="eyebrow">Toolkit</p>
+            {/* Two axes, four quadrants: what the work is for, crossed
+                with whose hands are on it. A list would have said which
+                tools; this says what each one is for. */}
+            <div className={styles.map}>
+              <span className={`${styles.axis} ${styles.axisX}`} aria-hidden="true" />
+              <span className={`${styles.axis} ${styles.axisY}`} aria-hidden="true" />
+
+              <span className={`${styles.axisLabel} ${styles.axisTop}`}>Agentic</span>
+              <span className={`${styles.axisLabel} ${styles.axisBottom}`}>Human</span>
+              <span className={`${styles.axisLabel} ${styles.axisLeft}`}>Explorative</span>
+              <span className={`${styles.axisLabel} ${styles.axisRight}`}>Goal-oriented</span>
+
+              <ul className={styles.tools}>
+                {TOOLKIT.map((t) => (
+                  <li
+                    key={t.id}
+                    className={styles.tool}
+                    style={{
+                      // -1..1 in both axes, with y inverted because the
+                      // agentic end is up and CSS counts downward.
+                      // Mapped into 8–92% rather than the full width:
+                      // the axis labels own the outer margin, and a
+                      // sticker centred on 0% would hang off the plot.
+                      left: `${8 + ((t.x + 1) / 2) * 84}%`,
+                      top: `${8 + ((1 - t.y) / 2) * 84}%`,
+                    }}
+                  >
+                    {t.art ? (
+                      /* eslint-disable-next-line @next/next/no-img-element */
+                      <img src={t.art} alt="" className={styles.toolArt} />
+                    ) : (
+                      <span className={styles.toolChip} aria-hidden="true">
+                        {t.name.slice(0, 2)}
+                      </span>
+                    )}
+                    <span className={styles.toolName}>{t.name}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </section>
+
       </div>
 
-      {/* Panel rail: position, and a way back to any panel. */}
+      {/* Panel rail: position, a way back to any panel, and the switch
+          that hands the deck over to autoplay. */}
       <nav className={styles.rail} aria-label="About sections">
+        <button
+          type="button"
+          className={styles.play}
+          onClick={() => {
+            // Restarting from the end should start over, not sit on the
+            // last slide waiting for a tick that never comes.
+            if (!playing && active >= PANELS.length - 1) goTo(0);
+            setPlaying((p) => !p);
+          }}
+          aria-pressed={playing}
+          aria-label={playing ? "Pause the slideshow" : "Play the slideshow"}
+        >
+          {playing ? (
+            <svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true">
+              <rect x="2" y="1.5" width="3" height="9" rx="1" fill="currentColor" />
+              <rect x="7" y="1.5" width="3" height="9" rx="1" fill="currentColor" />
+            </svg>
+          ) : (
+            <svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true">
+              <path d="M3 1.5 L10.5 6 L3 10.5 Z" fill="currentColor" />
+            </svg>
+          )}
+        </button>
         {PANELS.map((label, i) => (
           <button
             key={label}

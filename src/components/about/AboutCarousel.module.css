@@ -340,3 +340,362 @@
     max-width: 100%;
   }
 }
+
+/* ---- slide 1: the pair, the tenet, the sheet ------------------------ */
+
+/* Whichever photograph is pointed at comes to the front. The two are
+   laid out overlapping on purpose, so depth is something the reader
+   resolves rather than something the layout decided for them. */
+.piece.polaroid:hover,
+.piece.polaroid:focus-within {
+  z-index: 5;
+}
+
+/* A fortune-cookie slip: long, thin, and printed rather than written. */
+.strip {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  padding: var(--s-3) var(--s-4);
+  box-shadow: 0 6px 18px -14px rgba(26, 26, 31, 0.5);
+}
+
+.stripText {
+  display: block;
+  text-align: center;
+  font-family: var(--font-instrument), Georgia, serif;
+  font-size: var(--fs-body);
+  line-height: 1.3;
+  color: var(--text);
+}
+
+/* The bigger piece of paper the introduction is printed on. */
+.sheet {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: var(--s-8);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+  box-shadow: 0 18px 44px -34px rgba(26, 26, 31, 0.55);
+}
+
+.sheetText {
+  font-size: var(--fs-small);
+  line-height: 1.62;
+  color: var(--text);
+}
+
+/* ---- slide 2: journal, statement, speaking shots -------------------- */
+
+/* Quadrants, loosely. Pieces are allowed to cross them — this is a
+   board, not a grid, and the sketch it comes from overlaps freely. */
+.statement {
+  position: relative;
+  width: 100%;
+  max-width: var(--max-w);
+  height: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  /* minmax(0, …) rather than a bare 1fr: a grid track's default minimum
+     is its content, so the book — which is taller than a quarter of the
+     screen at full width — was growing its own row and pushing the
+     photographs off the bottom. */
+  grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
+}
+
+/* Sized by height, not width. The book is a fixed 1200:851 and the
+   quadrant is wider than it is tall, so height is the binding
+   constraint; driving from width overflowed every time. */
+.journalSlot {
+  grid-column: 1;
+  grid-row: 1;
+  align-self: center;
+  justify-self: center;
+  height: 100%;
+  width: auto;
+  aspect-ratio: 1200 / 851;
+  max-width: 100%;
+}
+
+/* Reads across the empty top-right quadrant, which is where the
+   paintings and crafts will eventually go. */
+.statementText {
+  grid-column: 2;
+  grid-row: 1;
+  align-self: center;
+  margin: 0;
+  padding: 0 var(--s-8);
+  font-size: var(--fs-h2);
+  line-height: 1.3;
+  text-wrap: balance;
+  color: var(--text);
+}
+
+.shots {
+  grid-column: 2;
+  grid-row: 2;
+  position: relative;
+  list-style: none;
+  align-self: center;
+  justify-self: center;
+  width: 100%;
+  height: 100%;
+}
+
+/* Stacked, each one offset from the last. Hovering lifts one clear of
+   the pile and names it. */
+.shot {
+  position: absolute;
+  left: calc(10% + var(--i) * 16%);
+  top: calc(8% + var(--i) * 8%);
+  width: 34%;
+  aspect-ratio: 4 / 3;
+  transform: rotate(var(--tilt, 0deg));
+  transition: transform 0.28s var(--ease-out), z-index 0s;
+}
+
+.shot:hover,
+.shot:focus-within {
+  z-index: 5;
+  transform: rotate(0deg) translateY(-8px) scale(1.04);
+}
+
+.shot img,
+.shotEmpty {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  box-shadow: 0 12px 30px -22px rgba(26, 26, 31, 0.6);
+}
+
+/* Dashed while it is still a reserved slot rather than a photograph. */
+.shotEmpty {
+  border-style: dashed;
+}
+
+.shotContext {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(-1 * var(--s-6));
+  text-align: center;
+  font-size: var(--fs-eyebrow);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  opacity: 0;
+  transition: opacity 0.2s var(--ease-out);
+}
+
+.shot:hover .shotContext,
+.shot:focus-within .shotContext {
+  opacity: 1;
+}
+
+/* ---- slide 3: education beside experience --------------------------- */
+
+.twoUp {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--s-16);
+  align-items: start;
+}
+
+.roleDetail {
+  font-size: var(--fs-small);
+  color: var(--text-muted);
+}
+
+/* ---- slide 5: the toolkit map --------------------------------------- */
+
+/* Column that hands the map whatever height is left once the eyebrow
+   has taken its share. */
+.mapPanel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-6);
+  height: 100%;
+  min-height: 0;
+}
+
+/* Driven from height, like the journal on slide 2: the panel is wider
+   than it is tall, so height is what runs out first. Sizing from width
+   pushed the plot past the bottom of the screen and took the eyebrow up
+   behind the nav with it. */
+.map {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  height: 100%;
+  aspect-ratio: 1.25;
+  width: auto;
+  max-width: 100%;
+  align-self: center;
+}
+
+.axis {
+  position: absolute;
+  background: var(--border);
+}
+
+.axisX {
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+}
+
+.axisY {
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1px;
+}
+
+.axisLabel {
+  position: absolute;
+  font-size: var(--fs-eyebrow);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.axisTop {
+  top: calc(-1 * var(--s-6));
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.axisBottom {
+  bottom: calc(-1 * var(--s-6));
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Outside the plot, not on it. Inside, the right-hand label sat on top
+   of whichever sticker happened to be furthest that way. The map is
+   centred with room to spare on both sides, so the margin is free. */
+.axisLeft {
+  left: calc(-1 * var(--s-4));
+  top: 50%;
+  transform: translate(-100%, -50%);
+}
+
+.axisRight {
+  right: calc(-1 * var(--s-4));
+  top: 50%;
+  transform: translate(100%, -50%);
+}
+
+.tools {
+  position: absolute;
+  inset: 0;
+  list-style: none;
+}
+
+/* Positioned by its centre, so the coordinate in the data is the point
+   the sticker actually sits on. */
+.tool {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--s-1);
+  transition: transform 0.2s var(--ease-out);
+}
+
+.tool:hover {
+  transform: translate(-50%, -50%) scale(1.08);
+}
+
+/* Stands in for the sticker until there is one: a lettered chip, so a
+   map with no artwork still reads as a map. */
+.toolChip {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  box-shadow: 0 6px 16px -12px rgba(26, 26, 31, 0.5);
+  font-size: var(--fs-small);
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.toolArt {
+  display: block;
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+}
+
+.toolName {
+  font-size: var(--fs-eyebrow);
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+/* ---- autoplay control ----------------------------------------------- */
+
+.play {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  margin-bottom: var(--s-3);
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--bg);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color 0.2s var(--ease-out), border-color 0.2s var(--ease-out);
+}
+
+.play:hover,
+.play:focus-visible,
+.play[aria-pressed="true"] {
+  color: var(--accent-press);
+  border-color: var(--accent);
+}
+
+@media (max-width: 900px) {
+  .statement {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+  }
+  .journalSlot,
+  .statementText,
+  .shots {
+    grid-column: 1;
+  }
+  .journalSlot { grid-row: 1; }
+  .statementText { grid-row: 2; padding: 0; font-size: var(--fs-h3); }
+  .shots { grid-row: 3; min-height: 240px; }
+  .twoUp {
+    grid-template-columns: 1fr;
+    gap: var(--s-12);
+  }
+  .map {
+    aspect-ratio: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shot,
+  .tool,
+  .shotContext {
+    transition: none;
+  }
+}

@@ -1,6 +1,7 @@
 /**
- * Content for the About carousel: three full-viewport panels — intro,
- * professional experience, campus involvement — and then the footer.
+ * Content for the About deck: five full-viewport slides — summary,
+ * artist statement, education and experience, campus involvement, and
+ * the toolkit map — and then the footer.
  */
 
 export type Club = {
@@ -40,7 +41,7 @@ export const CLUBS: Club[] = [
     card: "/about/card-mhacks.png",
     photo: "/about/photo-mhacks.png",
     name: "MHacks (UMich Hackathon)",
-    role: "Designer",
+    role: "Director of Design",
     description:
       "MHacks is the University of Michigan's largest hackathon with over 1000+ annual hackers. The events connect thousands of students of all experience levels with opportunities to experiment, innovate, and collaborate.",
   },
@@ -83,4 +84,81 @@ export const ROLES: Role[] = [
     title: "Product Designer",
     period: "2025",
   },
+];
+
+export type School = {
+  id: string;
+  school: string;
+  credential: string;
+  /** Focus, minors, honours: whatever the credential alone doesn't say. */
+  detail?: string;
+  period: string;
+};
+
+/** Left-hand column of the education and experience slide. */
+export const EDUCATION: School[] = [
+  {
+    id: "umich",
+    school: "University of Michigan",
+    credential: "BS in Information, UX design",
+    detail: "Minors in architecture and artificial intelligence · 3.9 GPA",
+    period: "2024 — now",
+  },
+  {
+    id: "uvic",
+    school: "University of Vic",
+    credential: "Business and product design",
+    detail: "Studied abroad in Barcelona",
+    period: "Abroad",
+  },
+];
+
+export type Shot = {
+  id: string;
+  /** Photograph, once one exists. Placeholder frame until then. */
+  src?: string;
+  /** Read out on hover — what the photograph is of. */
+  context: string;
+};
+
+/**
+ * The speaking photographs on the artist-statement slide, stacked in
+ * the bottom-right. They render as placeholder frames until Rebecca
+ * adds `src`; the stack draws whatever this array holds, so going from
+ * two shots to three is one entry and no layout work.
+ */
+export const SPEAKING: Shot[] = [
+  { id: "class", context: "Speaking to a class" },
+  { id: "tedx", context: "On the TEDx stage" },
+  { id: "demo", context: "Presenting a product to an audience" },
+];
+
+export type Tool = {
+  id: string;
+  name: string;
+  /** -1 explorative … +1 goal-oriented. */
+  x: number;
+  /** -1 human … +1 agentic. */
+  y: number;
+  /** Sticker artwork, once it exists. Falls back to a lettered chip. */
+  art?: string;
+};
+
+/**
+ * The toolkit map. Two axes: what the work is for (explorative to
+ * goal-oriented) crossed with whose hands are on it (human to agentic).
+ * Positions are the whole content here, so they are meant to be argued
+ * with and edited — move a number, move the sticker.
+ */
+export const TOOLKIT: Tool[] = [
+  { id: "figma", name: "Figma", x: 0.45, y: -0.7 },
+  { id: "figjam", name: "FigJam", x: -0.55, y: -0.55 },
+  { id: "blender", name: "Blender", x: -0.7, y: -0.85 },
+  { id: "procreate", name: "Procreate", x: -0.85, y: -0.6 },
+  { id: "claude", name: "Claude Code", x: -0.3, y: 0.8 },
+  { id: "cursor", name: "Cursor", x: 0.5, y: 0.65 },
+  { id: "v0", name: "v0", x: -0.5, y: 0.45 },
+  { id: "next", name: "Next.js", x: 0.75, y: 0.15 },
+  { id: "storybook", name: "Storybook", x: 0.8, y: -0.25 },
+  { id: "linear", name: "Linear", x: 0.85, y: -0.6 },
 ];
