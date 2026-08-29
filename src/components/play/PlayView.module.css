@@ -1,6 +1,30 @@
 .page {
+  /* Width of the floating filter panel, and the room the grid gives up
+     so no tile ends up underneath it. Declared here because both the
+     panel and the reservation below have to agree on one number. */
+  --filters-w: 210px;
   min-height: calc(100vh - 64px);
   min-height: calc(100dvh - 64px);
+}
+
+/* The container centres itself in whatever width it is given, so
+   narrowing the page's content box walks the whole grid left of the
+   panel. The reservation is only what the panel actually intrudes past
+   the container's own margin — on a wide enough window that is zero and
+   nothing moves. */
+@media (min-width: 721px) {
+  .gridView {
+    /* Doubled because the container re-centres in whatever box it is
+       given: half of any padding added here is handed straight back as
+       a wider left margin. Reserve twice the intrusion and the right
+       edge lands where it should. */
+    padding-right: max(
+      0px,
+      calc(
+        var(--max-w) + 2 * (var(--s-8) + var(--filters-w) + var(--s-6)) - 100vw
+      )
+    );
+  }
 }
 
 .head {
@@ -13,16 +37,41 @@
   flex-wrap: wrap;
 }
 
-.shortcuts {
+/* Category filter, pinned to the right edge and held there through any
+   scroll. Same surface language as the view switcher below it, so the
+   two read as one column of floating controls rather than two devices.
+   Centred vertically but bounded top and bottom: the switcher owns the
+   bottom-right corner, and the panel must never grow into it. */
+.filters {
+  position: fixed;
+  right: var(--s-8);
+  width: var(--filters-w);
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 55;
   display: flex;
-  gap: var(--s-6);
-  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--s-1);
+  padding: var(--s-4);
+  max-height: calc(100dvh - 220px);
+  overflow-y: auto;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  box-shadow: 0 4px 16px -6px rgba(26, 26, 31, 0.18);
+}
+
+.filtersLabel {
+  margin-bottom: var(--s-2);
 }
 
 .shortcut {
   font-size: var(--fs-small);
   font-weight: 500;
   color: var(--text-muted);
+  text-align: left;
+  padding: var(--s-1) 0;
   transition: color 0.2s var(--ease-out);
 }
 
@@ -71,4 +120,37 @@
 .switchActive {
   color: var(--accent-press);
   background: var(--accent-soft);
+}
+
+/* Narrow screens: a fixed right-hand panel would eat a third of the
+   width, so the filter drops back into normal flow. Its place in the
+   DOM is directly above the grid, which is where it belongs anyway. */
+@media (max-width: 720px) {
+  .filters {
+    position: static;
+    transform: none;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--s-4);
+    max-height: none;
+    overflow: visible;
+    margin: 0 var(--s-6) var(--s-8);
+    box-shadow: none;
+  }
+
+  .filtersLabel {
+    margin-bottom: 0;
+    width: 100%;
+  }
+}
+
+/* Short windows: centring leaves too little clearance above the view
+   switcher, so the panel sits high and scrolls within itself instead. */
+@media (max-height: 620px) and (min-width: 721px) {
+  .filters {
+    top: 88px;
+    transform: none;
+    max-height: calc(100dvh - 190px);
+  }
 }

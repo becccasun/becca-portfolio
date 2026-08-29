@@ -36,35 +36,40 @@ export default function PlayView() {
   return (
     <div className={styles.page}>
       {view === "grid" ? (
-        <>
+        <div className={styles.gridView}>
           <header className={`container ${styles.head}`}>
             <h1 className={`display ${styles.title}`}>
               Building, tinkering, and connecting the dots between tech +
               creativity.
             </h1>
-            <nav className={styles.shortcuts} aria-label="Play categories">
-              {(["all", ...GRID_ORDER] as const).map((id) => {
-                const label =
-                  id === "all"
-                    ? "All"
-                    : PLAY_CATEGORIES.find((c) => c.id === id)!.label;
-                return (
-                  <button
-                    key={id}
-                    className={`${styles.shortcut} ${
-                      filter === id ? styles.shortcutActive : ""
-                    }`}
-                    aria-pressed={filter === id}
-                    onClick={() => setFilter(id)}
-                  >
-                    {label}
-                  </button>
-                );
-              })}
-            </nav>
           </header>
+          {/* Pinned to the right edge on desktop so the categories stay
+              reachable at any scroll position. Sits in the DOM directly
+              above the grid, which is where it lands on narrow screens
+              once the panel drops back into normal flow. */}
+          <nav className={styles.filters} aria-label="Play categories">
+            <p className={`eyebrow ${styles.filtersLabel}`}>Categories</p>
+            {(["all", ...GRID_ORDER] as const).map((id) => {
+              const label =
+                id === "all"
+                  ? "All"
+                  : PLAY_CATEGORIES.find((c) => c.id === id)!.label;
+              return (
+                <button
+                  key={id}
+                  className={`${styles.shortcut} ${
+                    filter === id ? styles.shortcutActive : ""
+                  }`}
+                  aria-pressed={filter === id}
+                  onClick={() => setFilter(id)}
+                >
+                  {label}
+                </button>
+              );
+            })}
+          </nav>
           <PlayGrid filter={filter} />
-        </>
+        </div>
       ) : (
         <PlayGallery />
       )}
