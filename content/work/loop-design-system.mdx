@@ -1,189 +1,334 @@
 ---
-title: Reconciling Loop's design system
+title: An agent-first design system for money movement
 projectLabel: Design system
-subtitle: Loop's components lived in code with no design file to match. I rebuilt the system backwards out of Storybook, then audited it against itself.
-status: In progress
-year: "2026"
-role: Design systems
-roles: ["Design systems"]
-duration: "2026"
-scope: ["Design tokens", "Component audit", "Figma variables"]
-outcome: ["16 audit findings", "9 fixed, 7 escalated"]
-tags: [Design System, Design Tokens, Storybook]
+subtitle: I built Loop's first design system from scratch and wrapped it in an MCP layer that let 55 non-designers produce on-brand work without waiting on me.
+status: Shipped and live
+year: "Summer 2026"
+role: Product Design Intern
+roles: ["Solo designer", "Product Design Intern"]
+duration: "13 weeks"
+scope: ["Design systems", "MCP tooling", "Product design", "Onboarding"]
+outcome: ["Application time: 23 to 9 minutes", "Conversion lifted 35%"]
+tags: [Design System, MCP, Product Design]
 category: client
 tier: 1
-order: 1.1
-parent: loop
-cover: /work/loop/design-system.png
+order: 1
+cover: /work/loop/brand-ramp.svg
 sections:
-  - { id: overview, title: Overview }
-  - { id: inversion, title: The inversion }
-  - { id: audit, title: The audit }
-  - { id: ramp, title: The ramp }
-  - { id: library, title: The library }
-  - { id: reflection, title: Reflection }
+  - { id: problem, title: The problem }
+  - { id: research, title: Finding the friction }
+  - { id: direction, title: Choosing a direction }
+  - { id: references, title: Studying the field }
+  - { id: system, title: Building the system }
+  - { id: skills, title: Fifteen narrow skills }
+  - { id: onboarding, title: Redesigning onboarding }
+  - { id: shipped, title: What else shipped }
+  - { id: reflection, title: What I would do differently }
+  - { id: principles, title: What I am carrying forward }
 ---
 
-<Section id="overview" title="What is Loop's blue, and who gets to answer?">
-  <Prose>
-    The brief I was given was to build the canonical Figma file: fork the
-    Untitled UI kit, restyle it into Loop's house style, publish it as a shared
-    library, and give the company somewhere to point when anyone asks what the
-    heading style is.
+<Prose>
+  I built Loop's first design system from scratch and wrapped it in an MCP
+  layer that let 55 non-designers across engineering, growth, sales, and
+  recruiting produce on-brand work without waiting on me. The onboarding
+  redesign I built on top of the system cut application time from 23 minutes
+  to 9 and lifted conversion by 35%.
+</Prose>
 
-    The problem with that brief is that Loop already had an answer to those
-    questions. It was just written in CSS. Four years of shipped product had
-    accumulated a real design system in `theme.css` and `variables.css`, and
-    the components consuming it were live in front of four thousand
-    businesses. A new Figma file would not have been the source of truth. It
-    would have been a second one.
+<Spacer size="md" />
+
+<Section id="problem" title="Loop was moving billions through a platform with no designer and no design system">
+  <Prose>
+    Loop is a Canadian fintech doing cross-border banking for globally
+    operating businesses. Thousands of customers, billions flowing through the
+    platform, regulated by FINTRAC. When I joined as the sole designer, the
+    company had no design system, no component library, and no previous
+    designer.
+
+    The existing "system" was a Figma frame with hex codes on a canvas. Lilac,
+    light blue, and light green buttons. No variables, no aliases, no component
+    library. Engineers were pulling from Tailwind defaults because there was
+    nothing else to pull from. Every screen in production had drifted.
+
+    **Imagery pending**
+
+    - Old Loop "design system": hex codes on a canvas with no component
+      library, no variables, no token structure
+    - Previous button components: lilac, light blue, and light green with no
+      hierarchy or consistency
+    - Previous component set: unstructured, no variants, no design tokens
+
+    The surface problem was visual inconsistency. The real problem was
+    throughput. As the only designer, every branded slide deck, every outreach
+    email, every prototype scaffold, and every one-pager was a synchronous ask
+    on me. My queue was becoming the company's queue.
   </Prose>
 </Section>
 
-<Section id="inversion" title="I inverted the project in the first week, after seven conversations.">
+<Section id="research" title="The first week: coffee chats, Slack channels, and finding where the friction actually lived">
   <Prose>
-    I spent my first three days in 1:1s with the frontend engineers, a
-    technical PM, and my manager, mapping how design actually reached
-    production. What I found was that there was no handoff to speak of.
-    Engineers designed in code, and the components drifted from each other
-    because nothing held them to a common definition.
+    In my first week I met with people across every team. Not formal
+    interviews. Coffee chats, desk conversations, reading the Customer
+    Feedback Slack channel obsessively. I wanted to understand what work people
+    were doing that touched design and where it broke down.
 
-    So the direction flipped. Instead of building a Figma library and pushing
-    it toward code, I forked *from* Storybook into Figma, component by
-    component, and treated every difference between the two as a finding
-    rather than an error to quietly fix.
-  </Prose>
+    The pattern was blunt. Non-designers were not opening Figma. They were
+    opening Slack and asking me. Growth was rebuilding pitch decks from
+    screenshots. Recruiting was hand-styling job posts. Engineers were
+    reaching for Tailwind defaults because the Figma library was not in their
+    loop.
 
-  <PullQuote>
-    The problem was never where the components lived. It was that nothing was
-    comparing them.
-  </PullQuote>
-
-  <Prose>
-    This reframe is the whole project. Putting the two side by side is what
-    makes drift visible, and visible drift is fixable drift. Both engineers I
-    ran it past backed it the same afternoon.
+    That killed my first instinct, which was to build a Figma component library
+    and evangelize adoption. A library nobody opens is a fiction.
   </Prose>
 </Section>
 
-<Section id="audit" title="Two success greens, one black brand color, and a greyscale numbered backwards.">
+<Section id="direction" title="Three options considered: the distribution layer won">
   <Prose>
-    I compared three sources: the design-system summary I had written as
-    forward-looking intent, the live token files in the repo, and an earlier
-    DTCG token export. Every value quoted below is from the code, with a file
-    and line, because a reconciliation nobody can verify is just an opinion
-    with a table.
-  </Prose>
+    **A Figma-only library.** Publish tokens and components, train people on
+    Figma. Killed it. The people who needed design output were not Figma users
+    and were not going to become Figma users in the 12 weeks I had left.
 
-  <Figure
-    src="/work/loop/design-system.png"
-    alt="The Loop Design System summary document, rendered in Loop's own system"
-    caption="The summary artifact, rendered in the system it documents. Two of the errors the audit caught are visible in this screenshot: the radius scale reads 14 to 34px when the code tops out at 28px, and the brand ramp is labelled 25 to 900 when the code runs 50 to 950."
-    wide
-  />
+    **A Storybook-first spec.** Let engineering own the system, designers pull
+    from code. Rejected for v1. Non-designers still cannot operate Storybook,
+    and I would have lost the Figma authoring surface I needed daily.
 
-  <Prose>
-    What came out of it, in severity order:
+    **An agent-first system with an MCP distribution layer.** Figma as the
+    authoring truth, Storybook as the engineering truth, and MCP skills as the
+    layer that serves everyone else in the tool they already live in. Same
+    system, three audiences, each in the tool they already use.
 
-    - **Status color forks by component.** The token layer resolves success to
-      Tailwind green `#00a63e`. The brand layer defines `--semantic-green`
-      `#30ac2e`, and AlertBanner and ErrorState consume that one. Whether
-      "succeeded" is one green or the other depends on which screen you land
-      on. Same story for the two reds.
-    - **Typography disagrees with itself in three places.** The documented
-      direction is DM Sans and DM Mono. The code loads Inter and Roboto Mono.
-      Articulat CF, the legacy face, is still attached to `<main>`. The type
-      *scale* matched perfectly, which is what made the family mismatch easy
-      to miss.
-    - **Dark Green is a brand primary with no token.** `#02271B` is in the
-      brand guidelines and nowhere in the code.
-    - **The greyscale is numbered in opposite directions.** Brand guidelines
-      say Grey 45 is darker than Grey 35. `variables.css` says the reverse.
-      Both are in use.
-    - **The semantic layer is doubled.** `--color-bg-*` and
-      `--background-color-*` mirror each other for most roles, which is the
-      exact drift the project exists to kill, reproduced inside the token file.
-
-    None of this was surprising. A four-year-old codebase with no design owner
-    is going to drift, and I would have bet on most of these before I opened a
-    file. What made the audit worth doing was not discovering that drift
-    existed. It was that half of these are shipping defects rather than
-    documentation problems, and you cannot tell which half without checking
-    every value against the code.
+    I chose the third option. The bet: the distribution layer matters more than
+    the library.
   </Prose>
 </Section>
 
-<Section id="ramp" title="The brand ramp turned the primary brand color into black.">
+<Section id="references" title="Studying how other companies structure their design tokens and onboarding flows">
   <Prose>
-    The worst finding needed math to confirm. Loop's brand ramp is not authored
-    by hand. It is derived in OKLCH from a single anchor, Loop Green `#045B3F`,
-    with each step moving lightness by 0.1 and clamping at the ends.
+    Before building, I studied how Stripe, Wise, Kraken, and others structured
+    their design systems. I had an agent summarize their token architectures
+    into design.md files so I could compare approaches side by side. That
+    process taught me how to write agent-readable design specs, which became
+    the foundation for the MCP skills I built later.
 
-    Loop Green measures L 0.418. Five steps down from the anchor is L 0.018,
-    and six is zero. So `brand-900` and `brand-950` both compute to pure black,
-    and `brand-800` lands at `#000d00`, which is black with a rumour of green
-    in it. `--color-text-brand-primary` is aliased to `brand-900`. Loop's
-    primary brand text renders black.
+    For the onboarding redesign, I walked through the end-to-end flows of
+    Mercury, Ramp (both US and Canada), Float, Venn, Column, and Stack AI. I
+    signed up for real accounts, screenshotted every step, and documented
+    patterns.
+
+    **Imagery pending**
+
+    - Competitive audit: Venn onboarding flow, signup through business
+      verification
+    - Competitive audit: Venn business details with real-time Canadian
+      Business Registry lookup
+    - Competitive audit: Float signup page and identity verification
+    - Competitive audit: Column financial products selection and company
+      employees steps
+    - Competitive audit: Mercury post-submission waiting room with application
+      timeline
+    - Competitive audit: Ramp product selection, submit page, and account
+      verification
+    - Competitive audit: Stack AI login
+
+    Two patterns stood out. Venn checked business numbers against the Canadian
+    Business Registry in real time. And most competitors used a left-rail
+    stepper with clear step counts and time estimates upfront. Loop had
+    neither.
+  </Prose>
+</Section>
+
+<Section id="system" title="Building the token architecture: brand, alias, mapping">
+  <Prose>
+    I built a tertiary token structure: brand tokens at the base, alias tokens
+    in the middle, mapping tokens at the surface. This sounds like overkill for
+    a Series A, and the tradeoff was real. Heavier setup, longer runway to the
+    first shipped component.
+
+    I defended it because the alias layer is what makes a single token dress a
+    pitch deck, an outreach email, a one-pager, and a mobile prototype from one
+    source. Without it, the MCP layer would have been impossible.
   </Prose>
 
   <Figure
     src="/work/loop/brand-ramp.svg"
-    alt="Loop's brand ramp as derived versus re-spaced, eleven steps each"
-    caption="I recomputed the ramp from the anchor to confirm the crush was in the derivation rather than in how I was reading it. The bottom row is the proposed fix."
+    alt="Full brand color ramp with WCAG contrast ratios, primary through semantic through secondary"
     wide
   />
 
   <Prose>
-    The fix is not a clamp. Clamping the bottom of the ramp keeps it black, it
-    just stops it going further. The dark end has to be re-spaced with smaller
-    per-step deltas so it stays chromatic all the way down, and the natural
-    place to land it is the Dark Green that was already a brand primary and
-    already missing from the code. `#02271B` measures L 0.243, which is
-    *lighter* than the current computed `brand-700`, so this is a genuine
-    re-derivation rather than a tweak.
+    **Imagery pending**
+
+    - Loop color token matrix in light and dark themes, showing brand, alias,
+      and mapping layers
+    - Figma variables panels with brand variables organized by primary, gray,
+      error, warning, success, and information
+    - Typography system: DM Sans type ramp driven entirely by variables, not
+      styles
+    - Color foundations page with accessibility contrast ratios
+
+    The type system uses DM Sans, bound to brand-tier variables for font-size,
+    line-height, and tracking. Nothing is hand-typed. Change a variable and
+    every instance updates.
+
+    I built 200+ tokens and components, published them as Loop's single source
+    of truth in Figma, and synced them to Storybook through a token pipeline.
+    That pipeline is the boring plumbing that makes everything else work. If
+    the design system drifts from code, engineers stop trusting it, and the
+    whole MCP layer collapses.
   </Prose>
 </Section>
 
-<Section id="library" title="Seven of the conflicts were not mine to resolve.">
+<Section id="skills" title="Fifteen narrow skills, not one big agent">
   <Prose>
-    The audit produced sixteen findings. I tagged each one with who has to
-    move: correct the document, correct the code, or an owner has to pick. Nine
-    were unambiguous and I wrote the fix. Seven were real forks with no
-    technically correct answer, and I did not decide those.
+    Each MCP skill has one job. Compose a branded pitch deck. Generate a
+    dynamic email template. Spin up a one-pager. Scaffold a mobile prototype.
+    Run an ICP friction review.
 
-    Whether `natural-grey-*` gets retired in favour of Tailwind neutral is a
-    brand call. Which direction the grey numbering runs is a convention that
-    other people's muscle memory depends on. Which green means success is a
-    decision someone has to still agree with in two years. I wrote them up as a
-    pick-one list with a recommendation each and took them to the owner, which
-    took longer than deciding unilaterally and is the only reason the decisions
-    will hold after my internship ends.
-  </Prose>
+    **For engineers:** On-brand mobile prototype scaffolds and UI generation
+    synced with the codebase. The MCP does not just hand over tokens. It syncs
+    with Loop's codebase, so a prototype spun up in Claude resembles code that
+    could actually ship.
 
-  <Prose>
-    What exists now: an audit of the 260 color tokens in Storybook, a Figma
-    variables library with primitives and semantic light and dark mappings
-    built from the reconciled values, and light and dark screenshots of every
-    staging page mapped back to the Storybook components that produced them.
-    The typography change is the first piece to go out internally.
+    **For the growth team:** Dynamic email templates, one-pagers, and pitch
+    decks so they can focus on personalized outreach instead of formatting.
+
+    **For recruiting and operations:** Branded job posts, ICP friction reviews,
+    and internal comms assets.
+
+    I wrote an internal rule early: AI-generated designs are only allowed when
+    we need to sketch a generic prototype fast or when front-end features need
+    to ship for testing and a joint engineering-design effort is not timely.
+    Anything backend, anything touching real user data, stays human and gets
+    audited by the risks team. Without that rule, the MCP would have become the
+    fastest way to ship subtly wrong things at Loop.
   </Prose>
 </Section>
 
-<Section id="reflection" title="Reflection">
+<Section id="onboarding" title="Redesigning onboarding: 0% completion to a shipped flow that cut application time by 60%">
   <Prose>
-    **Source of truth does not mean correct.** The rule I set was that
-    Storybook wins where the two disagree, and it is a good rule, but the ramp
-    finding is a case where the source of truth was the thing that was broken.
-    Deciding *who has to move* per finding turned out to matter more than
-    deciding which artifact ranks higher.
+    While building the design system, I also redesigned Loop's onboarding. The
+    existing funnel was losing people at every step. Of 364 signups, 158
+    completed business verification. The flow fell off a cliff after that:
+    only 18 reached the agreements step. Overall completion was effectively 0%.
 
-    **The boring findings were the expensive ones.** A duplicate alias family
-    and an inverted numbering convention are not interesting to write up. They
-    are also what makes a component library slowly stop being a system, because
-    each one gives the next person a defensible reason to pick either.
+    **Auditing the existing flow and documenting every friction point**
 
-    **Talking to people changed the work more than iterating did.** I inverted
-    the entire project after three days of conversations, not after three days
-    of design. That has been true of nearly everything I have done here since.
+    I walked through Loop's existing staging and production onboarding flows
+    screen by screen, annotating issues on sticky notes directly in Figma.
+
+    **Imagery pending**
+
+    - Existing Loop staging environment: full audit with sticky-note
+      annotations on every screen
+    - Existing Loop production environment: full screen inventory
+    - Figma audit workspace with annotations on backtracking bugs, input
+      guardrails, and UX friction
+    - Audit annotations flagging heavy commitment, email validation, and
+      date-of-birth guardrail issues
+
+    **The KYB/KYC funnel data that shaped the redesign priorities**
+
+    I pulled analytics from the AiPrise verification dashboard to understand
+    exactly where applicants were dropping off across different verification
+    templates.
+
+    **Imagery pending**
+
+    - KYB journey funnels showing completion rates across June and July
+    - KYB warning code data with BUSINESS_ID_MISMATCH and AML_MATCH
+    - KYC funnels for beneficial owner, director, document, and multiple-role
+      verification
+    - KYC warning code, country, and ID-type breakdowns
+
+    **The redesigned flow: conditional funnels, registry autofill, and a
+    designed waiting room**
+
+    I wrote a full PRD mapping every friction point to a root cause and a
+    proposed fix. The biggest problems: the application took 23 minutes with
+    no progress indicator, KYB verification took a median of 3.3 days with no
+    designed wait state, there was no business-type branching, and re-entry
+    after leaving mid-flow dropped people back to the beginning.
+
+    I built an interactive prototype in Claude Code (17 iterations, each an
+    improvement on the last) to test the redesigned flow before committing to
+    Figma. The final design introduced:
+
+    A conditional funnel that filters non-qualifying businesses at the start
+    instead of at the end. Autofill from the Canadian Business Registry, so
+    entering a business number pulls in company details automatically.
+    Business-type branching so each applicant only sees the steps relevant to
+    their structure. A designed waiting room with clear status, expected
+    timeline, and things the applicant can do while they wait. A persistent
+    left-rail stepper showing progress.
+
+    **Imagery pending**
+
+    - Redesigned seven-step application flow
+    - Redesigned waiting room flow
+    - Figma onboarding iterations and three flow variants
+    - KYC/KYB verification screens with selfie and ID capture
+    - Interactive prototype: final shipped version V3.7
+
+    The redesign shipped to production in Q3. Application time dropped from 23
+    minutes to 9. Conversion lifted 35%.
+  </Prose>
+</Section>
+
+<Section id="shipped" title="What I also shipped on the same system">
+  <Prose>
+    On top of the design system and onboarding redesign, I shipped a new
+    careers page, refreshed brand and design assets, and internal design tools,
+    all built on the same token architecture.
+
+    I also designed a business switcher for users managing multiple accounts.
+    Fully specced: default, hover, open, focus, single-business, and long-name
+    states, with behavior for the collapsed sidebar rail.
+
+    **Imagery pending**
+
+    - Business switcher interactive states and menu variants
+    - Collapsed sidebar rail with flyout menu
+    - Accounts dashboard first-run coachmark
+    - Back navigation, button system, and component category overview
+
+    And I prototyped a credit account flow that would give clients a direct
+    pipeline from their dashboard to a credit application, replacing the email
+    back-and-forth with the CS team. That flow is expected to ship in Q4.
+  </Prose>
+</Section>
+
+<Section id="reflection" title="What I would do differently">
+  <Prose>
+    **Start with three skills, not fifteen.** I built the full slate before I
+    had adoption data on which requests were actually recurring. A couple of
+    the fifteen are still theoretical. If I did this again, I would ship three
+    skills, measure which ones people actually use, and expand from there.
+
+    **Measure usage depth, not just access.** 55 people have access to the MCP
+    tools. I did not measure how frequently each person used them before my
+    internship ended. Access is not the same as adoption, and I left without
+    the data to tell the difference.
+
+    **Automated skill drift detection.** As the brand or product evolves, the
+    15 skills have to stay in sync with the token pipeline and codebase. There
+    is no automated test that catches a stale skill yet. That is the biggest
+    maintenance risk I left behind.
+  </Prose>
+</Section>
+
+<Section id="principles" title="Two things I am carrying into every design role after this">
+  <Prose>
+    **Solo designer means build force multipliers, not more screens.** My
+    leverage was not in shipping more UI. It was in building infrastructure
+    that lets a company operate design without me. Every hour I spent on the
+    MCP saved a dozen future hours of ad-hoc asset requests from my Slack.
+
+    **AI gets you ten options. Judgment is still yours.** Every skill on this
+    MCP is a machine for generating on-brand work fast. What made them
+    ship-worthy was not the generation. It was the token architecture, the
+    layout templates I seeded, and the rule that kept AI out of backend and
+    off customer-facing surfaces. Distribution without taste is just more
+    noise, faster.
   </Prose>
 </Section>
