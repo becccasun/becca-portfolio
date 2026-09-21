@@ -1,3 +1,8 @@
+/* Referenced from the case-study page so block styles ship in the route CSS bundle. */
+.mdxRoot {
+  display: contents;
+}
+
 .section {
   scroll-margin-top: 96px;
   padding-bottom: var(--s-16);
@@ -107,19 +112,34 @@
 
 .metricStrip {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: var(--s-4);
+  grid-template-columns: repeat(auto-fit, minmax(148px, 1fr));
+  gap: 0;
   max-width: var(--reading-w);
-  padding: var(--s-6);
+  padding: var(--s-4) var(--s-6);
   border: 1px solid var(--border);
   border-radius: var(--r-md);
   background: var(--surface);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--bg) 80%, transparent);
 }
 
 .metric {
   display: flex;
   flex-direction: column;
   gap: var(--s-1);
+  padding: var(--s-3) var(--s-4);
+  border-right: 1px solid var(--border);
+}
+
+.metric:last-child {
+  border-right: none;
+}
+
+.metricLabel {
+  font-size: var(--fs-eyebrow);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
 }
 
 .metricValue {
@@ -129,12 +149,6 @@
   font-variant-numeric: tabular-nums;
   color: var(--text);
   line-height: 1.2;
-}
-
-.metricLabel {
-  font-size: var(--fs-small);
-  font-weight: 500;
-  color: var(--text);
 }
 
 .metricDetail {
@@ -147,6 +161,7 @@
   max-width: var(--reading-w);
   padding: var(--s-6);
   border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
   border-radius: var(--r-md);
   background: var(--surface);
   display: flex;
@@ -156,6 +171,7 @@
 
 .calloutAccent {
   border-color: color-mix(in srgb, var(--accent) 35%, var(--border));
+  border-left-color: var(--accent-press);
   background: var(--accent-soft);
 }
 
@@ -198,9 +214,11 @@
   border: 1px solid var(--border);
   border-radius: var(--r-md);
   background: var(--bg);
+  box-shadow: 0 1px 2px color-mix(in srgb, var(--text) 6%, transparent);
   display: flex;
   flex-direction: column;
   gap: var(--s-2);
+  min-height: 100%;
 }
 
 .cardTitle {
@@ -226,6 +244,17 @@
   }
 
   .metricStrip {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
+    padding: var(--s-3);
+  }
+
+  .metric {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    padding: var(--s-3) 0;
+  }
+
+  .metric:last-child {
+    border-bottom: none;
   }
 }

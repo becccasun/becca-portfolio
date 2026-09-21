@@ -131,8 +131,8 @@ export function MetricStrip({
     >
       {items.map((item) => (
         <div key={`${item.label}-${item.value}`} className={styles.metric} role="listitem">
-          <p className={styles.metricValue}>{item.value}</p>
           <p className={styles.metricLabel}>{item.label}</p>
+          <p className={styles.metricValue}>{item.value}</p>
           {item.detail && <p className={styles.metricDetail}>{item.detail}</p>}
         </div>
       ))}

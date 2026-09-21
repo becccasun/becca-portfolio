@@ -7,6 +7,7 @@ import ProjectRail, { ProjectChips } from "@/components/case/ProjectRail";
 import ProjectIndex, { ProjectNav } from "@/components/case/ProjectIndex";
 import ProjectFacts from "@/components/case/ProjectFacts";
 import InteractiveDemo from "@/components/case/InteractiveDemo";
+import CaseBlockStyles from "@/components/case/CaseBlockStyles";
 import {
   Section,
   Prose,
@@ -19,6 +20,7 @@ import {
   Callout,
   CardGrid,
 } from "@/components/case/blocks";
+import caseBlocks from "@/components/case/blocks.module.css";
 import styles from "./page.module.css";
 
 const mdxComponents = {
@@ -89,6 +91,7 @@ export default async function CaseStudyPage({
 
   return (
     <article className={styles.page}>
+      <CaseBlockStyles />
       <div className={styles.hero}>
         {meta.cover && (
           /* eslint-disable-next-line @next/next/no-img-element */
@@ -102,7 +105,7 @@ export default async function CaseStudyPage({
         ) : (
           <Toc sections={meta.sections} />
         )}
-        <div className={styles.body}>
+        <div className={`${styles.body} ${caseBlocks.mdxRoot}`}>
           {umbrella && <ProjectChips {...railProps} />}
           <header className={styles.head}>
             {meta.parent && parentMeta && (
