@@ -30,10 +30,18 @@ sections:
   I built Loop's first design system from scratch and wrapped it in an MCP layer
   that let 55 non-designers across engineering, growth, sales, and recruiting
   produce on-brand prototypes, email templates, decks, one-pagers, and
-  marketing pages without waiting on me. The system connected Figma, Storybook,
-  and 15 narrow skills so the same design decisions could reach people who
-  would never open a design file.
+  marketing pages without waiting on me.
 </Prose>
+
+<MetricStrip
+  items={[
+    { label: "MCP users", value: "55", detail: "Engineering, growth, sales, recruiting, CS" },
+    { label: "Focused skills", value: "15" },
+    { label: "SendGrid templates updated", value: "200+" },
+    { label: "Storybook components", value: "114", detail: "Manifest for hard verification" },
+    { label: "Design tokens", value: "200+", detail: "Brand, alias, and mapping layers" },
+  ]}
+/>
 
 <Spacer size="md" />
 
@@ -47,18 +55,20 @@ sections:
     light blue, and light green buttons. No variables, no aliases, no component
     library. Engineers were pulling from Tailwind defaults because there was
     nothing else to pull from. Every screen in production had drifted.
+  </Prose>
 
+  <PullQuote>
     The visual inconsistency was only the surface problem. Every branded slide
     deck, outreach email, prototype scaffold, and one-pager was also a
     synchronous request on me. My queue was becoming the company's queue.
+  </PullQuote>
 
-    **Imagery pending**
-
+  <Callout title="Imagery pending">
     - `Palette_-_Updated.svg` — Old Loop palette: hex codes without variables
       or token structure
     - `Components_-_Buttons.svg` — Previous lilac, blue, and green button set
     - `Components.svg` — Previous unstructured component set
-  </Prose>
+  </Callout>
 </Section>
 
 <Section id="research" title="The first week showed that a Figma library alone would not solve adoption">
@@ -66,36 +76,62 @@ sections:
     In my first week I met with people across every team. I used coffee chats,
     desk conversations, and the Customer Feedback Slack channel to understand
     where work that touched design was breaking down.
+  </Prose>
 
-    The pattern was blunt. Non-designers were not opening Figma. They were
-    opening Slack and asking me. Growth rebuilt pitch decks from screenshots.
-    Recruiting hand-styled job posts. Engineers reached for Tailwind defaults
-    because the Figma library was not in their loop.
+  <CardGrid
+    columns={2}
+    items={[
+      {
+        title: "Growth",
+        description: "Rebuilt pitch decks from screenshots instead of tokens.",
+      },
+      {
+        title: "Recruiting",
+        description: "Hand-styled job posts without a shared type or color system.",
+      },
+      {
+        title: "Engineering",
+        description: "Reached for Tailwind defaults because the Figma library was not in their loop.",
+      },
+      {
+        title: "Everyone else",
+        description: "Opened Slack and asked me—not Figma.",
+      },
+    ]}
+  />
 
+  <Prose>
     That killed my first instinct: build a Figma component library and
     evangelize adoption. A library nobody opens is a fiction.
   </Prose>
 </Section>
 
 <Section id="direction" title="The distribution layer mattered more than the library">
-  <Prose>
-    I considered three approaches.
+  <CardGrid
+    columns={3}
+    items={[
+      {
+        title: "Figma only",
+        description:
+          "Publish tokens and components, then train everyone. Rejected: the people who needed design output were not Figma users and would not become Figma users in the 12 weeks I had left.",
+      },
+      {
+        title: "Storybook first",
+        description:
+          "Let engineering own the system and have designers pull from code. Rejected: still excluded non-designers and removed the authoring surface I needed every day.",
+      },
+      {
+        title: "Agent-first + MCP",
+        description:
+          "Figma remains authoring truth, Storybook engineering truth, and MCP skills serve everyone else in the tool they already used. Chosen.",
+      },
+    ]}
+  />
 
-    **Figma only.** Publish tokens and components, then train everyone. I
-    rejected it because the people who needed design output were not Figma
-    users and would not become Figma users in the 12 weeks I had left.
-
-    **Storybook first.** Let engineering own the system and have designers pull
-    from code. That still excluded non-designers and removed the authoring
-    surface I needed every day.
-
-    **An agent-first system with MCP as the distribution layer.** Figma would
-    remain the authoring truth, Storybook the engineering truth, and MCP skills
-    would serve everyone else in the tool they already used.
-
-    I chose the third. One system, three audiences, each meeting it through the
-    right interface.
-  </Prose>
+  <Callout title="The distribution bet" tone="accent">
+    One system, three audiences—each meeting it through the right interface:
+    Figma for design, Storybook for engineering, MCP skills for everyone else.
+  </Callout>
 </Section>
 
 <Section id="system" title="Brand, alias, and mapping tokens made the system portable">
@@ -114,9 +150,9 @@ sections:
     in Figma, and synced them to Storybook through a token pipeline. That
     pipeline made the MCP possible: if design and code drift, engineers stop
     trusting the library and agent-generated work stops being credible.
+  </Prose>
 
-    **Imagery pending**
-
+  <Callout title="Imagery pending">
     - `Loop_Color_Token_Matrix___LIGHT.png` — Light-theme brand, alias, and
       mapping layers
     - `Loop_Color_Token_Matrix___DARK.png` — Dark-theme token matrix
@@ -127,7 +163,7 @@ sections:
       collection
     - `Typography.png` — DM Sans variable-driven type ramp
     - `Colors.png` — Color foundations and accessibility ratios
-  </Prose>
+  </Callout>
 </Section>
 
 <Section id="agent" title="A failed onboarding screen became the first agent experiment">
@@ -141,12 +177,27 @@ sections:
     I had never built an agent or written a skill. In a VS Code sandbox, I
     created a loop: write a screen spec, generate code, compile it, test the
     output, correct failures, and repeat.
+  </Prose>
 
-    One run reported success after writing an empty file because the script
-    swallowed a malformed response. Another passed only because the agent had
-    fallen back to native HTML instead of Loop components. Those failures
-    changed the verification model: a green check was not evidence until I
-    knew what had actually passed.
+  <CardGrid
+    columns={2}
+    items={[
+      {
+        title: "False success",
+        description:
+          "One run reported success after writing an empty file because the script swallowed a malformed response.",
+      },
+      {
+        title: "Wrong pass",
+        description:
+          "Another passed only because the agent had fallen back to native HTML instead of Loop components.",
+      },
+    ]}
+  />
+
+  <Prose>
+    Those failures changed the verification model: a green check was not
+    evidence until I knew what had actually passed.
 
     I connected the agent to Loop's Storybook manifest of 114 real components
     and the repository's `AGENTS.md` rules: semantic tokens only, real imports,
@@ -157,69 +208,63 @@ sections:
     `skill.md`. The onboarding feature itself—including its research, 14
     distinct prototypes, and product outcomes—lives in the
     [Loop onboarding case study](/work/loop-onboarding).
+  </Prose>
 
-    **Imagery pending**
-
+  <Callout title="Imagery pending">
     - `Screenshot_2026-08-14_at_10_48_19_AM.png` — Six design-agent skills by
       surface and verification type
     - `Screenshot_2026-08-14_at_12_54_05_PM.png` — Content and marketing skills
-  </Prose>
+  </Callout>
 </Section>
 
 <Section id="skills" title="Fifteen narrow skills, each with one job and one verification model">
   <Prose>
     Building the other 14 skills became a cycle of writing, testing, feedback,
-    and refinement.
-
-    **Product UI used hard verification.** `generate-loop-ui` produces
-    Storybook stories from real Next.js components.
-    `prototype-loop-ui` creates sandbox prototypes for new flows, feature
-    additions, and replicas. `reconcile-loop-design-system` audits the gap
-    between Figma and Storybook. Broken imports or invented components fail the
-    build.
-
-    **Content and marketing used human review.** `loop-ui-copy` produces product
-    copy and French counterparts while flagging compliance needs.
-    `loop-email-template` creates inline-CSS SendGrid templates.
-    `loop-marketing-subpage` creates clickable page prototypes.
-    `loop-brand-deck` creates editable `.pptx` files from 46 brand assets.
-    `loop-one-pager` creates editable one-pagers. An ICP friction skill reviews
-    flows from the perspective of Loop's target customer.
-
-    No skill publishes directly to production. The system distinguishes between
-    outputs that can be checked against code and outputs that require a person
-    to review meaning, claims, or brand judgment.
+    and refinement. No skill publishes directly to production. The system
+    distinguishes between outputs that can be checked against code and outputs
+    that require a person to review meaning, claims, or brand judgment.
   </Prose>
+
+  <CardGrid
+    columns={2}
+    items={[
+      {
+        title: "Hard verification (product UI)",
+        description:
+          "`generate-loop-ui` produces Storybook stories from real Next.js components. `prototype-loop-ui` creates sandbox prototypes for new flows, feature additions, and replicas. `reconcile-loop-design-system` audits the gap between Figma and Storybook. Broken imports or invented components fail the build.",
+      },
+      {
+        title: "Human review (content & marketing)",
+        description:
+          "`loop-ui-copy` produces product copy and French counterparts while flagging compliance needs. `loop-email-template` creates inline-CSS SendGrid templates. `loop-marketing-subpage` creates clickable page prototypes. `loop-brand-deck` creates editable `.pptx` files from 46 brand assets. `loop-one-pager` creates editable one-pagers. An ICP friction skill reviews flows from the perspective of Loop's target customer.",
+      },
+    ]}
+  />
 </Section>
 
 <Section id="deliverables" title="The same system produced emails, decks, one-pagers, and UI prototypes">
-  <Prose>
-    **Email templates.** Loop had over 200 SendGrid templates. They carried the
-    logo and dark green header, but the content was flat, hierarchy was weak,
-    retired domains remained, and some templates exposed raw Handlebars
-    variables.
+  <CardGrid
+    columns={2}
+    items={[
+      {
+        title: "Email templates",
+        description:
+          "Loop had over 200 SendGrid templates with weak hierarchy, retired domains, and raw Handlebars exposed. `loop-email-template` uses a shared block system with Outlook/MSO conditionals, dark-mode support, and a 600px centered card. All 200+ templates were updated with `#045b3f` CTAs, DM Sans, current footers, and rewritten bankonloop.com links. The skill never invents amounts, codes, dates, offers, or legal copy.",
+      },
+      {
+        title: "Decks and one-pagers",
+        description:
+          "Growth could generate editable sales and marketing collateral from the same tokens and 46 supporting assets instead of rebuilding from screenshots.",
+      },
+      {
+        title: "UI generation",
+        description:
+          "Engineers and PMs could use real-component prototypes as a visual target for savings-account pages, business-switcher flows, and payment-timeline roadmaps. Starting points, not production code.",
+      },
+    ]}
+  />
 
-    I built `loop-email-template` around a shared block system: a base shell
-    with Outlook/MSO conditionals, dark-mode support, and a 600px centered
-    card, plus composable header, heading, paragraph, OTP, detail-table, CTA,
-    feature-card, and footer partials.
-
-    I updated all 200+ templates with the block system, `#045b3f` CTAs, DM Sans,
-    current footers, rewritten `bankonloop.com` links, and variables contracts.
-    The skill's core rule was never to invent amounts, codes, dates, offers, or
-    legal copy.
-
-    **Decks and one-pagers.** Growth could generate editable sales and marketing
-    collateral from the same tokens and 46 supporting assets instead of
-    rebuilding it from screenshots.
-
-    **UI generation.** Engineers and PMs could use real-component prototypes as
-    a visual target for savings-account pages, business-switcher flows, and
-    payment-timeline roadmaps. The prototypes were starting points, not
-    production code.
-
-    **Imagery pending**
-
+  <Callout title="Imagery pending">
     - `Screenshot_2026-08-10_at_3_14_49_PM.png` — Old Subscription Cancelled
       email
     - `Screenshot_2026-08-10_at_3_14_25_PM.png` — Old You're Invited email
@@ -232,20 +277,19 @@ sections:
       CEO feedback
     - A before-and-after Loop deck generated with `loop-brand-deck`
     - A real Storybook screen generated with `generate-loop-ui`
-  </Prose>
+  </Callout>
 </Section>
 
 <Section id="governance" title="The governance rule kept speed from becoming risk">
-  <Prose>
-    I wrote one internal rule early: AI-generated designs are allowed when Loop
-    needs to sketch a generic prototype quickly, or when a front-end feature
-    needs to ship for testing and a joint engineering-design effort is not
-    timely.
+  <Callout title="Governance rule" tone="accent">
+    AI-generated designs are allowed when Loop needs to sketch a generic
+    prototype quickly, or when a front-end feature needs to ship for testing
+    and a joint engineering-design effort is not timely.
 
     Anything backend, anything touching real user data, stays human and is
     audited by the risks team. Without that boundary, the MCP would have become
     the fastest way to ship subtly wrong things at a regulated fintech.
-  </Prose>
+  </Callout>
 </Section>
 
 <Section id="adoption" title="Deployment turned the system from a library into a company capability">
@@ -257,45 +301,74 @@ sections:
     and recruiting, I ran live demos, helped people set up their terminals,
     showed them how to open project folders, and taught prompt-engineering
     techniques.
+  </Prose>
 
-    The CS team started generating documents within the same week. The
-    engineering lead used the deck skill for pager-duty workshops. Senior
-    developers used the prototype skill for new product flows.
+  <CardGrid
+    columns={2}
+    items={[
+      {
+        title: "Same-week CS adoption",
+        description: "The CS team started generating documents within the same week.",
+      },
+      {
+        title: "Engineering lead",
+        description: "Used the deck skill for pager-duty workshops.",
+      },
+      {
+        title: "Senior developers",
+        description: "Used the prototype skill for new product flows.",
+      },
+      {
+        title: "CEO signal",
+        description:
+          "After the email templates went live, the CEO posted that customers were reading them and giving more feedback.",
+      },
+    ]}
+  />
 
-    After the email templates went live, the CEO posted that customers were
-    reading them and giving more feedback. Across the company, 55 people had
-    access to the MCP. My Slack stopped being the bottleneck for branded work;
-    I moved from producing assets to producing the infrastructure that produced
-    them.
+  <PullQuote>
+    Across the company, 55 people had access to the MCP. My Slack stopped being
+    the bottleneck for branded work; I moved from producing assets to producing
+    the infrastructure that produced them.
+  </PullQuote>
 
+  <Prose>
     The MCP also became a design-system diagnostic. Missing components,
     typography primitives, layout primitives, and tokens defaulting to black
     surfaced when skills tried to use the real system and failed.
-
-    **Imagery pending**
-
-    - `Screen_Recording_2026-08-14_at_10_44_05_AM.mov` — Live MCP demo
   </Prose>
+
+  <Callout title="Imagery pending">
+    - `Screen_Recording_2026-08-14_at_10_44_05_AM.mov` — Live MCP demo
+  </Callout>
 </Section>
 
 <Section id="reflection" title="What I would do differently">
-  <Prose>
-    **Start with three skills, not fifteen.** I would ship the prototype, email,
-    and deck skills first, measure real use, then expand. Access is not the same
-    as adoption, and I did not measure usage depth before my internship ended.
+  <CardGrid
+    columns={3}
+    items={[
+      {
+        title: "Start with three skills",
+        description:
+          "Ship prototype, email, and deck skills first, measure real use, then expand. Access is not the same as adoption.",
+      },
+      {
+        title: "Automate email QA",
+        description:
+          "I manually tested 200+ templates across Gmail, Outlook desktop, Outlook web, Apple Mail, and iOS. Litmus or Email on Acid would have saved days.",
+      },
+      {
+        title: "Connect live to Storybook",
+        description:
+          "Prototype skills use an exported manifest. A live connection would keep every skill aligned without manual synchronization.",
+      },
+    ]}
+  />
 
-    **Automate email QA.** I manually tested 200+ templates across Gmail,
-    Outlook desktop, Outlook web, Apple Mail, and iOS. A Litmus or Email on Acid
-    integration would have saved days.
-
-    **Connect live to Storybook.** The prototype skills use an exported component
-    manifest. A live connection would keep every skill aligned with the current
-    library without manual synchronization.
-
-    The broader lesson was that skills and MCPs are design tools. The hard part
-    is not their technical wrapper; it is defining what "good" means—which
-    components are real, which tokens are current, which colors are forbidden,
-    and what the system must never invent. Distribution without taste is just
-    more noise, faster.
-  </Prose>
+  <PullQuote>
+    Skills and MCPs are design tools. The hard part is defining what "good"
+    means—which components are real, which tokens are current, which colors are
+    forbidden, and what the system must never invent. Distribution without taste
+    is just more noise, faster.
+  </PullQuote>
 </Section>

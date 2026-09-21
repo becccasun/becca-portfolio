@@ -15,6 +15,9 @@ import {
   Gallery,
   PullQuote,
   Spacer,
+  MetricStrip,
+  Callout,
+  CardGrid,
 } from "@/components/case/blocks";
 import styles from "./page.module.css";
 
@@ -26,6 +29,9 @@ const mdxComponents = {
   Gallery,
   PullQuote,
   Spacer,
+  MetricStrip,
+  Callout,
+  CardGrid,
   InteractiveDemo,
 };
 

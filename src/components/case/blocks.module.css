@@ -105,8 +105,127 @@
   color: var(--text-muted);
 }
 
+.metricStrip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: var(--s-4);
+  max-width: var(--reading-w);
+  padding: var(--s-6);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  background: var(--surface);
+}
+
+.metric {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-1);
+}
+
+.metricValue {
+  font-family: var(--font-figtree), system-ui, sans-serif;
+  font-size: var(--fs-h3);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+  line-height: 1.2;
+}
+
+.metricLabel {
+  font-size: var(--fs-small);
+  font-weight: 500;
+  color: var(--text);
+}
+
+.metricDetail {
+  font-size: var(--fs-small);
+  color: var(--text-muted);
+  line-height: 1.45;
+}
+
+.callout {
+  max-width: var(--reading-w);
+  padding: var(--s-6);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  background: var(--surface);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+}
+
+.calloutAccent {
+  border-color: color-mix(in srgb, var(--accent) 35%, var(--border));
+  background: var(--accent-soft);
+}
+
+.calloutTitle {
+  font-size: var(--fs-small);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.calloutBody {
+  font-size: var(--fs-body);
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+}
+
+.calloutBody :global(p) {
+  color: var(--text);
+}
+
+.calloutBody :global(ul),
+.calloutBody :global(ol) {
+  padding-left: 1.2em;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+}
+
+.cardGrid {
+  display: grid;
+  gap: var(--s-4);
+  max-width: var(--reading-w);
+}
+
+.card {
+  padding: var(--s-6);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+}
+
+.cardTitle {
+  font-size: var(--fs-body);
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.35;
+}
+
+.cardBody {
+  font-size: var(--fs-small);
+  color: var(--text-muted);
+  line-height: 1.55;
+}
+
 @media (max-width: 720px) {
   .gallery {
     grid-template-columns: 1fr !important;
+  }
+
+  .cardGrid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .metricStrip {
+    grid-template-columns: 1fr 1fr;
   }
 }

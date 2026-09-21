@@ -29,9 +29,17 @@ sections:
   While building Loop's design system, I redesigned the onboarding experience
   end to end. The work moved from competitive research and a screen-by-screen
   audit into funnel analysis, a full PRD, 14 distinct Claude Code prototypes,
-  and a shipped seven-step flow. Application time dropped from 23 minutes to 9.
-  Conversion lifted 35%.
+  and a shipped seven-step flow.
 </Prose>
+
+<MetricStrip
+  items={[
+    { label: "Application time", value: "23 min → 9 min" },
+    { label: "Conversion lift", value: "+35%" },
+    { label: "Claude Code prototypes", value: "14 distinct", detail: "15 files; V2.5 and V3.1 identical" },
+    { label: "Shipped application", value: "7 steps", detail: "Plus designed waiting room" },
+  ]}
+/>
 
 <Spacer size="md" />
 
@@ -41,15 +49,21 @@ sections:
     operating businesses. Its onboarding flow has to collect enough information
     for KYB and KYC verification, but the existing experience added avoidable
     friction around those requirements.
+  </Prose>
 
-    Of 364 signups, 158 completed business verification. The flow fell off a
-    cliff after that: only 18 reached the agreements step. Overall completion
-    was effectively 0%.
+  <MetricStrip
+    items={[
+      { label: "Signups in sample", value: "364" },
+      { label: "Completed business verification", value: "158" },
+      { label: "Reached agreements", value: "18", detail: "Effectively 0% overall completion" },
+      { label: "Median KYB wait", value: "3.3 days", detail: "No designed wait state" },
+    ]}
+  />
 
-    The application took 23 minutes with no progress indicator. KYB
-    verification took a median of 3.3 days with no designed wait state. There
-    was no business-type branching, and returning applicants were dropped back
-    at the beginning.
+  <Prose>
+    The application took 23 minutes with no progress indicator. There was no
+    business-type branching, and returning applicants were dropped back at the
+    beginning.
   </Prose>
 </Section>
 
@@ -59,10 +73,6 @@ sections:
     and Canada, Float, Venn, Column, and Stack AI. I signed up for real accounts,
     screenshotted every step, and documented the patterns.
 
-    Two patterns stood out. Venn checked business numbers against the Canadian
-    Business Registry in real time. Most competitors used a left-rail stepper
-    with clear step counts and time estimates upfront. Loop had neither.
-
     I also used an agent to summarize how Stripe, Wise, Kraken, and others
     structured their design systems into `design.md` files. Comparing those
     agent-readable specifications side by side taught me how to make design
@@ -70,6 +80,22 @@ sections:
     build later.
 
   </Prose>
+
+  <CardGrid
+    columns={2}
+    items={[
+      {
+        title: "Registry check in real time",
+        description:
+          "Venn validated business numbers against the Canadian Business Registry during application entry—a pattern Loop lacked.",
+      },
+      {
+        title: "Stepper with time upfront",
+        description:
+          "Most competitors used a left-rail stepper with clear step counts and time estimates. Loop had neither.",
+      },
+    ]}
+  />
 
   <Gallery
     images={[
@@ -144,11 +170,33 @@ sections:
     method, with the largest multiple-role biometric sample at 79.27%
     completion.
 
-    This evidence shaped the redesign priorities: reduce preventable mismatch,
-    make the correct path depend on business structure, preserve progress, and
-    turn the verification wait into an explicit product state.
-
   </Prose>
+
+  <CardGrid
+    columns={2}
+    items={[
+      {
+        title: "Reduce preventable mismatch",
+        description:
+          "KYB warning codes such as BUSINESS_ID_MISMATCH and AML_MATCH pointed to fixable data problems.",
+      },
+      {
+        title: "Branch by business structure",
+        description:
+          "KYC templates varied by role and verification method; the flow needed paths that matched structure.",
+      },
+      {
+        title: "Preserve progress",
+        description:
+          "Returning applicants should not restart from the beginning after partial completion.",
+      },
+      {
+        title: "Design the verification wait",
+        description:
+          "A 79.27% eventual completion on the largest biometric sample still left a long gap without product guidance.",
+      },
+    ]}
+  />
 
   <Figure
     src="/work/loop/onboarding/analytics/kyb-funnel-and-warning-codes.webp"
@@ -178,27 +226,33 @@ sections:
     proposed fix. Then I built the redesigned flow as an interactive prototype
     in Claude Code before committing it to Figma.
 
-    The archive contains 15 iteration files and 14 distinct prototypes:
-    `V2.5` and `V3.1` are byte-identical, and there is no `V3.0`. Across those
-    prototypes I tested the conditional funnel, registry autofill,
-    business-type branches, progress model, and waiting-room states as one
-    connected experience instead of isolated frames.
-
-    The single-file prototype grew from 259,022 bytes in `V1.0` to 1,138,143
-    bytes in `V3.7`, reflecting how much more of the end-to-end flow and its
-    states became testable.
-
-    The work also exposed a limitation in generic AI generation. Pasting a few
-    production hex codes into Claude Code produced a plausible fintech screen
-    with the wrong font, approximate greens, and full pill buttons instead of
-    Loop's 8px radius. Agent-readable specifications made the difference:
-    explicit tokens, component rules, and interaction constraints turned
-    "close enough" output into something I could critique and iterate.
-
     This onboarding prototype became the proving ground for the larger design
     infrastructure. The reusable token system, Storybook grounding, and MCP
     skills are covered in the [Design AI MCP case study](/work/loop-design-ai-mcp).
   </Prose>
+
+  <Callout title="14-iteration Claude Code thread" tone="accent">
+    The archive contains 15 iteration files and 14 distinct prototypes: `V2.5`
+    and `V3.1` are byte-identical, and there is no `V3.0`. Across those
+    prototypes I tested the conditional funnel, registry autofill, business-type
+    branches, progress model, and waiting-room states as one connected
+    experience instead of isolated frames.
+  </Callout>
+
+  <MetricStrip
+    items={[
+      { label: "Prototype file size (V1.0)", value: "259,022 B" },
+      { label: "Prototype file size (V3.7)", value: "1,138,143 B" },
+      { label: "Scope tested", value: "End-to-end", detail: "Paths and states, not isolated frames" },
+    ]}
+  />
+
+  <PullQuote>
+    Pasting production hex codes into Claude Code produced plausible fintech UI
+    with the wrong font, approximate greens, and full pill buttons instead of
+    Loop's 8px radius. Agent-readable specifications turned "close enough" into
+    something I could critique and iterate.
+  </PullQuote>
 
   <Gallery
     images={[
@@ -232,18 +286,31 @@ sections:
 </Section>
 
 <Section id="redesign" title="The final flow branches early, fills what it can, and designs the wait">
+  <CardGrid
+    columns={3}
+    items={[
+      {
+        title: "Eligibility first",
+        description:
+          "A conditional funnel filters non-qualifying businesses at the start instead of the end, with a designed exit.",
+      },
+      {
+        title: "Application",
+        description:
+          "Registry autofill, business-type branching, and a seven-step left-rail stepper with persistent progress.",
+      },
+      {
+        title: "Waiting room",
+        description:
+          "After submission, status, timing, and next actions replace the 3.3-day median verification gap.",
+      },
+    ]}
+  />
+
   <Prose>
-    The redesigned application introduced a conditional funnel that filters
-    non-qualifying businesses at the start instead of the end. Entering a
-    business number pulls company details from the Canadian Business Registry.
-    Business-type branching means applicants only see steps relevant to their
-    structure.
-
-    A persistent left-rail stepper shows progress through the seven-step
-    application. After submission, a designed waiting room explains status,
-    expected timing, and what the applicant can do next instead of leaving the
-    3.3-day median verification period as an empty gap.
-
+    Entering a business number pulls company details from the Canadian Business
+    Registry. Business-type branching means applicants only see steps relevant
+    to their structure.
   </Prose>
 
   <Gallery
@@ -342,9 +409,14 @@ sections:
 </Section>
 
 <Section id="outcomes" title="The redesigned onboarding flow shipped in Q3">
-  <Prose>
-    Application time dropped from 23 minutes to 9. Conversion lifted 35%.
+  <MetricStrip
+    items={[
+      { label: "Application time", value: "23 min → 9 min" },
+      { label: "Conversion", value: "+35%" },
+    ]}
+  />
 
+  <Prose>
     Those outcomes belonged to the product-design work: research, flow
     structure, registry autofill, conditional paths, persistent progress, and a
     designed waiting room. The design system and AI tooling supported the pace
@@ -354,20 +426,25 @@ sections:
 </Section>
 
 <Section id="reflection" title="Reflection">
-  <Prose>
-    **AI accelerated the iteration loop; it did not choose the product
-    direction.** The strongest decisions came from the competitive audit, the
-    AiPrise data, and the current-flow review. Claude Code made it faster to
-    test those decisions across 14 distinct connected prototypes.
+  <PullQuote>
+    AI accelerated the iteration loop; it did not choose the product direction.
+    The strongest decisions came from the competitive audit, the AiPrise data,
+    and the current-flow review.
+  </PullQuote>
 
-    **Agent-readable design specs became part of the design work.** The same
-    care used to define a component, token, or state for another designer also
-    determines whether an agent produces something correct instead of merely
-    plausible.
-
-    **The waiting room deserved as much design attention as the form.** A
-    median 3.3-day verification period is part of the customer experience.
-    Designing what happens after submission was necessary to carry momentum
-    from application into activation.
-  </Prose>
+  <CardGrid
+    columns={2}
+    items={[
+      {
+        title: "Agent-readable specs are design work",
+        description:
+          "The same care used to define a component, token, or state for another designer determines whether an agent produces something correct instead of merely plausible.",
+      },
+      {
+        title: "Design the wait, not only the form",
+        description:
+          "A median 3.3-day verification period is part of the customer experience. Post-submission states were necessary to carry momentum into activation.",
+      },
+    ]}
+  />
 </Section>
