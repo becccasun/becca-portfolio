@@ -18,11 +18,13 @@
   height: 100%;
   border: 0;
   opacity: 0;
+  pointer-events: none;
   transition: opacity 180ms ease;
 }
 
 .iframeLoaded {
   opacity: 1;
+  pointer-events: auto;
 }
 
 .fallback {

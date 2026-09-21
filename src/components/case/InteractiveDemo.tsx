@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styles from "./InteractiveDemo.module.css";
 
 export default function InteractiveDemo({
@@ -18,13 +18,6 @@ export default function InteractiveDemo({
 }) {
   const [loaded, setLoaded] = useState(false);
   const [failed, setFailed] = useState(false);
-
-  useEffect(() => {
-    const timeout = window.setTimeout(() => {
-      if (!loaded) setFailed(true);
-    }, 12000);
-    return () => window.clearTimeout(timeout);
-  }, [loaded]);
 
   return (
     <figure className={styles.demo}>
