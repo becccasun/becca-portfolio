@@ -1,0 +1,112 @@
+.demo {
+  max-width: 100%;
+}
+
+.frame {
+  position: relative;
+  min-height: 720px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  background: var(--surface);
+}
+
+.iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  opacity: 0;
+  transition: opacity 180ms ease;
+}
+
+.iframeLoaded {
+  opacity: 1;
+}
+
+.fallback {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface);
+}
+
+.fallback img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.fallbackLoaded {
+  display: none;
+}
+
+.fallbackAction {
+  position: absolute;
+  right: var(--s-6);
+  bottom: var(--s-6);
+  left: var(--s-6);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-4);
+  padding: var(--s-4);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  background: color-mix(in srgb, var(--bg) 92%, transparent);
+  backdrop-filter: blur(12px);
+}
+
+.fallbackAction p {
+  color: var(--text-muted);
+}
+
+.fallbackAction a,
+.actions a {
+  color: var(--accent-press);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.actions {
+  margin-top: var(--s-3);
+  font-size: var(--fs-small);
+}
+
+.caption {
+  margin-top: var(--s-3);
+  max-width: var(--reading-w);
+  color: var(--text-muted);
+  font-size: var(--fs-small);
+}
+
+@media (max-width: 720px) {
+  .frame {
+    min-height: 0;
+    aspect-ratio: 16 / 10;
+  }
+
+  .iframe {
+    display: none;
+  }
+
+  .fallback,
+  .fallbackLoaded {
+    display: flex;
+  }
+
+  .fallbackAction {
+    inset: auto var(--s-3) var(--s-3);
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--s-2);
+    padding: var(--s-3);
+  }
+
+  .fallbackAction p {
+    display: none;
+  }
+}

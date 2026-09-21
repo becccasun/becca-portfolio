@@ -6,6 +6,7 @@ import Toc from "@/components/case/Toc";
 import ProjectRail, { ProjectChips } from "@/components/case/ProjectRail";
 import ProjectIndex, { ProjectNav } from "@/components/case/ProjectIndex";
 import ProjectFacts from "@/components/case/ProjectFacts";
+import InteractiveDemo from "@/components/case/InteractiveDemo";
 import {
   Section,
   Prose,
@@ -25,6 +26,7 @@ const mdxComponents = {
   Gallery,
   PullQuote,
   Spacer,
+  InteractiveDemo,
 };
 
 export function generateStaticParams() {

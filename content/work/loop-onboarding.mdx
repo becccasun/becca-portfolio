@@ -13,6 +13,7 @@ tags: [Product Design, Fintech, AI Prototyping]
 category: client
 tier: 1
 order: 0.9
+cover: /work/loop/onboarding/redesign/01-signup-open-business-account.webp
 sections:
   - { id: problem, title: The problem }
   - { id: research, title: Research and competitive audit }
@@ -27,7 +28,7 @@ sections:
 <Prose>
   While building Loop's design system, I redesigned the onboarding experience
   end to end. The work moved from competitive research and a screen-by-screen
-  audit into funnel analysis, a full PRD, 17 Claude Code prototype iterations,
+  audit into funnel analysis, a full PRD, 14 distinct Claude Code prototypes,
   and a shipped seven-step flow. Application time dropped from 23 minutes to 9.
   Conversion lifted 35%.
 </Prose>
@@ -68,23 +69,22 @@ sections:
     decisions legible to both people and the Claude Code prototype I would
     build later.
 
-    **Imagery pending**
-
-    - `Screenshot_2026-06-05_at_3_10_07_PM.png` — Venn onboarding from signup
-      through business verification
-    - `Screenshot_2026-06-05_at_3_15_43_PM.png` — Venn business details with
-      Canadian Business Registry lookup
-    - `Screenshot_2026-06-05_at_3_17_42_PM.png` — Float signup
-    - `Screenshot_2026-06-05_at_3_19_22_PM.png` — Float identity verification
-    - `Screenshot_2026-06-08_at_12_19_13_PM.png` — Column product selection and
-      left-rail stepper
-    - `Screenshot_2026-06-08_at_12_19_21_PM.png` — Column company employees
-    - `image_1.png` — Mercury post-submission waiting room
-    - `Screenshot_2026-06-10_at_11_49_19_AM.png` — Ramp product selection
-    - `Screenshot_2026-06-10_at_12_05_44_PM.png` — Ramp submit page
-    - `Screenshot_2026-06-10_at_11_35_26_AM.png` — Ramp account verification
-    - `Screenshot_2026-06-16_at_9_48_20_AM.png` — Stack AI login
   </Prose>
+
+  <Gallery
+    images={[
+      {
+        src: "/work/loop/onboarding/competitive/ramp-canada.webp",
+        alt: "Ramp Canada competitive audit board showing the onboarding flow from business details through verification and submission",
+      },
+      {
+        src: "/work/loop/onboarding/competitive/mercury-payments.webp",
+        alt: "Mercury competitive audit board showing a multi-step payments flow and its review states",
+      },
+    ]}
+    caption="Two of the competitive flow boards used in the pattern review: Ramp Canada onboarding and Mercury payments. The broader audit also covered Venn, Float, Column, and Stack AI."
+    wide
+  />
 </Section>
 
 <Section id="audit" title="I audited staging and production before drawing the new flow">
@@ -98,17 +98,33 @@ sections:
     required information was not the only source of friction; sequence,
     feedback, re-entry, and missing states were design problems I could change.
 
-    **Imagery pending**
-
-    - `Loop_Staging__Existing_.pdf` — Full staging-flow audit
-    - `Loop_Production__Existing_.pdf` — Production screen inventory
-    - `Screenshot_2026-08-28_at_3_17_19_PM.png` — Audit workspace with annotated
-      onboarding screens
-    - `Screenshot_2026-08-28_at_3_17_37_PM.png` — Backtracking and
-      heavy-commitment annotations
-    - `Screenshot_2026-08-28_at_3_17_46_PM.png` — Email and date-of-birth
-      guardrail annotations
   </Prose>
+
+  <Figure
+    src="/work/loop/onboarding/figma/audit-board-staging-and-production.webp"
+    alt="Figma audit board comparing Loop's existing staging and production onboarding flows, with sticky-note annotations beside individual screens"
+    caption="The existing staging and production flows mapped together before redesign work began."
+    wide
+  />
+
+  <Gallery
+    images={[
+      {
+        src: "/work/loop/onboarding/before/additional-information-account-use.webp",
+        alt: "Existing Loop onboarding screen asking applicants how they planned to use their account",
+      },
+      {
+        src: "/work/loop/onboarding/before/related-businesses-add-company-modal.webp",
+        alt: "Existing Loop onboarding modal for adding a related company",
+      },
+      {
+        src: "/work/loop/onboarding/before/additional-information-submit.webp",
+        alt: "Existing Loop onboarding final additional-information step with the submit action at the end of a six-step sidebar",
+      },
+    ]}
+    caption="Representative before-state screens: dense account-use questions, a related-business modal, and the final submission step."
+    wide
+  />
 </Section>
 
 <Section id="data" title="KYB and KYC funnels showed where the experience broke">
@@ -124,36 +140,45 @@ sections:
     make the correct path depend on business structure, preserve progress, and
     turn the verification wait into an explicit product state.
 
-    **Imagery pending**
-
-    - `Screenshot_2026-06-09_at_4_59_14_PM__3_.png` — Main Onboarding KYB
-      funnel, June 2–9
-    - `Screenshot_2026-07-16_at_11_55_04_AM.png` — Main Onboarding KYB funnel,
-      July 9–16
-    - `Screenshot_2026-06-26_at_9_24_00_AM.png` — KYB baseline, June 19–26
-    - `Screenshot_2026-06-26_at_9_24_22_AM.png` — KYB warning-code breakdown
-    - `Screenshot_2026-06-26_at_9_26_00_AM.png` — Beneficial Owner Verification
-    - `Screenshot_2026-06-26_at_9_26_24_AM.png` — Director Verification
-    - `Screenshot_2026-06-26_at_9_26_59_AM.png` — US Account document
-      verification
-    - `Screenshot_2026-06-26_at_9_27_05_AM.png` — Manual Multiple Roles
-      Biometric Verification
-    - `Screenshot_2026-06-26_at_9_28_40_AM.png` — KYC warning-code breakdown
-    - `Screenshot_2026-06-26_at_9_28_47_AM.png` — Multiple Roles Biometric
-      Verification
-    - `Screenshot_2026-06-26_at_9_24_32_AM.png` — Country and ID-type breakdown
   </Prose>
+
+  <Figure
+    src="/work/loop/onboarding/analytics/kyb-funnel-and-warning-codes.webp"
+    alt="KYB journey Sankey chart from verification-session creation to submission, paired with a warning-code bar chart led by business ID mismatch and AML match"
+    caption="The KYB funnel and its warning-code distribution made preventable mismatch visible."
+    wide
+  />
+
+  <Figure
+    src="/work/loop/onboarding/analytics/kyc-decline-reasons.webp"
+    alt="KYC decline-reasons bar chart led by restricted industry, Quebec sole proprietorship, and failure to provide documents"
+    caption="Decline reasons showed that eligibility and document expectations needed to be addressed earlier."
+    wide
+  />
+
+  <Figure
+    src="/work/loop/onboarding/analytics/kyc-funnel-multiple-roles-biometric.webp"
+    alt="Multiple Roles Biometric Verification dashboard showing a 79.27 percent eventual completion rate and the journey through identity-document and selfie steps"
+    caption="The largest multiple-role biometric sample showed where applicants moved through identity verification and where they dropped out."
+    wide
+  />
 </Section>
 
-<Section id="ai" title="Seventeen Claude Code iterations made the prototype a design instrument">
+<Section id="ai" title="Fourteen distinct Claude Code prototypes made the flow a design instrument">
   <Prose>
     I wrote a full PRD that mapped every friction point to a root cause and a
     proposed fix. Then I built the redesigned flow as an interactive prototype
     in Claude Code before committing it to Figma.
 
-    There were 17 iterations. Each one let me test the conditional funnel,
-    registry autofill, business-type branches, progress model, and waiting-room
-    states as a connected experience instead of isolated frames.
+    The archive contains 15 iteration files and 14 distinct prototypes:
+    `V2.5` and `V3.1` are byte-identical, and there is no `V3.0`. Across those
+    prototypes I tested the conditional funnel, registry autofill,
+    business-type branches, progress model, and waiting-room states as one
+    connected experience instead of isolated frames.
+
+    The single-file prototype grew from 259,022 bytes in `V1.0` to 1,138,143
+    bytes in `V3.7`, reflecting how much more of the end-to-end flow and its
+    states became testable.
 
     The work also exposed a limitation in generic AI generation. Pasting a few
     production hex codes into Claude Code produced a plausible fintech screen
@@ -166,6 +191,36 @@ sections:
     infrastructure. The reusable token system, Storybook grounding, and MCP
     skills are covered in the [Design AI MCP case study](/work/loop-design-ai-mcp).
   </Prose>
+
+  <Gallery
+    images={[
+      {
+        src: "/work/loop/onboarding/iterations/v1-0.webp",
+        alt: "Version 1.0 of the Claude Code onboarding prototype, showing the early open-a-business-account screen",
+      },
+      {
+        src: "/work/loop/onboarding/iterations/v3-7.webp",
+        alt: "Version 3.7 of the Claude Code onboarding prototype, showing the final open-a-business-account screen",
+      },
+    ]}
+    caption="The opening screen in V1.0 and V3.7. The visual comparison is only one part of the change; the larger file-size increase came from adding connected paths and states."
+    wide
+  />
+
+  <Figure
+    src="/work/loop/onboarding/figma/onboarding-redesign-board-annotated.webp"
+    alt="Figma onboarding redesign board with multiple flow screens and yellow annotations documenting open questions and interaction decisions"
+    caption="The annotated redesign workspace where prototype findings were resolved into the final screen system."
+    wide
+  />
+
+  <InteractiveDemo
+    src="/work/loop/onboarding/demo/index.html"
+    title="Loop onboarding V3.7 interactive prototype"
+    fallbackSrc="/work/loop/onboarding/iterations/v3-7.webp"
+    fallbackAlt="Preview of the Loop onboarding V3.7 open-a-business-account screen"
+    caption="The final V3.7 prototype is embedded here as the original interactive HTML. On mobile, or if the embed cannot load, the preview links to the full prototype in a new tab."
+  />
 </Section>
 
 <Section id="redesign" title="The final flow branches early, fills what it can, and designs the wait">
@@ -181,19 +236,101 @@ sections:
     expected timing, and what the applicant can do next instead of leaving the
     3.3-day median verification period as an empty gap.
 
-    **Imagery pending**
-
-    - `Application_Flow.png` — Seven-step application from account creation
-      through review and submit
-    - `Waiting_Room_Flow.png` — Post-submission status, approval, plan
-      selection, and activation
-    - `Screenshot_2026-08-28_at_3_18_56_PM.png` — Figma iteration workspace
-    - `Screenshot_2026-08-28_at_3_21_06_PM.png` — Sign Up, Waiting Room, and
-      Application variants side by side
-    - `Screenshot_2026-06-10_at_11_50_42_AM_1.png` — KYC/KYB selfie and ID
-      verification screens
-    - `Onboarding_Redesign_V3_7.html` — Final interactive prototype
   </Prose>
+
+  <Gallery
+    images={[
+      {
+        src: "/work/loop/onboarding/redesign/01-signup-open-business-account.webp",
+        alt: "Final onboarding signup screen with account fields, an under-ten-minute estimate, and a customer proof panel",
+      },
+      {
+        src: "/work/loop/onboarding/redesign/02-eligibility-incorporation-with-demo-tools.webp",
+        alt: "Eligibility question asking where the business is incorporated, with the prototype's screen-navigation tools visible",
+      },
+      {
+        src: "/work/loop/onboarding/redesign/03-eligibility-declined-exit.webp",
+        alt: "Eligibility exit screen explaining that the business cannot continue with the application",
+      },
+    ]}
+    caption="1–3: account creation and the eligibility branch, including a designed exit."
+    wide
+  />
+
+  <Gallery
+    images={[
+      {
+        src: "/work/loop/onboarding/redesign/04-business-information-document-autofill.webp",
+        alt: "Business-information step offering document upload to autofill company details",
+      },
+      {
+        src: "/work/loop/onboarding/redesign/05-business-information-registry-autofilled.webp",
+        alt: "Business-information form prefilled from a registry record with a confirmation message",
+      },
+    ]}
+    caption="4–5: document and registry autofill reduce repeated business-data entry."
+    wide
+  />
+
+  <Gallery
+    images={[
+      {
+        src: "/work/loop/onboarding/redesign/06-business-contacts-empty-org-chart.webp",
+        alt: "Business-contacts step with an empty organization chart ready for directors and beneficial owners",
+      },
+      {
+        src: "/work/loop/onboarding/redesign/07-add-related-person-modal.webp",
+        alt: "Modal for adding a related person and assigning their business roles",
+      },
+      {
+        src: "/work/loop/onboarding/redesign/08-business-contacts-filled.webp",
+        alt: "Completed business-contacts organization chart with related people and verification roles",
+      },
+    ]}
+    caption="6–8: the contact model moves from an empty organization chart to a completed ownership and signer structure."
+    wide
+  />
+
+  <Gallery
+    images={[
+      {
+        src: "/work/loop/onboarding/redesign/09-expected-activity.webp",
+        alt: "Expected-activity step collecting projected account and payment behavior",
+      },
+      {
+        src: "/work/loop/onboarding/redesign/10-review-and-submit.webp",
+        alt: "Review-and-submit screen summarizing the completed business information before submission",
+      },
+    ]}
+    caption="9–10: expected activity and a consolidated review before submission."
+    wide
+  />
+
+  <Gallery
+    images={[
+      {
+        src: "/work/loop/onboarding/redesign/11-waiting-room-subscription-plan.webp",
+        alt: "Waiting-room screen showing application progress and a required subscription-plan action",
+      },
+      {
+        src: "/work/loop/onboarding/redesign/12-waiting-room-mandatory-actions-address.webp",
+        alt: "Waiting-room mandatory-action screen requesting an address before review can continue",
+      },
+      {
+        src: "/work/loop/onboarding/redesign/13-waiting-room-funding-and-idv-status.webp",
+        alt: "Waiting-room status screen showing funding options and completed identity verification for each related person",
+      },
+    ]}
+    caption="11–13: the waiting room turns review into a visible process with specific actions and identity-verification status."
+    wide
+  />
+
+  <Figure
+    src="/work/loop/onboarding/redesign/14-sign-agreements.webp"
+    alt="Final onboarding step for reviewing and signing account agreements"
+    caption="14: agreements complete the path after the application is ready."
+    wide
+  />
 </Section>
 
 <Section id="outcomes" title="The redesigned onboarding flow shipped in Q3">
@@ -213,7 +350,7 @@ sections:
     **AI accelerated the iteration loop; it did not choose the product
     direction.** The strongest decisions came from the competitive audit, the
     AiPrise data, and the current-flow review. Claude Code made it faster to
-    test those decisions as a connected flow across 17 iterations.
+    test those decisions across 14 distinct connected prototypes.
 
     **Agent-readable design specs became part of the design work.** The same
     care used to define a component, token, or state for another designer also
