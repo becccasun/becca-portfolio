@@ -1,222 +1,290 @@
 ---
-title: Loop Financial Design AI MCP
-projectLabel: Design AI MCP
-subtitle: A design operations system built as 12 narrowly scoped skills, with shared product tokens, review gates, and a frozen transactional-email contract.
-status: Source artifacts documented
-year: "2026"
-role: Design AI systems
-roles: ["Design AI systems"]
-duration: "2026"
-scope: ["MCP skills", "Design systems", "Email systems"]
-outcome: ["12 scoped skills documented", "Email asset migration specified"]
+title: Teaching a fintech company to design without a designer
+projectLabel: Design MCP
+subtitle: I built a 15-skill MCP that let 55 non-designers at Loop produce on-brand work without waiting on me.
+status: Shipped and live
+year: "Summer 2026"
+role: Product Design Intern
+roles: ["Solo designer", "Product Design Intern"]
+duration: "13 weeks"
+scope: ["MCP tooling", "Email templates", "Prototyping"]
+outcome: ["55 non-designers self-serving branded work", "200+ SendGrid templates updated"]
 tags: [AI Design, MCP, Design Systems]
 category: client
 tier: 1
 order: 1.1
-cover: /work/loop/design-ai-mcp-preview.png
 sections:
-  - { id: overview, title: Overview }
-  - { id: architecture, title: Skill architecture }
-  - { id: truth, title: Source of truth }
-  - { id: layers, title: System layers }
-  - { id: email, title: Email deliverable }
-  - { id: rehosting, title: Asset rehosting }
-  - { id: boundary, title: Evidence boundary }
+  - { id: first-attempt, title: The first attempt }
+  - { id: sandbox, title: Learning by building }
+  - { id: skills, title: Fifteen focused skills }
+  - { id: email, title: Email redesign }
+  - { id: deployment, title: Deployment and adoption }
+  - { id: impact, title: Operational impact }
+  - { id: differently, title: What I would do differently }
+  - { id: lesson, title: What I learned }
 ---
 
-<Section id="overview" title="A design MCP made of narrow contracts, not one general-purpose prompt">
+<Prose>
+  I built a 15-skill MCP that let 55 non-designers at Loop produce on-brand
+  prototypes, email templates, slide decks, one-pagers, and marketing pages
+  without waiting on me. I updated all 200+ of Loop's SendGrid email templates,
+  and when the new ones went live, the CEO posted in Slack that customers were
+  actually reading them for the first time. The MCP is deployed on the company
+  GitHub and Vercel and is still in use after my internship ended.
+</Prose>
+
+<Spacer size="md" />
+
+<Section id="first-attempt" title="The first attempt: pasting hex codes into Claude Code and getting pill buttons with the wrong font">
   <Prose>
-    This case study documents a Loop Financial Design AI MCP built from scratch
-    as **12 separate skill definitions**. Each skill states when it should run,
-    what evidence it must read, what it can produce, how it verifies the result,
-    and where it must stop.
+    I started this project by accident. I was redesigning Loop's onboarding
+    flow and needed to generate a screening page quickly. I opened Claude Code,
+    gave it a few hex codes from the production site, and asked it to build an
+    onboarding screen that would filter out restricted industries before
+    applicants invested 20 minutes in a form.
 
-    The source package does not include usage analytics or adoption outcomes, so
-    this case study does not claim them. The evidence is the system itself: 12
-    skill contracts, a framework-free design-system export, its component
-    preview, and an email-asset migration specification.
-  </Prose>
+    What came back was close enough to recognize as a fintech UI and far enough
+    off to be unusable. The buttons had full pill rounding instead of the 8px
+    radius we used. The font was a generic sans-serif, not DM Sans. The greens
+    were approximately right but not the actual brand tokens. It was the AI
+    version of "close enough," which in a regulated fintech means not close at
+    all.
 
-  <Figure
-    src="/work/loop/design-ai-mcp-preview.png"
-    alt="Rendered Loop Design System version 3.7 preview showing the supplied brand, success, gray, error, warning, and blue token ramps"
-    caption="Rendered directly from the supplied preview.html and loop-design-system.css. No case-study imagery was added."
-    wide
-  />
-</Section>
-
-<Section id="architecture" title="Twelve skills divide generation, review, product definition, and collateral">
-  <Prose>
-    The MCP's scope is visible in the frontmatter and rules of the 12 supplied
-    skill files:
-
-    - **loop-design-system** is the canonical reference to read before branded
-      product work. It defines the source-of-truth hierarchy, tokens, component
-      rules, responsive behavior, and known gaps.
-    - **generate-loop-ui** turns a confirmed spec or rough idea into UI grounded
-      in real Loop components, then type-checks and render-checks it.
-    - **rebrand-to-loop** keeps an existing page's content and flow while
-      replacing its visual layer with real Loop tokens and components.
-    - **spec-loop-feature** turns an early feature idea into a review-gated spec
-      and explicitly stops before product code is written.
-    - **loop-screen-states** enumerates reachable loading, empty, error, pending,
-      gated, and money-specific states from the data model.
-    - **loop-design-qa** reviews a change against design-system and repository
-      rules, with every finding tied to a real source.
-    - **loop-ux-friction-review** walks a flow twice: first as a user, then as a
-      senior UX reviewer.
-    - **loop-compliance-review** reviews Canadian fintech artifacts and describes
-      missing compliance features rather than only naming regulations.
-    - **loop-ui-copy** produces product copy, next-intl keys, and French
-      counterparts while escalating regulated language and unsourced numbers.
-    - **loop-brand-deck** produces editable, token-grounded presentation decks
-      and requires a render, correction, re-render, and token-verification loop.
-    - **loop-marketing-subpage** creates review-ready HTML prototypes for the
-      separate Webflow marketing system.
-    - **loop-email-template** fills one frozen transactional-email layout and
-      returns paste-ready SendGrid HTML plus its variables contract.
-
-    The separation is intentional. Generation skills hand work to review skills;
-    the feature-spec skill enforces a human confirmation gate; and the compliance
-    and copy skills refuse to invent regulatory language, figures, rates, or
-    timelines.
-  </Prose>
-
-  <PullQuote>
-    The MCP is a routing system for evidence and constraints: each skill owns one
-    job, one output, and a defined stopping point.
-  </PullQuote>
-</Section>
-
-<Section id="truth" title="The architecture tells the agent where each kind of truth lives">
-  <Prose>
-    The core design-system skill distinguishes between two levels of evidence.
-    Component states and token values come from the Loop Design System Figma
-    file. Whole-page composition uses Figma and Storybook together: Storybook
-    shows real composed screens and props, while Figma carries landmarks,
-    heading hierarchy, focus order, container widths, and the grid contract.
-
-    The supplied design-system skill records **528 variables across five
-    collections**: 77 Primitives, 175 Semantic variables with light and dark
-    modes, 229 Typography variables, 12 Effects, and 35 Layout variables. Its
-    typography layer contains 40 mapped text styles. The chain is explicit:
-    brand values feed aliases, aliases feed mapped implementation tokens, and
-    components consume roles instead of raw hex values.
-
-    This hierarchy is also a safety mechanism. Unreconciled Figma pages are not
-    treated as Loop truth, missing components are flagged instead of fabricated,
-    and disagreements between Figma and shipped code are reported rather than
-    silently resolved.
+    That gap between "plausible" and "correct" is what made me realize I needed
+    to build something more structured than a prompt.
   </Prose>
 </Section>
 
-<Section id="layers" title="One CSS export supports both the base surface and the application-flow treatment">
+<Section id="sandbox" title="Learning how agents work by building one from scratch in a VS Code sandbox">
   <Prose>
-    The supplied `loop-design-system.css` is a dependency-free export with
-    tokens, typography, fields, buttons, surfaces, status patterns, app shell,
-    motion, skeletons, dark-mode mappings, and responsive rules.
+    I had never built an agent or written a skill before. I did not know how
+    MCP worked. I started by researching: reading articles, watching talks,
+    studying how other people structured agent workflows. But the thing that
+    actually taught me was building one myself.
 
-    It contains two treatments of the same components:
+    I asked Claude Code to help me set up a sandbox experiment in VS Code. The
+    idea was simple: I would write a screen spec, the agent would generate code
+    from it, then the agent would check its own output and flag anything that
+    did not match. Generate, compile, test, correct, repeat.
 
-    - **Base** uses 10px radii, real 1px borders, and `brand-500` for primary
-      actions. The README positions it for marketing, authentication, and
-      sign-in surfaces.
-    - **`.loop-app`** switches buttons to full pills, fields to 16px radii and
-      16px text, borders to inset shadows, primary actions to `brand-600`, and
-      section eyebrows to DM Mono. The same layer also works through `#app`.
+    The first version was rough. One early run reported success while writing
+    an empty file because the script swallowed a malformed response. I fixed it
+    to fail loudly and dump the raw response instead. Another run "passed"
+    because the agent had quietly fallen back to native HTML elements instead
+    of using Loop's real components. The green checkmark meant "it avoided the
+    real components," which was the opposite of the goal.
 
-    The layer is selected by wrapping a surface in `.loop-app`; omitting that
-    wrapper keeps the base treatment. This preserves one component vocabulary
-    while allowing the application flow to carry the V3.7 prototype's signature
-    geometry.
-  </Prose>
-</Section>
+    That was the moment I understood something important: a passing check is
+    not proof of the thing you care about. You have to verify what passed, not
+    just that something passed.
 
-<Section id="email" title="The email skill freezes the frame and lets only content and data vary">
-  <Prose>
-    The email skill defines one approved **Loop letter** rather than asking the
-    model to design each message. Its frame is fixed: brand hero band, 600px
-    white sheet, letter-style body, one pill CTA, and a standard footer. The
-    documented body geometry includes `36px 48px 40px` sheet padding and a 20px
-    gap between blocks.
-
-    Requests arrive in plain language: purpose, audience, one action, changing
-    data, transactional or marketing status, and sign-off. The skill then
-    returns fully inline-CSS HTML for SendGrid, a variables table, suggested
-    subject and preheader, a plain-text alternative, and every bracketed line
-    that still needs approved copy. It does not send email or touch the live
-    SendGrid account.
-
-    There are customer and internal variants. Customer is the default. Internal
-    is restricted to Loop staff alerts, monitoring, and reports; the supplied
-    skill names a title instead of a greeting, no sign-off, and a reduced footer
-    as visible differences. It says there are exactly four documented
-    differences, but the referenced `LAYOUT.md` containing the complete list was
-    not supplied, so the fourth is not inferred here.
-
-    Both variants are light-mode only, table-based, and built with inline CSS.
-    Customer emails have no body heading; the internal variant opens with a 24px
-    title. One primary CTA is allowed, secondary actions are text links, and
-    Outlook's square rendering of rounded elements is explicitly accepted.
-  </Prose>
-</Section>
-
-<Section id="rehosting" title="The email migration treats old messages as an immutable archive">
-  <Prose>
-    A separate upload specification covers four images used across **183
-    transactional email templates** and referenced **549 times**. The goal is to
-    move them away from a personal Vercel project into the existing
-    `loop-public` S3 bucket in `ca-central-1`.
-
-    The four objects are:
-
-    - `loop-email-hero-band.jpg` → `email/v1/hero-band.jpg`
-    - `loop-email-hero-band-internal.jpg` →
-      `email/v1/hero-band-internal.jpg`
-    - `icon-website.png` → `email/v1/icon-website.png`
-    - `icon-linkedin.png` → `email/v1/icon-linkedin.png`
-
-    Email clients must be able to fetch them anonymously: no signed URLs,
-    referer blocking, WAF gate, or rate limit. Every object needs
-    `Cache-Control: public, max-age=31536000, immutable`.
-
-    The versioned prefix is the archival constraint. A redesign publishes to
-    `email/v2/` and leaves `email/v1/` untouched. Bucket versioning protects
-    against data loss, but it does not protect an old email from changing when
-    the same URL resolves to a newer object. Immutable keys do.
-
-    The specification says one hero image is already at the bucket root without
-    a cache header; the other three were not uploaded at the time of writing.
-    After the final URLs exist, `bin/rehost-assets.py` is designed to verify HTTP
-    200 responses before rewriting all templates and reshipping them to
-    SendGrid. The source set does not include evidence that this migration ran.
-  </Prose>
-</Section>
-
-<Section id="boundary" title="What the supplied artifacts do not prove">
-  <Prose>
-    This case study is intentionally bounded by the files that arrived. It does
-    not claim MCP adoption, time saved, conversion impact, a completed S3
-    migration, or client-proof email rendering.
+    I connected the agent to Loop's live Storybook component manifest (114 real
+    components) and pointed it at the repo's AGENTS.md rules: semantic tokens
+    only, real imports, no invented components. When the agent generated code
+    now, it had to compile against the actual codebase, not a stand-in.
 
     **Imagery pending**
 
-    - A real MCP interface capture showing the 12 skills available and one
-      skill being invoked
-    - A before-and-after output from a real UI generation or rebrand run
-    - Side-by-side captures of the base and `.loop-app` treatments
-    - Customer and internal Loop-letter renders from the referenced
-      `templates/identity-verification.html` and
-      `templates/internal-report.html`
-    - The referenced `LAYOUT.md`, needed to document the fourth exact difference
-      between customer and internal email variants
-    - The four email image files:
-      `loop-email-hero-band.jpg`,
-      `loop-email-hero-band-internal.jpg`, `icon-website.png`, and
-      `icon-linkedin.png`
-    - The Loop wordmark and hero background referenced by
-      `design-system-README.md` but not bundled with the source package
-    - S3 response headers or migration output proving the final URLs, immutable
-      cache policy, and template rewrite
+    - `Screenshot_2026-08-14_at_10_48_19_AM.png` — The six design agent skills
+      organized by surface, showing verification type (hard vs. soft) for each
+    - `Screenshot_2026-08-14_at_12_54_05_PM.png` — Content and marketing skills:
+      UI copy, email templates, marketing subpages, and brand decks
+
+    Once the sandbox loop worked end-to-end, I distilled the entire process
+    into a single skill.md file. That became the prototyping skill, the first
+    of 15.
+  </Prose>
+</Section>
+
+<Section id="skills" title="Fifteen skills, each with one job, grouped by who actually makes the request">
+  <Prose>
+    After I understood how to write and test a skill, I did not need the
+    sandbox experiment anymore. Building the remaining 14 was a cycle of
+    writing, testing, getting feedback, and refining. Each skill has one narrow
+    job, one defined output, and one verification method.
+
+    **Product UI (hard verification, type-checked against the real codebase):**
+    generate-loop-ui produces Storybook stories from the real Next.js
+    components. prototype-loop-ui generates sandbox prototypes for new flows,
+    feature additions, or replicas of existing screens.
+    reconcile-loop-design-system audits the gap between the Figma library and
+    Storybook, producing a report plus Figma documentation updates.
+
+    **Content and marketing (soft verification, human review):** loop-ui-copy
+    generates labels, error messages, empty states, toasts, and accessibility
+    labels with French counterparts, flagging anything that needs compliance
+    review. loop-email-template produces email-safe inline-CSS HTML for
+    SendGrid dynamic templates across four complexity tiers.
+    loop-marketing-subpage generates clickable HTML prototypes for new pages on
+    bankonloop.com. loop-brand-deck produces editable sales and marketing decks
+    as .pptx files from 46 supporting brand assets. loop-one-pager creates
+    editable one-pagers.
+
+    I also built an ICP friction review skill that evaluates a flow from the
+    perspective of Loop's ideal customer profile, and several more that I
+    continued to add throughout the internship.
+
+    The distinction between "hard" and "soft" verification mattered. The
+    prototype skills compile and type-check against the real codebase. If they
+    produce broken imports or invented components, the build fails. The content
+    skills produce output for a human to review before anything goes live. No
+    skill publishes anything directly to production.
+  </Prose>
+</Section>
+
+<Section id="email" title="Updating 200+ email templates that nobody was reading">
+  <Prose>
+    Loop had over 200 email templates on SendGrid. They all technically worked,
+    but nobody was reading them.
+
+    **Imagery pending**
+
+    - `Screenshot_2026-08-10_at_3_14_49_PM.png` — Old email template: the
+      before state with no information hierarchy, yellow divider lines, and raw
+      Handlebars variables visible
+    - `Screenshot_2026-08-10_at_3_14_25_PM.png` — Old "You're Invited" email
+      template with a dark green button that fills the full width and no visual
+      structure
+    - `Screenshot_2026-08-10_at_3_14_05_PM.png` — Old "Payment Complete" email
+      template with yellow divider lines and no content hierarchy
+    - `Screenshot_2026-08-10_at_3_13_46_PM.png` — Old "Your Plan Upgrade is
+      Confirmed" email template with minimal styling and no brand hierarchy
+
+    The templates had the Loop logo and the right dark green header, but the
+    content was flat text with no hierarchy. Yellow and gold divider lines that
+    did not match the brand. No clear CTAs. Fonts that fell back to system
+    defaults. Some still referenced retired domains. Several showed raw
+    Handlebars variables to the user.
+
+    I built the email template skill (loop-email-template) around a block
+    system: a base shell with Outlook/MSO conditionals, dark mode support, and a
+    600px centered card, plus a set of composable partials (header, heading,
+    paragraph, OTP code block, detail table, CTA button, feature card, footer).
+    Every email type assembles from the same blocks, so they all look like one
+    family.
+
+    I wrote a strict rule into the skill: never invent amounts, codes, dates,
+    offers, or legal copy. Those are either Handlebars variables filled by the
+    sending system or approved text from the team. If something is missing,
+    flag it. Do not fake it. Emails go to real customers.
+
+    I updated all 200+ templates. Every one got the new block system, the
+    correct brand green (#045b3f) CTAs, DM Sans typography, proper footers with
+    the current address, and the retired domain links rewritten to
+    bankonloop.com. Each template ships with a variables contract table mapping
+    every Handlebars slot to its type and an example value.
+
+    **Imagery pending**
+
+    - `Screenshot_2026-08-19_at_10_44_41_AM.png` — New email template in
+      production: a deposit notification with the hero band, clear hierarchy,
+      branded CTA, and proper footer
+    - `Screenshot_2026-08-25_at_10_31_58_AM.png` — Redesigned VISA Advisement
+      Payment email and CEO Slack message with the new deposit notification
+      template
+
+    After the new templates went live, the CEO posted in Slack:
+
+    "looks like @Rebecca Sun's redesigned emails are getting people to actually
+    read them! better news: getting more feedback from customers on how we can
+    make them more valuable!!!"
+
+    Customers were reading the emails. They were responding to the contents.
+    They were giving feedback for the first time. The design was not just
+    cosmetic. It was the difference between an email that gets skimmed and
+    closed and one that gets forwarded to a colleague with "can we synthup
+    this?"
+  </Prose>
+</Section>
+
+<Section id="deployment" title="Deploying the MCP and teaching non-technical people to use it in a live demo">
+  <Prose>
+    I deployed the MCP to Loop's GitHub repo and to Vercel. Non-technical users
+    connect through a bearer token in Claude Code.
+
+    The entire engineering agentic system at Loop runs in Claude Code, so
+    engineers were already comfortable in the terminal. For the non-technical
+    team (CS, growth, sales, recruiting), I ran live demos. I sat with them,
+    helped them set up their terminals, showed them how to open a project
+    folder in Claude Code, and taught them prompt engineering techniques for
+    getting better results from the skills.
+
+    The gap between "here is how to install it" and "someone used it without
+    me" was short. The CS team started generating docs with the skills within
+    the same week. The engineering lead started using the deck generation skill
+    to build pager duty workshops. Senior developers started using the
+    prototype skill to push new features: savings account pages, business
+    switcher flows, payment timeline roadmaps.
+
+    The prototypes these skills produce are not production code. They are the
+    starting point. A PM uses a prototype to show a client what a feature might
+    look like. An engineer uses it as the visual target before writing the real
+    implementation. The design system documentation baked into each skill (how
+    to use each component, each token, each layout pattern) is what keeps the
+    output close enough to production that the gap between prototype and
+    shipped feature stays small.
+
+    **Imagery pending**
+
+    - `Screen_Recording_2026-08-14_at_10_44_05_AM.mov` — MCP demo recording
+  </Prose>
+</Section>
+
+<Section id="impact" title="What the MCP changed about how Loop operates">
+  <Prose>
+    Before the MCP, every branded asset was a synchronous request on me. Growth
+    needed a pitch deck. Recruiting needed a styled job post. Engineering
+    needed a quick mockup. CS needed an email template updated. All of it came
+    through Slack, all of it waited in my queue.
+
+    After the MCP, 55 people across engineering, growth, sales, and recruiting
+    were self-serving branded work. My Slack stopped being the company's
+    bottleneck for design output. I went from producing assets to producing the
+    infrastructure that produces assets.
+
+    The MCP also doubles as a design system diagnostic. When a skill tries to
+    build a real screen and fails because a component is missing or a token
+    defaults to black, that failure is a direct signal about what the design
+    system still needs. The agent surfaced real gaps (missing typography
+    components, missing layout primitives) just by trying to use the system. I
+    would not have found those gaps as fast by hand.
+  </Prose>
+</Section>
+
+<Section id="differently" title="What I would do differently">
+  <Prose>
+    **Ship fewer skills and measure which ones get used.** I built 15 skills
+    before I had usage data on which requests were actually recurring. Some of
+    the 15 are well-adopted. Some are still theoretical. If I started over, I
+    would ship the prototype skill, the email skill, and the deck skill, watch
+    what people actually use for a month, and expand from there.
+
+    **Automate the email template QA pipeline.** Each template needs to be
+    tested across Gmail, Outlook desktop, Outlook web, Apple Mail, and iOS. I
+    did this manually for 200+ templates. A Litmus or Email on Acid integration
+    inside the skill would have saved days.
+
+    **Build the live MCP connection to Storybook.** The prototype skills
+    currently work from an exported component manifest. A live connection to
+    Storybook would mean the skills always reflect the current component
+    library without a manual sync step. I documented this as the upgrade path
+    for whoever picks it up next.
+  </Prose>
+</Section>
+
+<Section id="lesson" title="The thing I learned that changed how I think about design tools">
+  <Prose>
+    I always thought of skills and MCPs as engineering tools. Something complex
+    that requires deep technical knowledge to build. The sandbox experiment
+    showed me they are not. A skill is a document that teaches an agent how to
+    do one thing well. The hard part is not the technical structure. The hard
+    part is knowing what "well" means for your specific context: which
+    components are real, which tokens are current, which colors are forbidden,
+    what the agent is not allowed to invent.
+
+    That is design judgment applied to a new medium. The same instinct that
+    tells you a button is too rounded or a font is wrong is the instinct that
+    makes a skill produce correct output instead of plausible output.
+    Distribution without taste is just more noise, faster.
   </Prose>
 </Section>
