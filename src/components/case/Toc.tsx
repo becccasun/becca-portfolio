@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import type { WorkSection } from "@/lib/work";
 import styles from "./Toc.module.css";
 
@@ -32,6 +33,9 @@ export default function Toc({ sections }: { sections: WorkSection[] }) {
 
   return (
     <nav className={styles.toc} aria-label="Case study contents">
+      <Link href="/work" className={styles.back}>
+        ← All work
+      </Link>
       <p className="eyebrow">Contents</p>
       <ol className={styles.list}>
         {sections.map((s) => (

@@ -26,8 +26,8 @@
 
 .layout {
   display: grid;
-  grid-template-columns: 220px 1fr;
-  gap: var(--s-16);
+  grid-template-columns: minmax(0, 168px) minmax(0, 1fr);
+  gap: var(--s-8);
   align-items: start;
   padding-top: var(--s-8);
 }

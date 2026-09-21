@@ -7,6 +7,16 @@
   gap: var(--s-4);
 }
 
+.back {
+  font-size: var(--fs-small);
+  color: var(--text-muted);
+  transition: color 0.2s var(--ease-out);
+}
+
+.back:hover {
+  color: var(--accent-press);
+}
+
 .list {
   list-style: none;
   display: flex;

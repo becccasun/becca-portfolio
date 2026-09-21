@@ -53,6 +53,9 @@ export default function ProjectRail({
 
   return (
     <nav className={styles.rail} aria-label={`${parent.title} projects`}>
+      <Link href="/work" className={styles.back}>
+        ← All work
+      </Link>
       <Link
         href={`/work/${parent.slug}`}
         className={`eyebrow ${styles.parent} ${
@@ -97,10 +100,6 @@ export default function ProjectRail({
           );
         })}
       </ol>
-
-      <Link href="/work" className={styles.back}>
-        ← All work
-      </Link>
     </nav>
   );
 }
