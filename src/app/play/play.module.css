@@ -1,5 +1,5 @@
 .page { width: min(1146px, calc(100% - 32px)); margin: 0 auto; padding: 120px 0 96px; }
-.heading { font-size: 28px; line-height: 33.6px; letter-spacing: -0.56px; color: rgba(0, 0, 0, 0.75); margin-bottom: 24px; }
+.heading { font-size: 56px; line-height: 64px; letter-spacing: -1.4px; color: rgba(0, 0, 0, 0.85); margin-bottom: 24px; }
 
 .grid3, .grid2 { display: flex; gap: 16px; align-items: flex-start; }
 .grid2 { display: none; }
@@ -21,6 +21,7 @@
 
 @media (max-width: 720px) {
   .page { padding-top: 96px; }
+  .heading { font-size: 40px; line-height: 46px; }
   .grid3 { display: none; }
   .grid2 { display: flex; gap: 10px; }
   .col { gap: 10px; }
