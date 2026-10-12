@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import Toc from "@/components/case/Toc";
 import { caseStudies, getCase } from "@/case-studies";
 import s from "@/components/case/case.module.css";
@@ -64,7 +63,6 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
           </div>
         </div>
       </article>
-      <Footer />
     </>
   );
 }

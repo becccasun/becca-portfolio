@@ -1,12 +1,9 @@
 import { heroBand, site, works } from "@/content";
 import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import HeroCanvas from "@/components/HeroCanvas";
 // Stamps are set aside for now (StampRow + Stamp still in components/); the hero is the zine field.
 import ZineField from "@/components/ZineField";
 import ComingSoonCard from "@/components/ComingSoonCard";
-import Chat from "@/components/Chat";
-import ShadowOverlay from "@/components/ShadowOverlay";
 import Reveal from "@/components/Reveal";
 import s from "./page.module.css";
 
@@ -14,8 +11,6 @@ export default function Home() {
   return (
     <>
       <Header />
-      <Chat />
-      <ShadowOverlay />
       <Reveal />
 
       <main className={s.main}>
@@ -75,7 +70,6 @@ export default function Home() {
         </div>
       </main>
 
-      <Footer />
     </>
   );
 }

@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import { getBlogArticle, getBlogPosts } from "@/lib/blogs";
 import s from "./article.module.css";
 
@@ -67,7 +66,6 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
           </nav>
         )}
       </article>
-      <Footer />
     </>
   );
 }
