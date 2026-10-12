@@ -3,15 +3,14 @@ import { PORTFOLIO_URL } from "@/lib/portfolio";
 
 // Selected works, in display order. Each opens /work/<slug>. Entries without an image show a
 // blank panel; kicker and blurb are optional.
-export const works: { slug: string; title: string; kicker?: string; blurb?: string; image?: string; fit?: "contain"; bg?: string }[] = [
+export const works: { slug: string; title: string; kicker?: string; blurb?: string; image?: string; fit?: "contain"; bg?: string; comingSoon?: boolean }[] = [
   { slug: "loop-onboarding", title: "Loop Client Onboarding", kicker: "PRODUCT DESIGN INTERN \u2022 SUMMER 2026", blurb: "Designing and prototyping an end-to-end fintech product onboarding flow.", image: "/work/loop-onboarding/onboarding.jpg" },
   { slug: "feature-discovery", title: "Feature Discovery UX Research", kicker: "LEAD USER RESEARCHER + DESIGNER \u2022 SPRING 2026", blurb: "Spearheaded high signal qualitative research & user interviews with Firmware Engineers", image: "/works/embedder.png" },
-  { slug: "agentmail", title: "AgentMail Product Demo", kicker: "PRODUCT DESIGNER \u2022 FALL 2025", blurb: "Designed an interactive landing-page demo that shows an AI agent sending email from three perspectives", image: "/works/agentmail.png" },
+  { slug: "aspect", title: "Aspect", kicker: "CONTRACT DESIGN \u2022 YC", image: "/works/aspect.png", comingSoon: true },
   { slug: "design-mcp", title: "Design MCP + Agentic Design System", kicker: "PRODUCT DESIGN INTERN \u2022 FALL 2026", blurb: "Building an original design skill MCP that operates autonomously with a refreshed token and component system.", image: "/work/design-mcp/cover-fit.jpg?v=3", fit: "contain", bg: "#a9d3bf" },
   { slug: "mhacks", title: "MHacks Design Suite", kicker: "DESIGN LEAD \u2022 2026", blurb: "Led a four-person team on one brand of flowers and ASCII across a website, two mini games, print, merch and stage", image: "/work/mhacks/site-hero.jpg" },
+  { slug: "agentmail", title: "AgentMail Product Demo", kicker: "PRODUCT DESIGNER \u2022 FALL 2025", blurb: "Designed an interactive landing-page demo that shows an AI agent sending email from three perspectives", image: "/works/agentmail.png" },
   { slug: "editorial-journal", title: "Editorial Design Journal", kicker: "PERSONAL PROJECT \u2022 WINTER 2025", blurb: "Self-initiated annual design journal that documents my creative growth; 2025 edition!", image: "/works/agree-to-disagree.png" },
-  { slug: "apology", title: "Apology: Living PRDs" },
-  { slug: "sentinel", title: "Sentinel at Ramp Builders Cup" },
 ];
 
 // Credits band along the bottom of the hero

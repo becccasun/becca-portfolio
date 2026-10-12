@@ -1,0 +1,22 @@
+.card { cursor: none; }
+/* Pinned to the pointer: its left cap sits where the cursor would be, and the body
+   stretches out to the right when the card is hovered */
+.pill {
+  position: fixed; left: 0; top: 0; z-index: 50; pointer-events: none;
+  display: flex; align-items: center; height: 30px; margin: -15px 0 0 -15px;
+  max-width: 30px; overflow: hidden; border-radius: 999px;
+  background: #fff; color: rgb(20, 20, 20); box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  opacity: 0; scale: 0.4;
+  transition: max-width 0.45s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.2s, scale 0.25s;
+}
+.on { opacity: 1; scale: 1; max-width: 160px; }
+.label {
+  padding: 0 14px 0 30px; white-space: nowrap; font-size: 13px; line-height: 30px;
+  opacity: 0; transition: opacity 0.2s 0.12s;
+}
+.on .label { opacity: 1; }
+/* The cap that stands in for the cursor */
+.pill::before {
+  content: ""; position: absolute; left: 11px; top: 11px; width: 8px; height: 8px; border-radius: 50%; background: rgb(20, 20, 20);
+}
+@media (hover: none) { .card { cursor: auto; } .pill { display: none; } }

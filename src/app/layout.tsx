@@ -7,8 +7,8 @@ import "./globals.css";
 const sans = Figtree({ subsets: ["latin"], variable: "--font-figtree" });
 
 export const metadata: Metadata = {
-  title: "Your Name, product designer",
-  description: "Portfolio layout study.",
+  title: "Rebecca Sun, product designer",
+  description: "Rebecca Sun is a full-stack designer building artful experiences.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

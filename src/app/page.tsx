@@ -3,6 +3,7 @@ import Header from "@/components/Header";
 import HeroCanvas from "@/components/HeroCanvas";
 // Stamps are set aside for now (StampRow + Stamp still in components/); the hero is the zine field.
 import ZineField from "@/components/ZineField";
+import ComingSoonCard from "@/components/ComingSoonCard";
 import Chat from "@/components/Chat";
 import ShadowOverlay from "@/components/ShadowOverlay";
 import Reveal from "@/components/Reveal";
@@ -54,14 +55,21 @@ export default function Home() {
         {/* The works sheet slides up over the pinned hero like a drawer */}
         <div className={s.sheet}>
         <section id="work" className={s.works}>
-          {works.map((w) => (
-            <a key={w.title} href={`/work/${w.slug}`} className={`reveal ${s.work}`}>
-              {w.image ? <img src={w.image} alt="" className={s.workThumb} style={w.fit ? { objectFit: w.fit, background: w.bg } : undefined} /> : <div className={s.workThumb} aria-hidden />}
-              {w.kicker && <p className={s.workKicker}>{w.kicker}</p>}
-              <h2 className={s.workTitle}>{w.title}</h2>
-              {w.blurb && <p className={s.workBlurb}>{w.blurb}</p>}
-            </a>
-          ))}
+          {works.map((w) => {
+            const inner = (
+              <>
+                {w.image ? <img src={w.image} alt="" className={s.workThumb} style={w.fit ? { objectFit: w.fit, background: w.bg } : undefined} /> : <div className={s.workThumb} aria-hidden />}
+                {w.kicker && <p className={s.workKicker}>{w.kicker}</p>}
+                <h2 className={s.workTitle}>{w.title}</h2>
+                {w.blurb && <p className={s.workBlurb}>{w.blurb}</p>}
+              </>
+            );
+            return w.comingSoon ? (
+              <ComingSoonCard key={w.title} className={`reveal ${s.work}`}>{inner}</ComingSoonCard>
+            ) : (
+              <a key={w.title} href={`/work/${w.slug}`} className={`reveal ${s.work}`}>{inner}</a>
+            );
+          })}
         </section>
         </div>
       </main>

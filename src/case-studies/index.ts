@@ -10,12 +10,10 @@ import { mhacks } from "./mhacks";
 export const caseStudies: CaseStudy[] = [
   loopOnboarding,
   featureDiscovery,
-  agentmail,
   designMcp,
   mhacks,
+  agentmail,
   blankCase("editorial-journal", "Editorial Design Journal"),
-  blankCase("apology", "Apology: Living PRDs"),
-  blankCase("sentinel", "Sentinel at Ramp Builders Cup"),
 ];
 
 export const getCase = (slug: string) => caseStudies.find((c) => c.meta.slug === slug);
