@@ -32,7 +32,7 @@ export const site = {
   nav: [
     { label: "Work", href: "/#work" },
     { label: "About", href: "#about" },
-    { label: "Play", href: `${PORTFOLIO_URL}/play` },
+    { label: "Play", href: "/play" },
   ],
   // hero tagline; empty means none (removed for now — the zine strips carry the hero)
   heroLead: "",
