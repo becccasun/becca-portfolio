@@ -1,4 +1,3 @@
-import { blankCase } from "./template";
 import type { CaseStudy } from "./types";
 import { loopOnboarding } from "./loop-onboarding";
 import { designMcp } from "./design-mcp";
@@ -13,7 +12,6 @@ export const caseStudies: CaseStudy[] = [
   designMcp,
   mhacks,
   agentmail,
-  blankCase("editorial-journal", "Editorial Design Journal"),
 ];
 
 export const getCase = (slug: string) => caseStudies.find((c) => c.meta.slug === slug);

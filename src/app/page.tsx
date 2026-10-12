@@ -59,7 +59,7 @@ export default function Home() {
           {works.map((w) => {
             const inner = (
               <>
-                {w.image ? <img src={w.image} alt="" className={s.workThumb} style={w.fit ? { objectFit: w.fit, background: w.bg } : undefined} /> : <div className={s.workThumb} aria-hidden />}
+                {w.image ? <img src={w.image} alt="" className={s.workThumb} style={w.fit ? { objectFit: w.fit, background: w.bg, padding: w.pad, boxSizing: "border-box" } : undefined} /> : <div className={s.workThumb} aria-hidden />}
                 {w.kicker && <p className={s.workKicker}>{w.kicker}</p>}
                 <h2 className={s.workTitle}>{w.title}</h2>
                 {w.blurb && <p className={s.workBlurb}>{w.blurb}</p>}
