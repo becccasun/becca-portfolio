@@ -164,11 +164,6 @@ export const askAi = {
   buttons: ["Ask ChatGPT", "Ask Claude", "Ask Google"],
 };
 
-export const footer = {
-  cta: "Ready to start something?",
-  links: ["Twitter/X", "LinkedIn", "Instagram"],
-};
-
 // Hero stamps. Names, dates and artwork are placeholders: swap freely.
 // Art lives in a 100 × 125 box; the panel is x 8–92, y 8–114.5. Shapes are blurred by `blur`.
 export type GeneratedArt = {

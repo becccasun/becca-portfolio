@@ -1,5 +1,4 @@
-/* main scrolls over the fixed footer; the margin leaves room to reveal it */
-.main { position: relative; z-index: 1; background: #fff; margin-bottom: 715px; padding-bottom: 120px; }
+.main { position: relative; z-index: 1; background: #fff; }
 
 /* Hero: 595px block, text baseline block starts at y=320 */
 /* Hero is pinned: it sticks once its bottom meets the viewport bottom (or at the top when it
@@ -28,7 +27,8 @@
   position: relative; z-index: 2; background: #fff;
   border-radius: 28px 28px 0 0;
   box-shadow: 0 -1px 0 var(--line), 0 -18px 50px rgba(0, 0, 0, 0.07);
-  padding-top: 64px;
+  /* the bottom padding lives here, on the white sheet, so the pinned hero can't show through below the grid */
+  padding: 64px 0 120px;
 }
 .heroBg { position: absolute; inset: 0 0 -319px; }
 .heroRow { position: relative; height: 100%; width: min(1200px, calc(100% - 32px)); margin: 0 auto; display: flex; align-items: flex-end; justify-content: space-between; padding-bottom: 50px; pointer-events: none; }
@@ -170,23 +170,6 @@
 .askBtn { height: 50px; padding: 0 24px 0 18px; gap: 10px; font-size: 16px; }
 .askIcon { width: 20px; height: 20px; border-radius: 50%; border: 2px solid #fff; opacity: 0.9; }
 
-/* Footer */
-.footer {
-  position: fixed; left: 0; right: 0; bottom: 0; height: 715px; z-index: 0;
-  background: radial-gradient(90% 70% at 50% 40%, rgb(44, 44, 44), var(--footer));
-  color: #fff;
-}
-.footerInner { height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; }
-.bigCta {
-  display: inline-flex; align-items: center; justify-content: center; height: 124px; padding: 0 134px; border-radius: 999px;
-  color: var(--ink); background: linear-gradient(180deg, #fff 0%, #f1f1f1 55%, #fff 100%);
-  box-shadow: inset 0 -8px 20px rgba(0, 0, 0, 0.08), 0 20px 60px rgba(0, 0, 0, 0.45);
-  transition: transform 0.6s var(--spring), box-shadow 0.4s;
-}
-.bigCta:hover { transform: scale(1.04); box-shadow: inset 0 -8px 20px rgba(0, 0, 0, 0.08), 0 30px 80px rgba(255, 255, 255, 0.12); }
-.social { position: absolute; bottom: 60px; display: flex; gap: 34px; font-size: 16px; }
-.social a { opacity: 0.9; transition: opacity 0.2s; }
-.social a:hover { opacity: 0.5; }
 
 @media (max-width: 900px) {
   .hero { --hero-h: 640px; }
@@ -219,5 +202,4 @@
   .letterHead { position: static; }
   .letterBody { padding-top: 24px; }
   .stamp { display: none; }
-  .bigCta { height: 88px; padding: 0 32px; font-size: 24px; letter-spacing: -0.5px; }
 }

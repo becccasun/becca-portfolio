@@ -1,5 +1,6 @@
-import { heroBand, footer, site, works } from "@/content";
+import { heroBand, site, works } from "@/content";
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import HeroCanvas from "@/components/HeroCanvas";
 // Stamps are set aside for now (StampRow + Stamp still in components/); the hero is the zine field.
 import ZineField from "@/components/ZineField";
@@ -74,13 +75,7 @@ export default function Home() {
         </div>
       </main>
 
-      {/* Footer: sits under the page and is revealed as main scrolls off */}
-      <footer id="contact" className={s.footer}>
-        <div className={s.footerInner}>
-          <a href="#" className={`t40 ${s.bigCta}`}>{footer.cta}</a>
-          <nav className={s.social}>{footer.links.map((l) => <a key={l} href="#">{l}</a>)}</nav>
-        </div>
-      </footer>
+      <Footer />
     </>
   );
 }

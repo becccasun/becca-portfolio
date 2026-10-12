@@ -23,6 +23,22 @@ export default function ChatMascot({
 }) {
   const [cueing, setCueing] = useState(false);
   const [nodding, setNodding] = useState(false);
+  const [landing, setLanding] = useState(false);
+
+  // When the footer scrolls into view, hop up and drop into its empty corner.
+  useEffect(() => {
+    const foot = document.querySelector("[data-site-footer]");
+    if (!foot) return;
+    let t = 0;
+    const io = new IntersectionObserver(([e]) => {
+      if (!e.isIntersecting) return;
+      setLanding(true);
+      window.clearTimeout(t);
+      t = window.setTimeout(() => setLanding(false), 1100);
+    }, { threshold: 0.9 });
+    io.observe(foot);
+    return () => { io.disconnect(); window.clearTimeout(t); };
+  }, []);
 
   useEffect(() => {
     if (!cue) return;
@@ -50,6 +66,7 @@ export default function ChatMascot({
         data-open={expanded || undefined}
         data-cue={cueing || undefined}
         data-nod={nodding || undefined}
+        data-land={landing || undefined}
       >
         <EyeTracker size={44} shape="Cube" eyes="Slant" eyeScale={1.25} follow={45} bounce={35} />
       </button>

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import { getBlogPosts, MEDIUM_URL } from "@/lib/blogs";
 import s from "./writing.module.css";
 
@@ -44,6 +45,7 @@ export default async function WritingPage() {
           ))}
         </ul>
       </main>
+      <Footer />
     </>
   );
 }

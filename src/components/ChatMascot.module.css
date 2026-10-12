@@ -38,7 +38,18 @@
   100% { transform: translateY(0); }
 }
 
+/* reaching the footer: up and out of the way, then a drop into the corner with a squash */
+.button[data-land] { animation: land 1.05s both; }
+@keyframes land {
+  0% { transform: translateY(0); animation-timing-function: cubic-bezier(0.2, 0.7, 0.3, 1); }
+  28% { transform: translateY(-84px) scale(0.96, 1.05); animation-timing-function: cubic-bezier(0.55, 0, 0.9, 0.4); }
+  56% { transform: translateY(0) scale(1.14, 0.86); animation-timing-function: cubic-bezier(0.2, 0.7, 0.3, 1); }
+  72% { transform: translateY(-12px) scale(0.98, 1.02); animation-timing-function: cubic-bezier(0.55, 0, 0.9, 0.4); }
+  86% { transform: translateY(0) scale(1.04, 0.96); }
+  100% { transform: translateY(0) scale(1); }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .button[data-cue], .button[data-nod] { animation: none; }
+  .button[data-cue], .button[data-nod], .button[data-land] { animation: none; }
   .button :global(.eyt-body) { transition: none; }
 }

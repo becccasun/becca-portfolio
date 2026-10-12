@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import { playItems, type PlayItem } from "@/play";
 import s from "./play.module.css";
 
@@ -56,6 +57,7 @@ export default function PlayPage() {
         <Grid n={3} className={s.grid3} />
         <Grid n={2} className={s.grid2} />
       </main>
+      <Footer />
     </>
   );
 }
