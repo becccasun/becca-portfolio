@@ -28,10 +28,10 @@ export const heroBand = {
 export const site = {
   name: "Rebecca Sun",
   role: "Product Designer",
-  // Work and About scroll to this page's sections; Play opens the rebuild's Play page.
+  // Work scrolls to the homepage grid; About and Play are their own pages.
   nav: [
     { label: "Work", href: "/#work" },
-    { label: "About", href: "#about" },
+    { label: "About", href: "/about" },
     { label: "Play", href: "/play" },
   ],
   // hero tagline; empty means none (removed for now — the zine strips carry the hero)
