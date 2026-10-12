@@ -6,6 +6,7 @@ import ZineField from "@/components/ZineField";
 import ComingSoonCard from "@/components/ComingSoonCard";
 import Reveal from "@/components/Reveal";
 import s from "./page.module.css";
+import { withBase } from "@/lib/base";
 
 export default function Home() {
   return (
@@ -38,7 +39,7 @@ export default function Home() {
                   {heroBand.roles.map((r) => (
                     <li key={r.text}>
                       {r.text}
-                      <img src={r.logo} alt="" width={22} height={22} className={s.bandLogo} />
+                      <img src={withBase(r.logo)} alt="" width={22} height={22} className={s.bandLogo} />
                     </li>
                   ))}
                 </ul>
@@ -54,7 +55,7 @@ export default function Home() {
           {works.map((w) => {
             const inner = (
               <>
-                {w.image ? <img src={w.image} alt="" className={s.workThumb} style={w.fit ? { objectFit: w.fit, background: w.bg, padding: w.pad, boxSizing: "border-box" } : undefined} /> : <div className={s.workThumb} aria-hidden />}
+                {w.image ? <img src={withBase(w.image)} alt="" className={s.workThumb} style={w.fit ? { objectFit: w.fit, background: w.bg, padding: w.pad, boxSizing: "border-box" } : undefined} /> : <div className={s.workThumb} aria-hidden />}
                 {w.kicker && <p className={s.workKicker}>{w.kicker}</p>}
                 <h2 className={s.workTitle}>{w.title}</h2>
                 {w.blurb && <p className={s.workBlurb}>{w.blurb}</p>}
@@ -63,7 +64,7 @@ export default function Home() {
             return w.comingSoon ? (
               <ComingSoonCard key={w.title} className={`reveal ${s.work}`}>{inner}</ComingSoonCard>
             ) : (
-              <a key={w.title} href={`/work/${w.slug}`} className={`reveal ${s.work}`}>{inner}</a>
+              <a key={w.title} href={withBase(`/work/${w.slug}`)} className={`reveal ${s.work}`}>{inner}</a>
             );
           })}
         </section>

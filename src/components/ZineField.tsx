@@ -1,4 +1,5 @@
 import s from "./ZineField.module.css";
+import { withBase } from "@/lib/base";
 
 /*
   Accordion-folded zine strips filling the hero, made from Rebecca's own publications:
@@ -57,7 +58,7 @@ export default function ZineField() {
           {row.pages.map((page, i) => (
             <div key={page} className={s.panel} data-lean={i % 2 ? "down" : "up"} style={{ "--i": i } as React.CSSProperties}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={`/zine/${page}.jpg?v=${VERSION}`} alt="" height={341} decoding="async" draggable={false} />
+              <img src={withBase(`/zine/${page}.jpg?v=${VERSION}`)} alt="" height={341} decoding="async" draggable={false} />
             </div>
           ))}
         </div>

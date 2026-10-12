@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { site } from "@/content";
 import s from "./Header.module.css";
+import { withBase } from "@/lib/base";
 
 // Eight stacked backdrop blurs (0.5px → 64px), each masked to a 3/8-wide band that
 // slides down the 126px strip: the original's progressive blur.
@@ -28,17 +29,17 @@ export default function Header() {
       </div>
       <header className={s.header}>
         <div className={`col ${s.inner}`}>
-          <a href="/" className={`t16 ${s.name}`}>
+          <a href={withBase("/")} className={`t16 ${s.name}`}>
             {site.name}
             <span className={s.sep} aria-hidden>|</span>
             <span className={s.role}>{site.role}</span>
           </a>
-          <a href="/" className={s.logo} aria-label={`${site.name}, home`}>
-            <Image src="/logo.png" alt="" width={36} height={36} priority />
+          <a href={withBase("/")} className={s.logo} aria-label={`${site.name}, home`}>
+            <Image src={withBase("/logo.png")} alt="" width={36} height={36} priority />
           </a>
           <nav className={s.nav} aria-label="Pages">
             {site.nav.map((l) => (
-              <a key={l.label} href={l.href} className={`t16 ${s.link}`}>{l.label}</a>
+              <a key={l.label} href={withBase(l.href)} className={`t16 ${s.link}`}>{l.label}</a>
             ))}
           </nav>
         </div>

@@ -3,8 +3,9 @@ import ScreenStepper from "@/components/case/ScreenStepper";
 import Compare from "@/components/case/Compare";
 import Slideshow from "@/components/case/Slideshow";
 import type { CaseStudy } from "./types";
+import { withBase } from "@/lib/base";
 
-const img = (f: string) => `/work/loop-onboarding/${f}`;
+const img = (f: string) => withBase(`/work/loop-onboarding/${f}`);
 const PROTOTYPE = "https://becccasun.github.io/loop-onboarding-demo/";
 const SCREEN = "1383 / 868";
 

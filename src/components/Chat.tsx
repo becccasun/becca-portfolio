@@ -10,6 +10,7 @@ import dynamic from "next/dynamic";
 // opens the chat, not with the page.
 const CommandBar = dynamic(() => import("./CommandBar").then((m) => m.CommandBar), { ssr: false });
 import s from "./Chat.module.css";
+import { STATIC_EXPORT, withBase } from "@/lib/base";
 
 /*
   The mascot's chat.
@@ -167,8 +168,15 @@ export default function Chat() {
     const write = (content: string, error = false) =>
       setMessages((m) => m.map((x) => (x.id === reply.id ? { ...x, content, error } : x)));
 
+    if (STATIC_EXPORT) {
+      // This copy of the site is static files only (GitHub Pages), so there's no server to answer.
+      write("The chat needs a server, so it's switched off on this copy of the site. You can reach me at beccasun@umich.edu.", true);
+      setBusy(false);
+      abort.current = null;
+      return;
+    }
     try {
-      const res = await fetch("/api/chat", {
+      const res = await fetch(withBase("/api/chat"), {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ messages: forApi(history) }),

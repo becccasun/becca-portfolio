@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import Header from "@/components/Header";
 import { getBlogArticle, getBlogPosts } from "@/lib/blogs";
 import s from "./article.module.css";
+import { withBase } from "@/lib/base";
 
 export async function generateStaticParams() {
   const { posts } = await getBlogPosts();
@@ -30,7 +31,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
     <>
       <Header />
       <article className={s.page}>
-        <a href="/writing" className={s.back}>← All writing</a>
+        <a href={withBase("/writing")} className={s.back}>← All writing</a>
 
         <header className={s.head}>
           {article.series && <p className={s.series}>{article.series}</p>}
@@ -52,13 +53,13 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
         {(previous || next) && (
           <nav className={s.pager} aria-label="Other writing">
             {previous ? (
-              <a href={`/writing/${previous.id}`} className={s.pagerLink}>
+              <a href={withBase(`/writing/${previous.id}`)} className={s.pagerLink}>
                 <span className={s.pagerLabel}>Previous</span>
                 <span className={s.pagerTitle}>{previous.title}</span>
               </a>
             ) : <span />}
             {next && (
-              <a href={`/writing/${next.id}`} className={`${s.pagerLink} ${s.pagerNext}`}>
+              <a href={withBase(`/writing/${next.id}`)} className={`${s.pagerLink} ${s.pagerNext}`}>
                 <span className={s.pagerLabel}>Next</span>
                 <span className={s.pagerTitle}>{next.title}</span>
               </a>

@@ -3,8 +3,9 @@ import ScaledEmbed from "@/components/case/ScaledEmbed";
 import WalletPass from "@/components/case/WalletPass";
 import PosterGrid from "@/components/case/PosterGrid";
 import type { CaseStudy } from "./types";
+import { withBase } from "@/lib/base";
 
-const img = (f: string) => `/work/mhacks/${f}`;
+const img = (f: string) => withBase(`/work/mhacks/${f}`);
 
 const sections = [
   { id: "overview", title: "Overview" },

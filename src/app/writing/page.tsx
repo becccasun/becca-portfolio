@@ -3,6 +3,7 @@ import Image from "next/image";
 import Header from "@/components/Header";
 import { getBlogPosts, MEDIUM_URL } from "@/lib/blogs";
 import s from "./writing.module.css";
+import { withBase } from "@/lib/base";
 
 export const metadata: Metadata = {
   title: "Writing · Rebecca Sun",
@@ -25,7 +26,7 @@ export default async function WritingPage() {
         <ul className={s.list}>
           {posts.map((post) => (
             <li key={post.id}>
-              <a href={`/writing/${post.id}`} className={s.row}>
+              <a href={withBase(`/writing/${post.id}`)} className={s.row}>
                 <span className={s.thumb}>
                   {post.image && <Image src={post.image} alt="" fill sizes="(max-width: 720px) 100vw, 200px" />}
                 </span>

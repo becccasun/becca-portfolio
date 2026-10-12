@@ -1,8 +1,9 @@
 import { Section, Subhead, Prose, Stats, Decision, Figure } from "@/components/case/blocks";
 import Slideshow from "@/components/case/Slideshow";
 import type { CaseStudy } from "./types";
+import { withBase } from "@/lib/base";
 
-const img = (f: string) => `/work/agentmail/${f}`;
+const img = (f: string) => withBase(`/work/agentmail/${f}`);
 const VIEW = 1440 / 1047;
 const STAGE = "rgb(28, 28, 28)";
 

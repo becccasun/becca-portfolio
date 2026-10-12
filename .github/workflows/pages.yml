@@ -1,0 +1,53 @@
+# Builds the site as static files and publishes it to GitHub Pages:
+# https://becccasun.github.io/becca-portfolio/
+# Pages can't run a server, so this build leaves out /api/chat (the chat says it's offline here)
+# and reads the Medium feed at build time. The daily run keeps Writing current.
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "0 12 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Drop the server-only chat route
+        run: rm -rf src/app/api
+      - name: Build static site
+        run: npx next build
+        env:
+          STATIC_EXPORT: "1"
+          BASE_PATH: /becca-portfolio
+      - run: touch out/.nojekyll
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: out
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

@@ -5,8 +5,9 @@ import TokenLayers from "@/components/case/TokenLayers";
 import FontCompare from "@/components/case/FontCompare";
 import LoopSteps from "@/components/case/LoopSteps";
 import type { CaseStudy } from "./types";
+import { withBase } from "@/lib/base";
 
-const img = (f: string) => `/work/design-mcp/${f}`;
+const img = (f: string) => withBase(`/work/design-mcp/${f}`);
 
 const sections = [
   { id: "overview", title: "Overview" },

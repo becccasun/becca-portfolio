@@ -116,6 +116,8 @@ const ALLOWED_TAGS = new Set([
 
 /** Serve article images from this origin, sized for the reading column. */
 function proxied(src: string): string {
+  // A static build has no image server, so it links Medium's CDN directly
+  if (process.env.NEXT_PUBLIC_STATIC_EXPORT === "1") return normalizeImage(src);
   return `/_next/image?url=${encodeURIComponent(normalizeImage(src))}&w=1200&q=75`;
 }
 

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Header from "@/components/Header";
 import s from "./about.module.css";
+import { withBase } from "@/lib/base";
 
 export const metadata: Metadata = { title: "About · Rebecca Sun" };
 
@@ -27,7 +28,7 @@ export default function AboutPage() {
         <div className={s.photos}>
           {photos.map((p) => (
             // eslint-disable-next-line @next/next/no-img-element
-            <img key={p.src} src={p.src} alt={p.alt} />
+            <img key={p.src} src={withBase(p.src)} alt={p.alt} />
           ))}
         </div>
 
@@ -62,7 +63,7 @@ export default function AboutPage() {
         <div className={s.groups}>
           {groups.map((g) => (
             // eslint-disable-next-line @next/next/no-img-element
-            <img key={g.src} src={g.src} alt={g.alt} loading="lazy" />
+            <img key={g.src} src={withBase(g.src)} alt={g.alt} loading="lazy" />
           ))}
         </div>
       </main>

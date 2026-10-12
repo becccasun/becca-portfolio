@@ -1,8 +1,9 @@
 import { Section, Subhead, Prose, Table, Annotated, Stats, Decision, Figure, Quote } from "@/components/case/blocks";
 import RainbowGrid from "@/components/case/RainbowGrid";
 import type { CaseStudy } from "./types";
+import { withBase } from "@/lib/base";
 
-const img = (f: string) => `/work/feature-discovery/${f}`;
+const img = (f: string) => withBase(`/work/feature-discovery/${f}`);
 
 const sections = [
   { id: "overview", title: "Overview" },

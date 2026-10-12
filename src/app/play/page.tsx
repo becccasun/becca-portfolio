@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Header from "@/components/Header";
 import { playItems, type PlayItem } from "@/play";
 import s from "./play.module.css";
+import { withBase } from "@/lib/base";
 
 export const metadata: Metadata = { title: "Play · Rebecca Sun" };
 
@@ -22,10 +23,10 @@ function Tile({ it }: { it: PlayItem }) {
   return (
     <figure className={s.tile} style={{ aspectRatio: `${it.w} / ${it.h}` }}>
       {it.type === "video" ? (
-        <video src={it.src} autoPlay muted loop playsInline />
+        <video src={withBase(it.src)} autoPlay muted loop playsInline />
       ) : (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={it.src} alt={it.title} loading="lazy" />
+        <img src={withBase(it.src)} alt={it.title} loading="lazy" />
       )}
       <figcaption className={s.caption}>
         <span className={s.title}>{it.title}</span>
