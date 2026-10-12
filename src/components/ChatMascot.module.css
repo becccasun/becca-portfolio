@@ -1,0 +1,44 @@
+.frame { position: fixed; inset: 0; z-index: 20; pointer-events: none; }
+
+/* Bottom-right corner; the chat stacks up from here */
+.button {
+  position: absolute; bottom: 20px; right: 20px;
+  pointer-events: auto; border-radius: 14px;
+  transition: transform 0.45s var(--spring);
+}
+.button:hover { transform: scale(1.08); }
+.button:active { transform: scale(0.94); }
+.button:focus-visible { outline: 2px solid rgba(var(--ink-rgb), 0.4); outline-offset: 3px; }
+
+/* The eye tracker's 200px frame is sized for a demo wall; here it should hug the ball */
+.button :global(.eyt) { width: auto; height: auto; }
+/* Lift off the page, and keep an edge on the dark footer */
+.button :global(.eyt-ball) { filter: drop-shadow(0 0 0.5px rgba(255, 255, 255, 0.35)) drop-shadow(0 6px 12px rgba(0, 0, 0, 0.18)); }
+
+
+/* While the chat (the bar or its answers) is open the mascot goes from the button
+   grey to black, so it reads as switched on; it eases back when the chat closes. */
+.button :global(.eyt-body) { transition: fill 0.35s ease; }
+.button[data-open] :global(.eyt) { --fill-slab: #000; }
+
+/* when the chat closes, a small hop: this is where it went */
+.button[data-cue] { animation: hop 0.9s var(--spring) 0.15s both; }
+@keyframes hop {
+  0% { transform: translateY(0) scale(1); }
+  30% { transform: translateY(-7px) scale(1.06, 0.96); }
+  55% { transform: translateY(0) scale(0.97, 1.04); }
+  100% { transform: translateY(0) scale(1); }
+}
+
+/* a small nod when a reply lands */
+.button[data-nod] { animation: nod 0.6s var(--spring) both; }
+@keyframes nod {
+  0% { transform: translateY(0); }
+  35% { transform: translateY(3px) scale(1.04); }
+  100% { transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button[data-cue], .button[data-nod] { animation: none; }
+  .button :global(.eyt-body) { transition: none; }
+}

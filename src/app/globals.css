@@ -1,49 +1,424 @@
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --font-sans: var(--font-figtree), "Roobert Regular", sans-serif;
+  --font-ui: var(--font-figtree), sans-serif;
+  --ink: rgb(36, 35, 35);
+  --ink-rgb: 36, 35, 35;
+  --bg: #fff;
+  --ink-strong: rgb(17, 17, 17);
+  --nav: rgb(38, 38, 38);
+  --muted: rgb(120, 120, 120);
+  --soft: rgb(91, 88, 88);
+  --tag: rgba(0, 0, 0, 0.6);
+  --green: rgb(51, 111, 47);
+  --green-ui: rgb(43, 125, 52);
+  --button: rgb(56, 56, 56);
+  --panel: rgb(250, 250, 250);
+  --cream: rgb(247, 246, 236);
+  --line: rgba(0, 0, 0, 0.06);
+  --footer: rgb(30, 30, 30);
+  --col: 960px;
+  --wide: 1040px;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  /* Framer's default spring (stiffness 400, damping 40) approximated as linear() */
+  --spring: linear(0, 0.21 6%, 0.58 14%, 0.83 22%, 0.95 30%, 1.005 40%, 1.01 50%, 1 70%, 1);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-html {
-  height: 100%;
-}
-
-html,
+* { box-sizing: border-box; margin: 0; padding: 0; }
+h1, h2, h3, h4 { font-weight: 400; }
+html { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
 body {
-  max-width: 100vw;
+  background: #fff;
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.45;
+  letter-spacing: -0.02em;
   overflow-x: hidden;
 }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; letter-spacing: inherit; border: 0; background: none; color: inherit; cursor: pointer; }
 
-body {
-  min-height: 100%;
+.col { width: min(var(--col), calc(100% - 32px)); margin: 0 auto; }
+.wide { width: min(var(--wide), calc(100% - 32px)); margin: 0 auto; }
+
+.t16 { font-size: 16px; line-height: 23.2px; letter-spacing: -0.32px; }
+.t20 { font-size: 20px; line-height: 28px; letter-spacing: -0.4px; }
+.t30 { font-size: 30px; line-height: 39px; letter-spacing: -0.6px; }
+.t40 { font-size: 40px; line-height: 48px; letter-spacing: -1.2px; }
+.t60 { font-size: 60px; line-height: 72px; letter-spacing: -1.2px; }
+
+/* Appear: Framer's in-view fade + rise + unblur */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  filter: blur(8px);
+  transition: opacity 0.9s var(--ease-out), transform 0.9s var(--ease-out), filter 0.9s var(--ease-out);
+  transition-delay: var(--d, 0s);
+}
+.reveal.in { opacity: 1; transform: none; filter: none; }
+
+.pill {
+  display: inline-flex; align-items: center; justify-content: center;
+  height: 50px; padding: 0 24px; border-radius: 999px;
+  background: var(--button); color: #fff;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), 0 1px 2px rgba(0,0,0,0.2), 0 4px 10px rgba(0,0,0,0.08);
+  transition: transform 0.4s var(--spring), background 0.2s;
+}
+.pill:hover { transform: scale(1.03); background: rgb(30, 30, 30); }
+.pill:active { transform: scale(0.98); }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; filter: none; transition: none; }
+}
+
+/* ══ Eye tracker ═══════════════════════════════════════════
+   See lab/Watcher.tsx. The frame holds the largest ball the
+   Size knob allows, so the wall never rescales it. */
+.eyt {
+  width: 200px;
+  height: 200px;
+  display: grid;
+  place-items: center;}
+
+.eyt-ball {
+  width: var(--eyt-size, 100px);
+  height: var(--eyt-size, 100px);
+  overflow: visible;}
+
+/* the ball is the Fill's own slab and the eyes its ink: white
+   with dark eyes on a light fill, near-black with light eyes on
+   a dark one */
+.eyt-body { fill: var(--fill-slab, #ffffff); }
+
+.eyt-eye { fill: var(--fill-on, #0b0b0d); }
+
+.logo-test .eyt { width: auto; height: auto; }
+
+.logo-test .eyt-body { fill: var(--ink); }
+
+.logo-test .eyt-eye { fill: var(--bg); }
+
+/* the circle and pill in dark mode match the hexagon: a lifted
+   dark body with the eyes kept white */
+[data-theme="dark"] .logo-test .eyt-body { fill: #2b2c30; }
+
+[data-theme="dark"] .logo-test .eyt-eye { fill: #fbfbfa; }
+
+/* ── Bencho tokens → this project ──────────────────────────
+   --ink and --bg already exist in :root with the same jobs.
+   --fill-slab / --fill-on have no equivalent here, so they are
+   set on the component root only: the mascot is a button, so it
+   wears the button's surface (the dark "Let's talk" pill) with
+   the ground colour as its ink — white eyes on a dark body. */
+.eyt {
+  --fill-slab: var(--button);
+  --fill-on: var(--bg);}
+
+/* ══ Tilt ═══════════════════════════════════════════════════
+   A picture card that gives under the pointer. Almost nothing
+   is here: the rotation, both gradients and the shadow are
+   written per frame from the pointer's position, and a rule
+   in this file that also had an opinion about any of them
+   would be a second author. What is left is the things that
+   are true whatever the pointer is doing. */
+.tlt {
+  position: relative;
+  /* The frame is what the pointer is measured against and it
+     is deliberately the ONLY thing in here that never moves.
+     The perspective lives on it rather than on the card for
+     the usual reason: on the card itself, `perspective` is
+     applied per element and the vanishing point rides along
+     with the rotation instead of staying put in the room. */}
+
+.tlt-card {
+  position: absolute;
+  inset: 0;
+  background-color: var(--surface-2);
+  background-size: cover;
+  background-position: center;
+  /* `cover` and a fixed frame, so the crop is the one
+     scripts/butterfly.sh already made rather than a second
+     one on top of it */
+  overflow: hidden;
+  /* NO `will-change`. It would hold a composited layer for
+     every copy of this block on the wall, permanently, to
+     save one frame on a hover that may never come — the same
+     bookkeeping CLAUDE.md objects to for permanent rAF. The
+     browser promotes this on its own once the transform
+     starts moving. */}
+
+/* ── the dent and the rim ───────────────────────────────────
+   One element, two gradients, both placed from the pointer —
+   the dark one under it and the light one at its mirror. It
+   inherits the corner rather than being told one, so the knob
+   only has to reach the card. */
+.tlt-sheen {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;}
+
+/* ── Bencho token → this project ───────────────────────────
+   --surface-2 is the card's own ground under its picture. The
+   project's raised surface for that job is --panel (the impact
+   cards), and there is no global --surface-2, so it is set on
+   the component root only. */
+.tlt {
+  --surface-2: var(--panel);}
+
+/* D — command bar */
+/* the group lays the two bodies out; the library moves them */
+.cmd-goo {
   display: flex;
-  flex-direction: column;
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+  align-items: center;
+  gap: 8px;}
 
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-}
+/* NO 1/k CORRECTION HERE. These are morph items, and morph
+   positions its bodies with a CSS transform in layout pixels,
+   which the card's own scale then handles correctly. The
+   correction exists for `move`, which measures screen pixels —
+   applying it to morph shrinks the silhouette below the
+   element it belongs to. */
+.cmd-slot { display: block; }
 
-a {
-  color: inherit;
-  text-decoration: none;
-}
+.cmd {
+  position: relative;
+  display: flex; align-items: center;
+  gap: 6px;
+/* ── THE BAR AND THE BUTTON TRADE ONE WIDTH ───────────────
+     Both states add up to the same 320 the component sits in —
+     274 + 8 + 38 at rest, 266 + 8 + 46 once the button opens
+     out. Holding the total fixed is not tidiness: this is a
+     card on the wall, and a box that changes size re-packs
+     every column around it. So the bar gives up exactly what
+     the button takes, and the outer box never moves. */
+  /* (this project: the same sums against --cmd-w, the width the
+     component is given — 320 still gives exactly 274 and 266) */
+  width: calc(var(--cmd-w, 320px) - 46px);
+  transition: width 340ms cubic-bezier(0.24, 1.34, 0.38, 1);
+  /* smaller: 54 was a bar you could have put two lines in */
+  height: 56px;
+  /* the right side is padded for the mic rather than for text */
+  /* (this project: the mic is gone, so the field's right edge gets the
+     same breathing room as its left) */
+  padding: 0 20px 0 20px;
+  border-radius: var(--cmd-r, 28px);
+  /* no background: <Liquid> paints the bar, and a fill here
+     would lay a hard rectangle over the liquid edge exactly
+     where the button is leaving it */
+  background: none;
+  isolation: isolate;}
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
+.cmd[data-has="true"] { width: calc(var(--cmd-w, 320px) - 54px); }
+
+/* ── NOT THE STROKE'S ANY MORE, THE GLASS'S ─────────────────
+   Stroke is gone from this component, so on a flat surface
+   this border stays transparent and draws nothing. It is kept
+   because the GLASS surface needs a box to paint its lit rim
+   into — a gradient cannot go in a border without a second
+   element to carry it, and this is that element. Delete it and
+   the bar loses its rim under glass. */
+.cmd::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1px solid transparent;
+  pointer-events: none;}
+
+.cmd input {
+  flex: 1; min-width: 0;
+  border: 0; outline: none; background: none;
+  font-family: var(--font-ui);
+  font-size: 15px;
+  letter-spacing: -0.005em;
+  color: var(--fill-on, var(--ink));}
+
+.cmd input::placeholder { color: var(--ink-5); }
+
+/* (this project: the .cmd-mic rules are gone with the mic) */
+
+.cmd-go {
+  position: relative;
+  flex: none;
+  width: 38px; height: 38px;
+  border: 0; border-radius: 999px;
+  /* NOTHING AT REST. Tucked inside the bar it is a body for
+     the goo to split from and nothing more — no disc, and its
+     glyph is hidden too, so what you see is one bar. */
+  background: none;
+  color: var(--fill-slab, var(--on-ink));
+  cursor: pointer;
+  display: grid; place-items: center;
+  opacity: 0;
+  transition:
+    background 220ms ease, color 220ms ease, opacity 160ms ease,
+    width 340ms cubic-bezier(0.24, 1.34, 0.38, 1),
+    height 340ms cubic-bezier(0.24, 1.34, 0.38, 1),
+    transform 320ms cubic-bezier(0.24, 1.34, 0.38, 1);}
+
+/* it arrives at full size, into the room the bar just made */
+.cmd-go[data-on="true"] { opacity: 1; width: 46px; height: 46px; }
+
+/* ── THE SAME MATERIAL AS THE BAR ───────────────────────────
+   It was an ink disc with a light glyph, which made the thing
+   that splits off a different object from the thing it split
+   FROM — and the goo's whole claim is that they are one body
+   separating. Same fill as the field, ink glyph, and the seam
+   between them while they neck is now continuous. */
+.cmd-go[data-on="true"] {
+  background: var(--fill-slab, var(--board));
+  color: var(--fill-on, var(--ink));}
+
+/* ── TWO STATES, AND NEITHER HAS AN EDGE ────────────────────
+   Focused with an empty field, the button is the same material
+   as the bar it just split out of: present and offered, asking
+   for nothing. The first character makes it the thing you are
+   about to press, and it says so by filling — the only solid
+   object in the component, which is what a primary action is.
+
+   Filled, not outlined, in both: the only edge either state
+   can ever have is the hairline the Stroke switch draws
+   below. */
+.cmd-go[data-armed="true"] {
+  background: var(--fill-on, var(--ink));
+  color: var(--fill-slab, var(--on-ink));}
+
+.cmd-go:active { transform: scale(0.92); }
+
+/* ── the rim ─────────────────────────────────────────────────
+   Every glass surface already drew a 1px ring in one flat
+   colour. A flat rim is the single clearest tell that a thing
+   is a rectangle with a border rather than a pane with
+   thickness: real edges are lit unevenly, and evenly lit ones
+   read as ink.
+
+   So the ring becomes a gradient — bright at the corner
+   facing the light, almost nothing along the sides that run
+   edge-on to it, and a second weaker catch at the far corner
+   where the light has come through the pane and out again.
+
+   Painting a gradient in a border needs the border box filled
+   and the padding box punched out of it, which is what the
+   two masks do: one covers the whole element, one covers only
+   the inside, and compositing them apart leaves the rim. It
+   is the only way to get a gradient into a border without a
+   second element to draw it on.
+
+   Only under glass. Flat keeps its honest hairline, which is
+   what a solid pane should have. */
+[data-surface="glass"] .lab::before,
+[data-surface="glass"] .gcard::before,
+[data-surface="glass"] .cmd::before,
+[data-surface="glass"] .gpane::before,
+[data-surface="glass"] .gnav::before,
+[data-surface="glass"] .gdock::before {
+  border-color: transparent;
+  background:
+    linear-gradient(
+      142deg,
+      rgba(255, 255, 255, var(--g-edge-hi, 0)) 0%,
+      rgba(255, 255, 255, var(--g-edge-lo, 0)) 26%,
+      rgba(255, 255, 255, var(--g-edge-lo, 0)) 62%,
+      rgba(255, 255, 255, var(--g-edge-far, 0)) 100%
+    ) border-box;
+  -webkit-mask:
+    linear-gradient(#000 0 0) padding-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) padding-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;}
+
+/* ── thickness ───────────────────────────────────────────────
+   Three marks, and between them they are the difference
+   between a pane and a wash.
+
+   The lit line along the top is where light enters the edge of
+   a real sheet. The ring is the sheet's own thickness seen
+   from straight on. The shadow underneath says the pane is
+   ABOVE the page rather than painted onto it — which is the
+   one thing a backdrop-filter alone can never say, because a
+   filter has no depth.
+
+   All three ride on --glass and are gone at zero, where the
+   fallbacks take over and the surface is flat. */
+[data-surface="glass"] .lab,
+[data-surface="glass"] .gcard,
+[data-surface="glass"] .cmd,
+[data-surface="glass"] .gpane,
+[data-surface="glass"] .gnav,
+[data-surface="glass"] .gdock {
+  box-shadow: var(--g-shadow,
+    /* the top face, catching light through the thickness of
+       the pane — inside the rim, not on it */
+    inset 0 1px 0 rgba(255, 255, 255, var(--g-spec, 0)),
+    /* And what it casts on the page below — wide and soft
+       rather than tight and close. It is a different claim
+       about how far the pane floats, and the softer one is
+       what reads as a sheet resting above the page instead of
+       a card stuck to it. */
+    0 10px 40px rgba(var(--shadow-rgb), var(--g-lift, 0)));}
+
+[data-surface="flat"] .lab,
+[data-surface="flat"] .gcard,
+[data-surface="flat"] .cmd,
+[data-surface="flat"] .gnav,
+[data-surface="flat"] .gdock {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;}
+
+/* ── a flat rim, for comparison ──────────────────────────────
+   Reverts the graded rim to one colour all the way round —
+   which is what almost every published glass snippet does,
+   Apple's own included. It is here so the two can be judged
+   against each other on the same ground rather than taken on
+   trust, and it applies only inside a test board. */
+.gtry[data-rim="flat"] .lab::before,
+.gtry[data-rim="flat"] .gcard::before,
+.gtry[data-rim="flat"] .cmd::before,
+.gtry[data-rim="flat"] .gpane::before,
+.gtry[data-rim="flat"] .gnav::before,
+.gtry[data-rim="flat"] .gdock::before {
+  border-color: var(--try-edge, transparent);
+  background: none;
+  -webkit-mask: none;
+  mask: none;}
+
+/* ── Bencho tokens → this project ───────────────────────────
+   Already global here, with the same jobs: --ink, --font-ui
+   (Figtree, the UI face) and --bg (the white ground).
+   Set on the component root only, because nothing global does
+   the job: the bar is a button-like surface, so it wears the
+   dark "Let's talk" button and the mascot — dark body, white
+   type — and a white bar would vanish into this white page.
+     --fill-slab  → --button  (the bar and the button's body)
+     --fill-on    → --bg      (type and glyph on that body)
+     --board      → --bg      (fallback ground)
+     --on-ink     → --bg      (glyph on ink)
+     --ink-5      → white at 50%, the placeholder on the dark bar
+     --ink-4      → white at 70% (only the removed mic used it)
+   The glass tokens (--g-edge-far, --g-edge-hi, --g-edge-lo,
+   --g-lift, --g-shadow, --g-spec, --shadow-rgb) and --try-edge
+   are read only under [data-surface="glass"] and .gtry, which
+   this site never sets, so they are left undefined and inert. */
+.cmd-root {
+  --fill-slab: var(--button);
+  --fill-on: var(--bg);
+  --board: var(--bg);
+  --on-ink: var(--bg);
+  --ink-5: rgba(255, 255, 255, 0.5);
+  --ink-4: rgba(255, 255, 255, 0.7);}
+
+/* (this project: with something in the bar's left end, the field's left padding
+   shrinks so the leading control sits where the padding was) */
+.cmd[data-lead="true"] { padding-left: 8px; }
+
+/* The zine strips' fold angle (ZineField). Registered so it can transition and
+   animate as an angle rather than snapping. */
+@property --fold {
+  syntax: "<angle>";
+  inherits: true;
+  initial-value: 30deg;
 }

@@ -1,0 +1,321 @@
+{
+  "site": {
+    "name": "Rebecca Sun",
+    "email": "beccasun@umich.edu"
+  },
+  "timeline": [
+    {
+      "date": "2026",
+      "title": "Loop",
+      "detail": "Product design and frontend"
+    },
+    {
+      "date": "Spring 2026",
+      "title": "Embedder",
+      "detail": "Design engineering"
+    },
+    {
+      "date": "2025",
+      "title": "A/Squared",
+      "detail": "Member, product teams"
+    },
+    {
+      "date": "2025",
+      "title": "DPSS",
+      "detail": "Design and research"
+    },
+    {
+      "date": "2025",
+      "title": "AgentMail",
+      "detail": "Product engineering"
+    },
+    {
+      "date": "2024",
+      "title": "Nezha",
+      "detail": "Founding design"
+    }
+  ],
+  "about": "## Who Rebecca is\nRebecca Sun is a design engineer studying UX and AI at the University\nof Michigan. She currently does product design at Loop Financial.",
+  "projects": [
+    {
+      "slug": "agentmail",
+      "title": "AgentMail",
+      "subtitle": "One outreach email, shown from three sides: the salesperson, the system, and the person who receives it.",
+      "year": "2025",
+      "role": "Product design",
+      "status": "",
+      "scope": [
+        "Interaction design",
+        "Prototyping"
+      ],
+      "outcome": [
+        "Demo prototype delivered"
+      ],
+      "tags": [
+        "Weekend Project",
+        "AI Design",
+        "Developer Tools"
+      ],
+      "cover": "/knowledge/agentmail.png",
+      "body": "A weekend on the \"Try our product\" section of the marketing site. The question I was designing against: how do you show an agent sending email without it looking like a screenshot of a chatbot? A toggle switches whose screen you are looking at. Same email throughout. The toggle switches vantage points, not features. Three tabs for one event, so the demo argues the thing works end to end rather than listing what it can do. The recipient's view has no product in it. The client tab is a plain Gmail thread. Putting AgentMail chrome on that screen would contradict the promise, which is that the mail arrives as ordinary mail. The SDK rail never leaves. Code sits beside every state, scrolling against the demo, so a developer evaluating this never loses sight of what they would actually be writing. The manager's nudge starts the clock. A pinned message asking for fifty sales by end of day gives the demo a reason to be running. Without it, an inbox full of sent mail is just an inbox. - The three states do not animate between each other. They should read as one continuous scene viewed from three angles. - No mobile layout. The SDK rail and the inbox panel cannot sit side by side on a narrow screen. - The email copy is written to look plausible rather than tested against anything a salesperson would actually send."
+    },
+    {
+      "slug": "dpss",
+      "title": "DPSS",
+      "subtitle": "Michigan's public safety division was hiring, and the hardest part of applying was finding out how.",
+      "year": "2025",
+      "role": "Product design",
+      "status": "",
+      "scope": [
+        "UX research",
+        "Design system",
+        "Prototyping"
+      ],
+      "outcome": [
+        "Personas, wireframes, 3 prototypes",
+        "Presented at final review"
+      ],
+      "tags": [
+        "Design System",
+        "Public Sector",
+        "Client Work"
+      ],
+      "cover": "/knowledge/dpss.png",
+      "body": "The University of Michigan's Division of Public Safety and Security runs police, security and emergency management across Ann Arbor, Dearborn and Flint. They came to Atlas Digital, a student consultancy at Michigan, to rebuild the hiring experience they call \"A Great Place to Work.\" Five of us worked on it: a project manager, a lead designer, and three designers. I was one of the designers. I owned the hiring landing page and the design system, and shared the job listing and saved-applications screens with another designer. We audited the existing site and worked through the DPSS team's own view of who they were trying to reach. Three problems kept surfacing. The copy repeated itself across pages without answering the question an applicant actually has. Navigation gave no reliable sense of where you were. And the application flow put a university login in front of external candidates, which is a wall standing exactly where DPSS said it least wanted one. None of it was a visual problem. It was a sequencing problem: what a candidate needs in order to decide sat behind a process built for people who had already decided. The strongest move was the least decorative. DPSS hires in four phases: first interview, panel interview, background check, administrative panel. Each carries a genuine duration, and background investigation for a public safety role runs to weeks rather than days. That timeline used to be invisible until you were already inside it. Putting it on the landing page as four labelled phases with their durations stated answers the question every candidate has and most career pages avoid printing. It also reframes a slow process as a thorough one, which is the honest reading for a division that runs armed patrol. On the listing side the constraint was volume. DPSS posts a wide spread of roles, from operations analysts to control systems technicians to safety outreach. Filters for location, job type and date posted do the narrowing, and each posting can be saved or shared from its own row. Saving is the part that answers the login wall. A candidate can gather what interests them and track what they have submitted through a \"My Applications\" tab, without an account being the price of entry. The risk in a team this size is four plausible interfaces that do not look related. I built the design system that held them together: the palette anchored on Michigan maize and navy, three button tiers, a type scale, and the components that recur across every screen. It is not a large system and it did not need to be. It needed to exist early enough that nobody had to invent a button. We delivered personas, wireframes, three high-fidelity prototypes and the design system, presented to DPSS at a final review. The engagement was scoped to design rather than build, so what DPSS took away was an argument in prototype form for what their hiring experience could be. Feasibility shaped it throughout. We asked in every client meeting what their platform and their team could actually carry, because a recommendation that cannot be built on the system they already run is not a recommendation. The most useful thing I designed was a table of durations. Not the hero, not the palette. Telling candidates that a background check takes about two weeks is the kind of detail organisations omit by reflex, and stating it publicly does more for trust than any amount of photography. A design system's value is in when it arrives, not how complete it is. Mine was small. It landed before the other screens were drawn, which is the only reason four designers' work reads as one product. Public sector constraints are the brief, not an obstacle. Accessibility requirements and the limits of the existing platform were fixed before we started. Treating them as the shape of the problem rather than a tax on it is what made the handoff something DPSS could act on."
+    },
+    {
+      "slug": "embedder",
+      "title": "Embedder",
+      "subtitle": "A hardware-aware AI coding tool that nobody could tell was hardware-aware. Twenty usability sessions on why, and seven recommendations to fix it.",
+      "year": "Spring 2026",
+      "role": "UX research & product definition",
+      "status": "",
+      "scope": [
+        "UX research",
+        "Usability testing",
+        "Product definition"
+      ],
+      "outcome": [
+        "Seven recommendations delivered",
+        "Shaped the next onboarding round"
+      ],
+      "tags": [
+        "UX Research",
+        "Developer Tools",
+        "Client Work"
+      ],
+      "cover": "/knowledge/embedder.svg",
+      "body": "Embedder is a Y Combinator-backed AI assistant built for firmware and embedded systems work. General coding tools are software-first: they have no datasheet awareness, no register-level understanding, no idea what board you are talking to. Embedder does. It reads hardware context and runs in the terminal alongside the device, which is the entire reason it exists. None of that was visible when you installed it. Embedder's founder brought this to Atlas Digital Technology Consulting at the University of Michigan as a research question rather than a design brief. Not \"make this prettier\" but \"why do people bounce off it, and what is realistic to promise them?\" Six of us worked on it from February to April 2026. I was one of two project managers, and I owned the client relationship and scope, designed the research, ran sessions and coded transcripts, and worked on the synthesis and the final report. Embedder used the findings to shape their next round of onboarding updates. The research also fed two decisions beyond the immediate interface: whether a native app was worth building, and how to structure user research going forward so they could keep doing this without us. That last one is the outcome I did not expect and value most. We were hired to answer a question about onboarding. What the client also took from it was a way of asking questions. The founder's opening ask was product-market fit across 50 to 100 participants, weighted toward professional automotive engineers in Detroit. Data saturation in qualitative work tends to arrive around twenty, and we had ten weeks and six people, most of us new to firmware. Chasing the larger number would have bought us a thinner version of the same answer. So we cut it. The engagement became onboarding and feature discovery, scoped to the first ten minutes, and the participant target came down to a number we could actually reach and code properly. I took that back to the client rather than quietly under-delivering on the original. What we ran: - Twenty usability sessions, remote over Zoom, with CE, EE and robotics students and firmware engineers. Participants installed Embedder themselves and worked through tasks built on real embedded debugging scenarios: I2C, Timer and PWM, EXTI interrupts. - A comparative analysis against Cursor, Codex and Claude Code, scored on twelve criteria drawn from the interviews rather than from a feature list. - A heuristic evaluation of both the terminal and the VS Code extension, run in parallel against Nielsen's heuristics. Before any of it, I spent a session with an embedded engineer learning what firmware development actually involves end to end. The client had been explicit that general CS majors were not suitable participants because they would not know the specifics. The same applied to us. A researcher who cannot tell a serial monitor from a chat panel cannot hear what a participant is telling them. Users described Embedder as a \"Claude wrapper\", as \"just a chat box\", as something you \"could replicate on your own quite easily\". One put it flatly: they saw no advantage in using Embedder over Claude Code in any of the trials they had just run. They were wrong. But they were wrong for a reason the product handed them. Over 60% never found slash commands, mode switching or the attachments menu on their own. Half flagged the Monitor or console as confusing, unable to tell the device-facing surface from the AI chat. One participant said the Monitor confused them because it sat separate from everything else and they still could not work out what it did. Another only made sense of it by mapping it onto something he already knew, assuming it must be a serial monitor. None of this was surprising on its own. Onboarding is rough in most early products, and we expected to find friction. What made it worth the ten weeks was the second-order effect. When the differentiator is invisible, users do not conclude the product is confusing. They conclude it is redundant, and price it against tools they already have for free. That reframed the whole engagement. We came in treating this as a usability problem and left describing it as a positioning problem expressed through the interface. The features mostly worked once people found them. Nothing in the product argued for itself. The heuristic evaluation sharpened it further. Embedder is built for developers who live in a terminal, and yet filtering, clearing, switching panels and approving permissions all required a mouse. A tool that claims to be built for developers and then breaks their most basic expectation is not just adding friction. It is telling them it does not understand them. We delivered seven, each tied to the sessions and heuristics that produced it rather than to taste. The load-bearing ones: - A guided first-run flow, plus a walkthrough video on the marketplace listing. Users arrived with no mental model of the console, the chat or the hardware requirement, and competitors already set the expectation of being handed one. - Separate and relabel the two surfaces. \"Send to device\" against \"Ask Embedder\", so nobody has to guess which panel talks to hardware. - A keyboard path to everything. A command palette, shortcuts and autocomplete for slash commands, so the differentiated features are reachable by the users most likely to appreciate them. - Align to the conventions users already carry. Their mental models come from Claude Code, Copilot, Cursor and the Arduino IDE. Embedder does not need to invent interaction patterns, and every place it did cost a feature discovery. - Start people in Plan mode. Act mode executed file changes by default and most participants did not know it was on. A review layer nobody knows about is not a review layer. The through-line is that almost none of this asks for new features. It asks for the existing ones to be legible. This is the honest limit of the study and it belongs in the middle of the page rather than buried in an appendix. Sessions ran remotely with no board connected. Participants installed Embedder, explored the interface and worked through debugging scenarios as written tasks, but never watched the tool actually read a device. Which means we studied the first ten minutes thoroughly and never studied the moment the product proves itself. Our central finding is that users could not see what made Embedder different. We had built a study in which the most convincing evidence was unavailable to them. Some part of the \"wrapper\" reaction is a real product problem and some part is an artifact of how we tested, and this study cannot separate the two. I flagged it in the report rather than letting the findings read as stronger than they were. Get hardware in the room, or say plainly what the absence costs. If I ran this again I would fight harder for even two or three sessions with a board connected, as a check on the other twenty. The constraint was real, and I still under-weighted how much it shaped the headline finding. Learn the domain before writing the guide, not during. The client ruled out participants who did not know firmware. Applying that same bar to the research team changed the questions we asked. You cannot follow up on an interesting answer you did not recognise as interesting. A scope cut you take to the client is a different object than one you make quietly. Narrowing from a hundred participants to twenty could have read as falling short. Framed as a choice, with saturation as the reasoning, it became the thing that let the work go deep enough to be worth acting on. The most durable deliverable was not the report. They used the findings for onboarding, which is what we were hired for. They also took a structure for running research themselves, which nobody asked for and which outlasts every specific recommendation in the document."
+    },
+    {
+      "slug": "loop-careers",
+      "title": "Loop careers page",
+      "subtitle": "Loop's hiring page told candidates nothing about how Loop hires. Three directions, built as working pages.",
+      "year": "2026",
+      "role": "Product design & frontend",
+      "status": "Prototype, in review",
+      "scope": [
+        "Marketing site",
+        "Brand",
+        "Prototyping"
+      ],
+      "outcome": [
+        "Three directions built",
+        "In review"
+      ],
+      "tags": [
+        "Marketing Site",
+        "Brand",
+        "Prototyping"
+      ],
+      "cover": "/knowledge/loop-careers.png",
+      "body": "Loop's existing careers page listed open roles. Everything a candidate actually decides on was missing: what the company values, how the interview process runs, what the benefits are, whether the team is in an office, what it is like to work there. Culture, process and benefits were all opaque. Loop's own position is that it is transparent in its job descriptions and shares salary upfront. The page was not making that case, which is a strange thing for a recruitment page to fail at. Same content and section order across all three: hero, guiding principles, meet the team, an FAQ covering the things the old page hid, filterable open roles, and a closing block for people who do not fit a current listing. They differ in visual treatment, and each commits to one signature material rather than mixing. One runs on gradient surfaces in Loop's deep green. One uses frosted glass panels over photography. One is flat and close to monochrome, letting type scale carry the hierarchy. Building all three as real HTML rather than static comps meant the FAQ actually expanded, the role filters actually filtered, and the scroll behaviour from the hero CTA to the roles section could be judged rather than imagined. The featured teammate rotates. Leadership photos in a flat grid make a company look like an org chart. One person featured large with the rest as smaller cards below, rotating on a timer and promoting whichever card you click, gives every person a turn at full size without ranking anybody. It also means the block reads as people rather than as a directory. The FAQ is the argument, not the filler. Everything the old page hid became an accordion item: what we look for, how we work, what the culture is, how we hire. Putting \"we give the salary upfront\" in a page section commits the company to it in a way a job description does not. What I could not solve: real photography. Every person block is a labelled placeholder, and a hiring page whose warmth depends on photos of real people is only as good as the shoot that has not happened yet. The final build also happens in Webflow rather than in my code, so these three are the design argument and not the artifact that ships. Three finished pages beat one page and two directions described. Nobody in review had to imagine anything, and the conversation went straight to which one, which is the conversation I wanted. A recruitment page is a product surface. The FAQ is doing the same job as the decline copy in the onboarding redesign: answering the question somebody is actually asking, at the moment they are asking it, instead of making them find out later."
+    },
+    {
+      "slug": "loop-design-agent",
+      "title": "A design agent that checks its own work",
+      "subtitle": "A self-correcting loop that generates screens against Loop's real component library, type-checks them, renders them headless, and fixes its own failures.",
+      "year": "2026",
+      "role": "Design engineering",
+      "status": "Prototype, documented for handoff",
+      "scope": [
+        "AI tooling",
+        "Storybook integration",
+        "Prototyping"
+      ],
+      "outcome": [
+        "Prototype documented for handoff",
+        "Component gaps catalogued"
+      ],
+      "tags": [
+        "AI Design",
+        "Developer Tools",
+        "Storybook"
+      ],
+      "cover": "/knowledge/loop-design-agent.svg",
+      "body": "A sales rep needs a one-pager. An engineer needs a quick UI mock to argue about. A recruiter needs a job posting laid out. Each of these is a small ask and none of them is a good use of the only designer in the company. The obvious answer in 2026 is to point an LLM at it, and the obvious problem with that answer is that models generate UI code that looks right and does not work. They invent component names. They write markup that approximates your design system instead of importing it. Prompting harder does not fix this, because the model has no way to find out it was wrong. So the premise of this project is not a better prompt. It is a loop: the agent writes a screen, the machine checks it, failures go back in, and it tries again until it passes. Worth stating plainly, because it shaped everything about how this got built: I am a product designer, not an engineer. This project is also a record of learning the terminal, Node, git, and a production Next.js monorepo while building something real inside it. The harness is Node and TypeScript. A run goes: - Generate. The spec plus a selected component list goes to Claude, which returns React and TSX. - Compile. The output is built and type-checked against Loop's real repo, not a sandbox. - Test. A headless browser loads the resulting story in Storybook and checks whether it actually rendered or threw. - Correct. Any failure from either check, type error or runtime error, is fed back into the next attempt. Retries are capped, and the run fails loudly rather than quietly succeeding. The component vocabulary comes from Loop's live Storybook manifest, 114 real components. The agent picks what a given screen needs and gets their real names, props and import paths, so it is composing Loop's library rather than describing something that resembles it. It is also pointed at the repo's own AGENTS.md, which spells out in CI-blocking detail what the codebase requires: semantic tokens only, the shared Button, real imports, no invented components. Storybook is the render surface for a specific reason. The production app sits behind an AWS Cognito auth wall that would have blocked automated rendering entirely, and Storybook renders the same components in isolation with no auth. This is the lesson the project kept teaching, in both directions, and it is the reason the verification layer looks the way it does. An early run reported success while writing an empty file. The script had swallowed a malformed model response and treated the absence of an error as a result. Fixed by failing loudly and dumping the raw response. Later, the loop type-checked clean, and it was clean because the agent had quietly fallen back to native HTML instead of Loop's components. The green check meant \"it avoided the real components\", which is the precise opposite of the goal. I caught it by reading the agent's own flagged suggestions rather than its status. Then the reverse. The render check started failing on every attempt with the same error regardless of what code was generated, which is the signature of a broken harness rather than broken output. The screen was rendering fine in a browser. The detector was matching framework console noise through a selector that was too broad. Keying detection on Storybook's actual failure text fixed it. A check reporting failure is no more trustworthy than a green check reporting success. Verify what actually happened. The first time a generated screen rendered, the Button and the AlertBanner worked and the Select threw. Cannot read properties of undefined (reading 'id'), deep inside react-aria-components' collection logic, on code that had type-checked clean. That is exactly the gap a type checker cannot close. The contract was valid and the runtime behavior was not, because Loop's Select is a compound React Aria component with a correct usage pattern that is not inferable from its type signature. Rather than write it up as a known limitation, I extended the loop across it in three layers. Detection: after type-check, drive a headless browser to the story's Storybook iframe and find out whether it rendered or threw. Feedback: route render errors into the same correction loop that already handled type errors, so a runtime failure is just another attempt. Grounding: hand the agent the repo's own select.stories.tsx as a worked example, so instead of guessing the React Aria pattern it copies the one Loop already uses. That third layer is what actually fixed it, and it fixed the type subtlety at the same time. The eligibility screen now generates with three working Selects, the real AlertBanner, the real Button and three branching states, type-checking and rendering verified by machine, on the first attempt of the final run. Fetch to file over live MCP. The agent reads a fetched copy of the component manifest rather than querying the Figma or Storybook MCP server live. Simpler, reliable, and the same data. The cost is that the manifest goes stale and someone has to refresh it, so live MCP is documented as the upgrade for whoever owns this next. Invent but flag. The agent builds only what the spec asks for. When it thinks something is missing, a restricted-industry gate on an eligibility screen for example, it surfaces that separately for a human instead of adding it. Good ideas stay visible without silently becoming the spec. Type-check first, render-check second. I shipped the check that catches the most failures before building the harder one. Which turned out to be the right order, since the render check is what exposed the Select problem and I would not have known to look for it earlier. A branch and a scratch folder. All of it runs in a clearly scoped location on a git branch so the agent cannot pollute the real repo. Not interesting, and the reason I could move fast inside a production codebase. Trying to build real screens out of Loop's real components surfaced gaps in the component library that nobody had catalogued: missing typography and layout primitives, tokens defaulting to black, components whose correct usage is not discoverable from their types. The agent found these by failing on them. That is the connection back to the reconciliation work. The design agent and the Figma to Storybook pipeline are one system rather than two: the pipeline is the infrastructure and the agent is what runs on top of it. Every gap the agent hits is a gap a human designer would have hit more slowly and reported less precisely. Diagnosis discipline mattered more than building skill. Almost every hour I lost went to a status that was lying to me in one direction or the other. The habit that got me through was refusing to trust a checkmark until I knew what it had actually checked. Grounding beats prompting. Every time the agent got something wrong, the fix was giving it Loop's real code rather than better instructions. The manifest, AGENTS.md, and eventually a worked example story. Prompt engineering was never the answer. Build for the handoff you expect. The bet was always that if this proved out, an engineer would own it. Knowing that from the start changed what I wrote down, and it is the reason the upgrade path is documented instead of just known by me."
+    },
+    {
+      "slug": "loop-design-support",
+      "title": "Loop design support",
+      "subtitle": "The one-off requests nobody plans for, and what they keep revealing about the system.",
+      "year": "2026",
+      "role": "Product design",
+      "status": "Ongoing",
+      "scope": [
+        "Email design",
+        "Marketing site",
+        "Brand primitives"
+      ],
+      "outcome": [
+        "Gaps fed back into the system",
+        "Ongoing"
+      ],
+      "tags": [
+        "Email Design",
+        "Design System",
+        "Marketing Site"
+      ],
+      "cover": "/knowledge/loop-design-support.svg",
+      "body": "Alongside the four named projects, the frontend team, sales and leadership surface design needs continuously: a screen that was never specced, a tricky interaction, a deck that needs assembling, a one-pager for a customer call. These are tracked in Linear under a design label specifically so the pattern of what gets asked for is visible rather than anecdotal. Three of them were substantial enough to be their own work. Verification codes, payment confirmations, statement notifications, KYC updates. Each had accumulated its own layout, and together they made a regulated financial institution look improvised at exactly the moments a customer is checking whether something went wrong. The work is one template with variable slots rather than a set of designs: designed in Figma, built as HTML, and wired into SendGrid as a dynamic template so an engineer adds a new email type by supplying content rather than by building a layout. Tested across the clients that break email, which means Gmail, Outlook on desktop, Outlook on web, Apple Mail and iOS Mail. The constraint that shaped it is that email HTML cannot use the design system. No CSS custom properties, no shared components, no modern layout. Every token has to be inlined by hand, which makes the template a hand-maintained copy of the system that will drift from it the moment the system moves. Naming that out loud was more useful than pretending otherwise, because it makes the template something to review when tokens change rather than something to forget. Loop's site presents three subscription plans. Sales needed the All In platform option presented alongside them for a specific client, with its description held word for word, which meant a comparison layout that accommodates a fourth column without implying the fourth is simply the biggest of four tiers. This is the reason the support work is on the portfolio at all rather than filed as miscellaneous. The instruction I was given at the start of the internship was to treat every incoming request as a test of the design system: if an existing component cannot serve it, that is a signal the system needs to grow. It holds up. The pricing comparison needed a table variant that did not exist. The email template exposed that the token layer stops at the boundary of the product. The decks needed brand primitives that lived in nobody's file. Each of those went back into the reconciliation work as a gap rather than getting solved once and forgotten, which is the difference between doing design support and building a design system while doing design support."
+    },
+    {
+      "slug": "loop-design-system",
+      "title": "Reconciling Loop's design system",
+      "subtitle": "Loop's components lived in code with no design file to match. I rebuilt the system backwards out of Storybook, then audited it against itself.",
+      "year": "2026",
+      "role": "Design systems",
+      "status": "In progress",
+      "scope": [
+        "Design tokens",
+        "Component audit",
+        "Figma variables"
+      ],
+      "outcome": [
+        "16 audit findings",
+        "9 fixed, 7 escalated"
+      ],
+      "tags": [
+        "Design System",
+        "Design Tokens",
+        "Storybook"
+      ],
+      "cover": "/knowledge/loop-design-system.png",
+      "body": "The brief I was given was to build the canonical Figma file: fork the Untitled UI kit, restyle it into Loop's house style, publish it as a shared library, and give the company somewhere to point when anyone asks what the heading style is. The problem with that brief is that Loop already had an answer to those questions. It was just written in CSS. Four years of shipped product had accumulated a real design system in theme.css and variables.css, and the components consuming it were live in front of four thousand businesses. A new Figma file would not have been the source of truth. It would have been a second one. I spent my first three days in 1:1s with the frontend engineers, a technical PM, and my manager, mapping how design actually reached production. What I found was that there was no handoff to speak of. Engineers designed in code, and the components drifted from each other because nothing held them to a common definition. So the direction flipped. Instead of building a Figma library and pushing it toward code, I forked from Storybook into Figma, component by component, and treated every difference between the two as a finding rather than an error to quietly fix. The problem was never where the components lived. It was that nothing was comparing them. This reframe is the whole project. Putting the two side by side is what makes drift visible, and visible drift is fixable drift. Both engineers I ran it past backed it the same afternoon. I compared three sources: the design-system summary I had written as forward-looking intent, the live token files in the repo, and an earlier DTCG token export. Every value quoted below is from the code, with a file and line, because a reconciliation nobody can verify is just an opinion with a table. What came out of it, in severity order: - Status color forks by component. The token layer resolves success to Tailwind green 00a63e. The brand layer defines --semantic-green 30ac2e, and AlertBanner and ErrorState consume that one. Whether \"succeeded\" is one green or the other depends on which screen you land on. Same story for the two reds. - Typography disagrees with itself in three places. The documented direction is DM Sans and DM Mono. The code loads Inter and Roboto Mono. Articulat CF, the legacy face, is still attached to . The type scale matched perfectly, which is what made the family mismatch easy to miss. - Dark Green is a brand primary with no token. 02271B is in the brand guidelines and nowhere in the code. - The greyscale is numbered in opposite directions. Brand guidelines say Grey 45 is darker than Grey 35. variables.css says the reverse. Both are in use. - The semantic layer is doubled. --color-bg- and --background-color- mirror each other for most roles, which is the exact drift the project exists to kill, reproduced inside the token file. None of this was surprising. A four-year-old codebase with no design owner is going to drift, and I would have bet on most of these before I opened a file. What made the audit worth doing was not discovering that drift existed. It was that half of these are shipping defects rather than documentation problems, and you cannot tell which half without checking every value against the code. The worst finding needed math to confirm. Loop's brand ramp is not authored by hand. It is derived in OKLCH from a single anchor, Loop Green 045B3F, with each step moving lightness by 0.1 and clamping at the ends. Loop Green measures L 0.418. Five steps down from the anchor is L 0.018, and six is zero. So brand-900 and brand-950 both compute to pure black, and brand-800 lands at 000d00, which is black with a rumour of green in it. --color-text-brand-primary is aliased to brand-900. Loop's primary brand text renders black. The fix is not a clamp. Clamping the bottom of the ramp keeps it black, it just stops it going further. The dark end has to be re-spaced with smaller per-step deltas so it stays chromatic all the way down, and the natural place to land it is the Dark Green that was already a brand primary and already missing from the code. 02271B measures L 0.243, which is lighter than the current computed brand-700, so this is a genuine re-derivation rather than a tweak. The audit produced sixteen findings. I tagged each one with who has to move: correct the document, correct the code, or an owner has to pick. Nine were unambiguous and I wrote the fix. Seven were real forks with no technically correct answer, and I did not decide those. Whether natural-grey- gets retired in favour of Tailwind neutral is a brand call. Which direction the grey numbering runs is a convention that other people's muscle memory depends on. Which green means success is a decision someone has to still agree with in two years. I wrote them up as a pick-one list with a recommendation each and took them to the owner, which took longer than deciding unilaterally and is the only reason the decisions will hold after my internship ends. What exists now: an audit of the 260 color tokens in Storybook, a Figma variables library with primitives and semantic light and dark mappings built from the reconciled values, and light and dark screenshots of every staging page mapped back to the Storybook components that produced them. The typography change is the first piece to go out internally. Source of truth does not mean correct. The rule I set was that Storybook wins where the two disagree, and it is a good rule, but the ramp finding is a case where the source of truth was the thing that was broken. Deciding who has to move per finding turned out to matter more than deciding which artifact ranks higher. The boring findings were the expensive ones. A duplicate alias family and an inverted numbering convention are not interesting to write up. They are also what makes a component library slowly stop being a system, because each one gives the next person a defensible reason to pick either. Talking to people changed the work more than iterating did. I inverted the entire project after three days of conversations, not after three days of design. That has been true of nearly everything I have done here since."
+    },
+    {
+      "slug": "loop-onboarding",
+      "title": "Loop onboarding",
+      "subtitle": "Most rejected applicants were never eligible in the first place. The redesign tells them in seconds instead of weeks.",
+      "year": "2026",
+      "role": "Product design",
+      "status": "In design and handoff",
+      "scope": [
+        "Flow design",
+        "Wireframes",
+        "Prototyping"
+      ],
+      "outcome": [
+        "Handoff package delivered",
+        "Compliance decisions open"
+      ],
+      "tags": [
+        "Fintech",
+        "Compliance",
+        "Prototyping"
+      ],
+      "cover": "/knowledge/loop-onboarding.png",
+      "body": "Opening a Loop account means a KYB application: legal entity details, every director and beneficial owner over 25%, proof of operations, government ID for each person, expected payment volumes, and a stack of documents. It is long because it has to be. Loop is a regulated financial institution in Canada and compliance sets most of the fields. What compliance does not set is the order. The old flow collected all of it, then queued the application for human review, and the applicant found out days later whether Loop could serve their business at all. Cannabis, crypto, a Quebec sole proprietorship, no Canadian resident director: all of these are policy limits Loop knows about in advance, and all of them were being discovered at the end. I pulled the baseline before designing anything, from application decision data and the support and product analytics Loop already had. Thirty-nine percent of onboarding decisions were declines. The median wait for a decision was six business days and the ninetieth percentile was thirty-four. Around forty-two percent of people who started registration never finished it. And of the applicants who did get approved, the share who went on to activate their account had fallen from sixty-nine percent to forty-one. The last number is the one that reframed the project for me. The people in that gap had already been told yes. Something between approval and first use was losing customers Loop had already paid to acquire and already decided to accept. Then I went through the decline reasons themselves. Restricted industry, prohibited entity type, Quebec sole proprietorship, no Canadian director, applicant under 18, pre-revenue, spam. Nearly all of the top reasons are answerable from five questions, and none of them require a document. How might we tell someone we cannot serve them in seconds, instead of after six days and thirty uploaded files? The priority move of the redesign is a single screen placed before document upload and before anything reaches a human reviewer. Industry, a restricted activity checklist, province and entity type, whether at least one director is a Canadian resident, and whether the business is generating revenue yet. Everything downstream changed shape once that screen existed. Business details pre-fill from answers already given. The registry check runs automatically against public records to confirm the entity exists and is in good standing, which takes seconds and used to be part of what people waited days for. Ineligible applicants never enter the queue, so the queue itself gets shorter for everyone still in it. Screening also turned out to be the hardest part to design, because the branching kept growing. Businesses the registry cannot identify need conditional jurisdiction, entity type and CRA number steps. I ended up mapping the whole eligibility tree in FigJam as its own artifact, separate from the screens, because the logic stopped fitting in a linear flow. Front-loading the screening only helps if the rejection itself is decent. The old exits were generic. The redesign gives every terminal state reason-specific copy, an alternative where one exists, and a route to a human. It also separates three things the old flow treated the same way. A hard policy limit is a terminal exit. A borderline case, like a pre-revenue business, gets an honest heads-up and a choice: talk to someone first, or continue flagged for genuine review. Never a silent surprise decline later. An unreadable document is neither: it is a recapture loop with tips, not a rejection, and it never restarts the application. The same rule applies after submission. When review needs one more document, the screen asks for exactly that document inline and preserves everything else. And \"Under review\" is designed as a real screen rather than a gap: what is happening, an honest ranged estimate, what you can usefully do in the meantime, and how you will hear. A median six day wait with a ninetieth percentile of thirty-four cannot be a blank page. Watching where applications stalled, a pattern showed up that had nothing to do with eligibility. The person filling out the form frequently does not have all the answers. They need the CFO's numbers, a director's ID, a registration number somebody else has. So the application became something more than one person can work on. Invited owners and signers verify their own identity through secure email links on their own time, in parallel, and the applicant is never blocked waiting for them. Beyond that, any field, subsection, or whole page can be sent to a teammate: it locks, shows \"waiting for Priya to fill\", and can be revoked and taken back. The system still records who entered and edited what, because compliance needs that audit trail regardless of how many people touched the form. Getting there took a wrong turn first. I initially designed simultaneous editing, two people in the same section at once, and cut it. The collaboration model that survived is asynchronous assignment, because live co-editing creates a question about who is attesting to a given answer, and on a KYB form that question has a legal answer. The flow has around thirty nodes, conditional branches, soft warnings, recapture loops, and states that depend on what someone answered four screens earlier. Figma prototyping links do not survive that. So I built it in HTML, CSS and vanilla JavaScript as a single hash-routed page, styled against Loop's real tokens, and put it under git. That decision paid for itself in a way I did not predict. Compliance, product, engineering and customer experience all reviewed the same artifact, and they could click the path their own question was about instead of asking me to demo it. Reviewers found branch problems I had not found, because they went where I would not have thought to click. Iteration became a commit rather than a duplicated frame, so there is a real history of what changed and when: five substantive iterations so far, and V3.2 is live at the moment. What I cut: agreements and signing moved out of the application entirely to after approval, because asking someone to sign a deposit account agreement for an account that might be declined is asking for a commitment the business has not made yet. Live registry verification during the form and an agent that screens uploads and requests the right documents are both designed and both scoped out of this release. This is not shipped. The flow spec, the wireframes for every node including the exceptions, and the clickable prototype are the handoff package, and the compliance decisions that gate implementation are still open: which eligibility answers auto-deflect versus route to human review is owned by the compliance team, and the flow models both outcomes until they rule. There is also a real backlog. A long consolidated feedback list from the cross-functional reviews is still open, and closing it out before it grows is the current job. The number that mattered was the one after approval. I came in expecting the story to be about abandonment during the form, and there is a story there. But approved customers failing to activate is a worse problem, because those are people the business already said yes to, and no amount of form design fixes momentum lost during a thirty-four day wait. Compliance is a design constraint, not an obstacle to route around. Most of the fields are not negotiable. The order, the wording, the moment you ask, and what you do when the answer is no are all completely open, and that is where every improvement in this project came from. A prototype people can click is a different object than a prototype people watch. Building in code instead of Figma turned review meetings from me demoing into four teams exploring, and the branch problems they found were ones I could not have found alone."
+    },
+    {
+      "slug": "loop",
+      "title": "Loop design system & AI design agent",
+      "subtitle": "Loop shipped components in code with no design file behind them. One project rebuilt the system out of that code; the other taught an agent to design against it.",
+      "year": "2026",
+      "role": "Design systems & design engineering",
+      "status": "",
+      "scope": [
+        "Design tokens",
+        "Component audit",
+        "AI tooling"
+      ],
+      "outcome": [
+        "16 audit findings",
+        "Agent prototype documented for handoff"
+      ],
+      "tags": [
+        "Design System",
+        "AI Design",
+        "Storybook"
+      ],
+      "cover": "/knowledge/loop.png",
+      "body": "Loop is a Canadian business banking platform. Around four thousand businesses use it to hold multiple currencies, move money across borders, and get credit. Before this summer the company had engineers, a Storybook full of shipped components, and no designer. That shapes both projects here. There was no canonical design file to work from, so the design system had to be reconstructed backwards out of the code that was already live. The reconciliation defines what Loop's interface is made of; the design agent is what happens once that definition is machine-readable — it generates screens against the real component library, type-checks them, renders them headless, and fixes its own failures. One source of truth, and the tooling that reads from it. Pick either."
+    },
+    {
+      "slug": "mhacks",
+      "title": "MHacks 2026",
+      "subtitle": "Michigan's flagship hackathon needed an identity that felt alive, so the site became a garden you can click around in.",
+      "year": "2026",
+      "role": "Design Chair",
+      "status": "",
+      "scope": [
+        "Brand identity",
+        "Marketing site",
+        "Design engineering"
+      ],
+      "outcome": [
+        "Site live",
+        "Event Oct 3–4, 2026"
+      ],
+      "tags": [
+        "Brand",
+        "Marketing Site",
+        "Design Engineering"
+      ],
+      "cover": "/knowledge/mhacks.jpg",
+      "body": "MHacks is the University of Michigan's flagship hackathon: 24 hours of creative engineering, design, building, and prototyping, drawing 1,000+ student builders to Ann Arbor. The 2026 edition runs October 3–4. For most applicants the marketing site is MHacks until the doors open. It has to explain what the event is, when to apply, and why it's worth a weekend, and it has to do that in the few minutes between a link and a decision. I led design for the 2026 cycle as Design Chair. The whole site hangs off one line — build something that grows — and one metaphor: a digital garden. A hackathon project starts as something small and half-finished, and the good ones keep going after the weekend ends. The garden gives that idea a form you can actually draw. The plants aren't generic. Every flower on the page is a Michigan species, labelled the way a botanical garden labels a specimen: common name, Latin binomial, and a status line. Apple Blossom (Malus domestica, introduced, state flower). Lily of the Valley (Convallaria majalis, invasive groundcover). Black-Eyed Susan (Rudbeckia hirta, native wildflower). Dwarf Lake Iris (Iris lacustris, native, state wildflower). Michigan Lily (Lilium michiganense, native wildflower). It's a small piece of writing that does a lot of work: it roots a national event in the specific place it happens, and it rewards the person who slows down enough to read a caption. The type system splits along a clear line. Anything expressive — the wordmark, section headings — is set in a high-contrast display serif. Anything factual — the countdown, deadline times, the plant labels, the MCP server URL — is monospace, letterspaced, and small. The reader can tell at a glance which register they're in. Colour stays in a narrow band: a deep forest green, a warm off-white, and the illustration palette on top. Sections alternate between the two grounds and are separated by large rounded corners, so scrolling the page feels like moving between beds in a garden rather than down a document. Content pending. This section is for the interactive canvas — what it does, why an easter egg earned space on a page whose main job is conversion, and how you kept it from getting in the way of applying. The timeline is the most utilitarian thing on the page and gets the most typographic weight: five dates from applications opening on June 22 through regular decisions on September 19, each one a large date on the left and a small monospace label on the right. Deadline times are spelled out to the minute and timezone, because that is the single most-asked question of any application cycle. The FAQ answers the next six: who can apply, cost, teams, what to build, when applications close, where it happens. Both sections are built to be scanned, not read. MHacks 2026 ships an MCP server at mhacks.org/mcp. An applicant can connect Claude, Codex, or any MCP-capable client, and the agent reads the application schema, drafts answers with them, and submits — tied to their real MHacks login, with the MLH terms reviewed before anything is sent. Designing that meant designing for a reader who may never see the form. The section shows a real terminal transcript rather than a screenshot of a UI: the prompt, two tool calls resolving, and the agent stopping to ask for the school and t-shirt size it doesn't have. It sets the expectation that this is a conversation with checkpoints, not a black box that applies on your behalf. Content pending. This section is for how the site was actually built and what you did hands-on versus directed — the stack, the scroll-driven section transitions, the illustration pipeline, and how the design team was organised for the cycle. Content pending. Numbers you'd want here: applications received against previous cycles, traffic, sponsor conversion, anything the team tracked through the season. Content pending."
+    },
+    {
+      "slug": "sentinel",
+      "title": "Sentinel",
+      "subtitle": "Most finance apps hand you a dashboard and leave the interpretation to you. Sentinel is the opposite — an agent that reviews your money twice a week and tells you what changed.",
+      "year": "2026",
+      "role": "Product design & frontend",
+      "status": "",
+      "scope": [
+        "Product design",
+        "Design systems",
+        "Frontend"
+      ],
+      "outcome": [],
+      "tags": [
+        "Fintech",
+        "AI Agent",
+        "Product Design"
+      ],
+      "cover": "/knowledge/sentinel.svg",
+      "body": "A personal finance agent for people whose money is scattered across checking accounts, cards, brokerages, and a dozen subscriptions. It watches spending, catches waste, ties it back to savings and investment goals, and checks in on its own schedule rather than waiting to be asked. The design question is the interesting one: a dashboard shows you data and stops. An agent has to take a position — say what changed, say what it thinks you should do, and be legible enough that you can disagree with it. Content pending. Drop the written case study into this file using the Section, Prose, Figure, Video, Gallery, PullQuote, and Spacer blocks."
+    },
+    {
+      "slug": "typology",
+      "title": "Typology",
+      "subtitle": "A canvas where a plan recalculates itself. You enter the numbers, the model propagates the consequences, and nothing is fabricated on your behalf.",
+      "year": "2026",
+      "role": "Design engineering",
+      "status": "",
+      "scope": [
+        "Interaction design",
+        "AI tooling",
+        "Frontend"
+      ],
+      "outcome": [],
+      "tags": [
+        "AI Tooling",
+        "Canvas",
+        "Product Design"
+      ],
+      "cover": "/knowledge/typology.svg",
+      "body": "Typology is an infinite canvas for thinking through a plan that has numbers in it. Cards hold figures, cables connect them, and a change anywhere ripples through everything downstream. Built on Next.js and tldraw, with the Anthropic API doing the reasoning. The rule the whole thing is built around: the model does logic, not numbers. The user enters every figure; the agent only propagates the consequences. One fabricated number would destroy the trust the tool depends on. Content pending — the decisions log in the repo is the source. Drop the written case study into this file using the Section, Prose, Figure, Video, Gallery, PullQuote, and Spacer blocks."
+    }
+  ]
+}

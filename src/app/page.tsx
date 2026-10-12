@@ -1,69 +1,78 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+import { heroBand, footer, site, works } from "@/content";
+import Header from "@/components/Header";
+import HeroCanvas from "@/components/HeroCanvas";
+// Stamps are set aside for now (StampRow + Stamp still in components/); the hero is the zine field.
+import ZineField from "@/components/ZineField";
+import Chat from "@/components/Chat";
+import ShadowOverlay from "@/components/ShadowOverlay";
+import Reveal from "@/components/Reveal";
+import s from "./page.module.css";
 
 export default function Home() {
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>
-            To get started, edit the{" "}
-            <code className={styles.code}>page.tsx</code> file.
-          </h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+    <>
+      <Header />
+      <Chat />
+      <ShadowOverlay />
+      <Reveal />
+
+      <main className={s.main}>
+        {/* Hero */}
+        <section className={s.hero}>
+          <div className={s.heroBg}><HeroCanvas /></div>
+          <div className={s.zines}><ZineField /></div>
+          <div className={s.heroRow}>
+            {(site.heroLead || site.heroBody) && (
+              <div className={s.heroText}>
+                {site.heroLead && <p className="t30 reveal" style={{ color: "var(--ink)" }}>{site.heroLead}</p>}
+                {site.heroBody && (
+                  <p className="t30 reveal" style={{ color: "var(--muted)", "--d": "0.08s" } as React.CSSProperties}>{site.heroBody}</p>
+                )}
+              </div>
+            )}
+            <div className={`reveal ${s.band}`}>
+              <p className={s.bandTagline}>{heroBand.tagline}</p>
+              <div className={s.bandStack}>
+                <p className={s.bandSource}>
+                  <span>{heroBand.source}</span>
+                  <span className={s.bandNote}>{heroBand.sourceNote}</span>
+                </p>
+                <ul className={s.bandRoles}>
+                  {heroBand.roles.map((r) => (
+                    <li key={r.text}>
+                      {r.text}
+                      <img src={r.logo} alt="" width={22} height={22} className={s.bandLogo} />
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Works: two-column thumbnail + title grid, same format as the live homepage. Not linked yet. */}
+        {/* The works sheet slides up over the pinned hero like a drawer */}
+        <div className={s.sheet}>
+        <section id="work" className={s.works}>
+          {works.map((w) => (
+            <a key={w.title} href={`/work/${w.slug}`} className={`reveal ${s.work}`}>
+              {w.image ? <img src={w.image} alt="" className={s.workThumb} style={w.fit ? { objectFit: w.fit, background: w.bg } : undefined} /> : <div className={s.workThumb} aria-hidden />}
+              {w.kicker && <p className={s.workKicker}>{w.kicker}</p>}
+              <h2 className={s.workTitle}>{w.title}</h2>
+              {w.blurb && <p className={s.workBlurb}>{w.blurb}</p>}
+            </a>
+          ))}
+        </section>
         </div>
       </main>
-    </div>
+
+      {/* Footer: sits under the page and is revealed as main scrolls off */}
+      <footer id="contact" className={s.footer}>
+        <div className={s.footerInner}>
+          <a href="#" className={`t40 ${s.bigCta}`}>{footer.cta}</a>
+          <nav className={s.social}>{footer.links.map((l) => <a key={l} href="#">{l}</a>)}</nav>
+        </div>
+      </footer>
+    </>
   );
 }

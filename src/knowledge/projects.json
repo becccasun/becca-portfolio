@@ -1,0 +1,98 @@
+[
+  {
+    "slug": "agentmail",
+    "title": "AgentMail",
+    "subtitle": "One outreach email, shown from three sides: the salesperson, the system, and the person who receives it.",
+    "year": "2025",
+    "role": "Product design",
+    "cover": "/knowledge/agentmail.png"
+  },
+  {
+    "slug": "dpss",
+    "title": "DPSS",
+    "subtitle": "Michigan's public safety division was hiring, and the hardest part of applying was finding out how.",
+    "year": "2025",
+    "role": "Product design",
+    "cover": "/knowledge/dpss.png"
+  },
+  {
+    "slug": "embedder",
+    "title": "Embedder",
+    "subtitle": "A hardware-aware AI coding tool that nobody could tell was hardware-aware. Twenty usability sessions on why, and seven recommendations to fix it.",
+    "year": "Spring 2026",
+    "role": "UX research & product definition",
+    "cover": "/knowledge/embedder.svg"
+  },
+  {
+    "slug": "loop-careers",
+    "title": "Loop careers page",
+    "subtitle": "Loop's hiring page told candidates nothing about how Loop hires. Three directions, built as working pages.",
+    "year": "2026",
+    "role": "Product design & frontend",
+    "cover": "/knowledge/loop-careers.png"
+  },
+  {
+    "slug": "loop-design-agent",
+    "title": "A design agent that checks its own work",
+    "subtitle": "A self-correcting loop that generates screens against Loop's real component library, type-checks them, renders them headless, and fixes its own failures.",
+    "year": "2026",
+    "role": "Design engineering",
+    "cover": "/knowledge/loop-design-agent.svg"
+  },
+  {
+    "slug": "loop-design-support",
+    "title": "Loop design support",
+    "subtitle": "The one-off requests nobody plans for, and what they keep revealing about the system.",
+    "year": "2026",
+    "role": "Product design",
+    "cover": "/knowledge/loop-design-support.svg"
+  },
+  {
+    "slug": "loop-design-system",
+    "title": "Reconciling Loop's design system",
+    "subtitle": "Loop's components lived in code with no design file to match. I rebuilt the system backwards out of Storybook, then audited it against itself.",
+    "year": "2026",
+    "role": "Design systems",
+    "cover": "/knowledge/loop-design-system.png"
+  },
+  {
+    "slug": "loop-onboarding",
+    "title": "Loop onboarding",
+    "subtitle": "Most rejected applicants were never eligible in the first place. The redesign tells them in seconds instead of weeks.",
+    "year": "2026",
+    "role": "Product design",
+    "cover": "/knowledge/loop-onboarding.png"
+  },
+  {
+    "slug": "loop",
+    "title": "Loop design system & AI design agent",
+    "subtitle": "Loop shipped components in code with no design file behind them. One project rebuilt the system out of that code; the other taught an agent to design against it.",
+    "year": "2026",
+    "role": "Design systems & design engineering",
+    "cover": "/knowledge/loop.png"
+  },
+  {
+    "slug": "mhacks",
+    "title": "MHacks 2026",
+    "subtitle": "Michigan's flagship hackathon needed an identity that felt alive, so the site became a garden you can click around in.",
+    "year": "2026",
+    "role": "Design Chair",
+    "cover": "/knowledge/mhacks.jpg"
+  },
+  {
+    "slug": "sentinel",
+    "title": "Sentinel",
+    "subtitle": "Most finance apps hand you a dashboard and leave the interpretation to you. Sentinel is the opposite — an agent that reviews your money twice a week and tells you what changed.",
+    "year": "2026",
+    "role": "Product design & frontend",
+    "cover": "/knowledge/sentinel.svg"
+  },
+  {
+    "slug": "typology",
+    "title": "Typology",
+    "subtitle": "A canvas where a plan recalculates itself. You enter the numbers, the model propagates the consequences, and nothing is fabricated on your behalf.",
+    "year": "2026",
+    "role": "Design engineering",
+    "cover": "/knowledge/typology.svg"
+  }
+]

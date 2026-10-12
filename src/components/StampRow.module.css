@@ -1,0 +1,39 @@
+/* The hero band the row is measured against; the stamps themselves are portalled. */
+.stage { position: absolute; inset: 0; pointer-events: none; }
+
+/* At rest: absolute over the hero band, above main (z 1) but under the header blur (z 5).
+   Open: fixed over the whole screen, above the header (z 10) and the mascot (z 20). */
+.layer { position: absolute; z-index: 2; pointer-events: none; }
+.layer[data-open="true"] { z-index: 41; }
+
+.slot {
+  position: absolute; left: 0; top: 0;
+  transform-origin: center; padding: 0; border: 0; background: none;
+  pointer-events: auto; cursor: pointer;
+  will-change: transform; /* rasterised at the open size, so the row downscales cleanly */
+}
+.slot:focus-visible { outline: none; }
+.slot:focus-visible .face { outline: 3px solid rgba(var(--ink-rgb), 0.35); outline-offset: 6px; border-radius: 6px; }
+
+/* The stamp's shadow and its give under the pointer both come from TiltCard
+   (a drop-shadow that follows the perforated edge, and tightens as it is pressed).
+   Its card ground is transparent here so the perforations stay see-through. */
+.face { width: 100%; height: 100%; }
+.face :global(.tlt) { --surface-2: transparent; }
+
+/* White scrim behind an open stamp: the page dims to white, not grey. */
+.scrim {
+  position: fixed; inset: 0; z-index: 40;
+  /* heavy enough that nothing behind the open stamp is legible */
+  background: rgba(255, 255, 255, 0.55);
+  /* no hand-written -webkit- twin: the CSS optimiser keeps only one of the pair, and
+     listed after this it threw this one away (it adds the prefix itself where needed) */
+  backdrop-filter: blur(28px) saturate(1.1);
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.scrim[data-on="true"] { opacity: 1; pointer-events: auto; }
+
+@media (prefers-reduced-motion: reduce) {
+  .scrim { transition: opacity 0.15s linear; }
+}

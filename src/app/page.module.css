@@ -1,150 +1,223 @@
-.page {
-  --background: #fafafa;
-  --foreground: #fff;
+/* main scrolls over the fixed footer; the margin leaves room to reveal it */
+.main { position: relative; z-index: 1; background: #fff; margin-bottom: 715px; padding-bottom: 120px; }
 
-  --text-primary: #000;
-  --text-secondary: #666;
-
-  --button-primary-hover: #383838;
-  --button-secondary-hover: #f2f2f2;
-  --button-secondary-border: #ebebeb;
-
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-geist-sans);
-  background-color: var(--background);
+/* Hero: 595px block, text baseline block starts at y=320 */
+/* Hero is pinned: it sticks once its bottom meets the viewport bottom (or at the top when it
+   fits), and the works sheet below slides up over it. Scrolling back up pulls the sheet down
+   and off, revealing the hero again. */
+.hero {
+  --hero-h: 860px;
+  position: sticky; top: min(0px, calc(100svh - var(--hero-h)));
+  height: var(--hero-h); z-index: 0;
+  transform-origin: 50% 70%;
+  will-change: transform, opacity;
 }
-
-.main {
-  display: flex;
-  flex: 1;
-  width: 100%;
-  max-width: 800px;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: space-between;
-  background-color: var(--foreground);
-  padding: 120px 60px;
-}
-
-.intro {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  text-align: left;
-  gap: 24px;
-}
-
-.intro h1 {
-  max-width: 320px;
-  font-size: 40px;
-  font-weight: 600;
-  line-height: 48px;
-  letter-spacing: -2.4px;
-  text-wrap: balance;
-  color: var(--text-primary);
-}
-
-.intro p {
-  max-width: 440px;
-  font-size: 18px;
-  line-height: 32px;
-  text-wrap: balance;
-  color: var(--text-secondary);
-}
-
-.intro a {
-  font-weight: 500;
-  color: var(--text-primary);
-}
-
-.ctas {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  max-width: 440px;
-  gap: 16px;
-  font-size: 14px;
-}
-
-.ctas a {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 40px;
-  padding: 0 16px;
-  border-radius: 128px;
-  border: 1px solid transparent;
-  transition: 0.2s;
-  cursor: pointer;
-  width: fit-content;
-  font-weight: 500;
-}
-
-a.primary {
-  background: var(--text-primary);
-  color: var(--background);
-  gap: 8px;
-}
-
-a.secondary {
-  border-color: var(--button-secondary-border);
-}
-
-/* Enable hover only on non-touch devices */
-@media (hover: hover) and (pointer: fine) {
-  a.primary:hover {
-    background: var(--button-primary-hover);
-    border-color: transparent;
-  }
-
-  a.secondary:hover {
-    background: var(--button-secondary-hover);
-    border-color: transparent;
+/* As the sheet rises, the hero settles back a little */
+@supports (animation-timeline: scroll()) {
+  .hero {
+    animation: heroRecede linear both;
+    animation-timeline: scroll(root);
+    animation-range: 0 100svh;
   }
 }
+/* transform + opacity only, so the browser runs it off the main thread (a blur here
+   re-rastered the whole hero every frame) */
+@keyframes heroRecede { to { transform: scale(0.94); opacity: 0.35; } }
 
-@media (max-width: 600px) {
-  .main {
-    padding: 48px 24px;
-  }
+.sheet {
+  position: relative; z-index: 2; background: #fff;
+  border-radius: 28px 28px 0 0;
+  box-shadow: 0 -1px 0 var(--line), 0 -18px 50px rgba(0, 0, 0, 0.07);
+  padding-top: 64px;
+}
+.heroBg { position: absolute; inset: 0 0 -319px; }
+.heroRow { position: relative; height: 100%; width: min(1200px, calc(100% - 32px)); margin: 0 auto; display: flex; align-items: flex-end; justify-content: space-between; padding-bottom: 50px; pointer-events: none; }
+.heroRow > * { pointer-events: auto; }
+/* Zine strips fill the hero above the tagline */
+.zines { position: absolute; left: 0; right: 0; top: 80px; height: 620px; z-index: 1; }
+.heroText { width: 600px; }
 
-  .intro {
-    gap: 16px;
-  }
-
-  .intro h1 {
-    font-size: 32px;
-    line-height: 40px;
-    letter-spacing: -1.92px;
-  }
+/* Credits band along the bottom of the hero */
+.band {
+  width: 100%; display: flex; align-items: flex-end; justify-content: space-between; gap: 40px;
+  font-size: 15px; line-height: 22px; letter-spacing: -0.2px; color: var(--ink);
+  translate: 0 0; transition: translate 0.75s var(--spring);
+}
+.bandTagline { max-width: 420px; font-size: 24px; line-height: 31px; letter-spacing: -0.48px; color: var(--ink); }
+.bandStack { display: flex; flex-direction: column; align-items: flex-end; gap: 12px; }
+.bandSource { display: flex; gap: 20px; }
+.bandNote { color: var(--muted); }
+.bandRoles { display: flex; align-items: center; gap: 34px; list-style: none; }
+.bandRoles li { display: flex; align-items: center; gap: 10px; white-space: nowrap; }
+.bandLogo { width: 22px; height: 22px; border-radius: 6px; object-fit: cover; box-shadow: 0 0 0 1px var(--line); }
+:global(html[data-stamp="open"]) .band {
+  translate: 0 110vh;
+  transition: translate 0.5s cubic-bezier(0.55, 0, 0.9, 0.35);
 }
 
-@media (prefers-color-scheme: dark) {
-  .logo {
-    filter: invert();
-  }
-
-  .page {
-    --background: #000;
-    --foreground: #000;
-
-    --text-primary: #ededed;
-    --text-secondary: #999;
-
-    --button-primary-hover: #ccc;
-    --button-secondary-hover: #1a1a1a;
-    --button-secondary-border: #1a1a1a;
-  }
+/* While a stamp is open (StampRow sets html[data-stamp="open"]) the hero copy shoots
+   down off the screen, accelerating as it goes, and springs back up once the stamp is
+   closed. Uses `translate`, not `transform`, so it composes with the .reveal fade-in
+   on the same elements instead of fighting it. */
+.heroText {
+  translate: 0 0;
+  transition: translate 0.75s var(--spring);
+}
+:global(html[data-stamp="open"]) .heroText {
+  translate: 0 110vh;
+  transition: translate 0.5s cubic-bezier(0.55, 0, 0.9, 0.35);
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero { animation: none; }
+  .heroText { transition: opacity 0.2s linear; }
+  :global(html[data-stamp="open"]) .heroText { translate: 0 0; opacity: 0; transition: opacity 0.2s linear; }
 }
 
-.code {
-  font-family: var(--font-geist-mono);
-  font-size: 0.9em;
-  background: color-mix(in srgb, currentColor 8%, transparent);
-  padding: 0.1em 0.4em;
-  border-radius: 6px;
+.reel {
+  height: 585px; border-radius: 20px; background: #fff; position: relative; overflow: hidden;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.035), 0 1px 3px rgba(0, 0, 0, 0.02);
+}
+.reelStrip {
+  position: absolute; left: 0; right: 0; top: 217px; height: 150px;
+  background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.025) 20%, rgba(0, 0, 0, 0.025) 80%, transparent);
+}
+
+/* Works grid (format from the live homepage: 563px columns, 20px gutter) */
+.works {
+  width: min(1146px, calc(100% - 32px)); margin: 0 auto; scroll-margin-top: 80px;
+  display: grid; grid-template-columns: 1fr 1fr; column-gap: 20px; row-gap: 30px;
+}
+.work { display: flex; flex-direction: column; min-width: 0; }
+/* Cards fade and rise without the global reveal's blur: blurring big images as they
+   enter mid-scroll is what made the sheet hitch */
+.work:global(.reveal) { filter: none; transform: translateY(16px); }
+.work:global(.reveal.in) { transform: none; }
+.workThumb { display: block; width: 100%; aspect-ratio: 563 / 363; object-fit: cover; margin-bottom: 15px; background: var(--panel); }
+.workKicker { font-size: 14px; line-height: 16.8px; letter-spacing: 0; color: rgba(0, 0, 0, 0.5); }
+.workTitle { font-size: 28px; line-height: 33.6px; letter-spacing: -0.56px; color: rgba(0, 0, 0, 0.75); margin-top: 2px; }
+.workBlurb { font-size: 14px; line-height: 16.8px; letter-spacing: 0; font-weight: 300; color: rgba(0, 0, 0, 0.5); margin-top: 3px; }
+
+/* Projects: 960 column, 120px between blocks */
+.projects { display: flex; flex-direction: column; gap: 120px; margin-top: 120px; }
+.project { display: flex; flex-direction: column; gap: 40px; }
+.info { display: flex; flex-direction: column; gap: 20px; }
+.infoRow { display: flex; gap: 64px; padding-bottom: 32px; }
+.infoLeft, .quote { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 20px; }
+.tags { display: flex; flex-wrap: wrap; gap: 20px; color: var(--tag); }
+.quote { padding-top: 40px; }
+.quote p { position: relative; padding-left: 10px; color: var(--ink); }
+.qmark { position: absolute; left: 0; }
+.author { display: flex; align-items: center; gap: 14px; padding-left: 10px; color: var(--ink); }
+.authorName { font-weight: 600; }
+.avatar { width: 44px; height: 44px; border-radius: 50%; flex: none; }
+.badges { display: flex; gap: 28px; margin-top: auto; align-items: center; }
+.badgeLaurel, .badgeBox {
+  font-family: var(--font-ui); font-weight: 700; font-size: 17px; letter-spacing: normal; color: #555;
+  display: inline-flex; align-items: center; height: 53px; white-space: nowrap;
+}
+.badgeLaurel { padding: 0 38px; position: relative; }
+.badgeLaurel::before, .badgeLaurel::after {
+  content: ""; position: absolute; top: 6px; width: 20px; height: 42px; border-radius: 50%;
+  border: 3px dotted #bbb; border-width: 0 0 0 5px;
+}
+.badgeLaurel::before { left: 0; }
+.badgeLaurel::after { right: 0; transform: scaleX(-1); }
+.badgeBox { padding: 0 20px; border: 1px solid #ddd; border-radius: 8px; }
+
+.impact { background: var(--panel); border-radius: 20px; padding: 24px 26px 26px; }
+.impactGrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 16px; }
+.impactLabel { font-family: var(--font-sans); font-size: 15px; margin-top: 4px; color: var(--ink); }
+.delta { font-family: var(--font-ui); font-size: 13px; color: var(--green-ui); margin-top: 12px; letter-spacing: normal; }
+
+/* Stats: rows of 1 / 3 / 2 */
+.stats { display: flex; flex-direction: column; gap: 48px; margin-top: 200px; }
+.statRow { display: flex; justify-content: center; }
+.stat { width: 320px; text-align: center; display: flex; flex-direction: column; gap: 4px; }
+.statRow:last-child .stat { width: 330px; }
+
+/* About */
+.about { display: flex; gap: 70px; align-items: center; margin-top: 200px; }
+.portrait {
+  width: 306px; height: 460px; border-radius: 16px; flex: none;
+  background: linear-gradient(180deg, #e9e5e0, #c9d1c3);
+}
+.aboutText { display: flex; flex-direction: column; gap: 20px; }
+.aboutText ol { padding-left: 26px; }
+
+.services { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-top: 140px; }
+.services ul { list-style: none; margin-top: 12px; }
+.services li { line-height: 58px; }
+.small { font-size: 14px; color: var(--soft); }
+
+/* Letter card */
+.letter {
+  width: min(1094px, calc(100% - 32px)); margin: 160px auto 0; border-radius: 20px; background: var(--cream);
+  padding: 86px 86px 86px 86px; display: grid; grid-template-columns: 424px 1fr; gap: 0; position: relative;
+}
+.letterHead { position: sticky; top: 100px; align-self: start; }
+.letterBody { display: flex; flex-direction: column; gap: 22px; position: relative; padding-top: 80px; }
+.letterBody p { font-size: 20px; }
+.stamp {
+  position: absolute; right: 0; top: 0; width: 88px; height: 104px; border-radius: 4px;
+  background: repeating-linear-gradient(45deg, #d8cfa9 0 6px, #cfc59a 6px 12px);
+  outline: 4px dashed var(--cream); outline-offset: -2px; transform: rotate(4deg);
+}
+
+.faq { margin-top: 110px; display: flex; flex-direction: column; gap: 44px; }
+
+.ask { margin-top: 140px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 14px; }
+.askRow { display: flex; gap: 20px; margin-top: 30px; flex-wrap: wrap; justify-content: center; }
+.askBtn { height: 50px; padding: 0 24px 0 18px; gap: 10px; font-size: 16px; }
+.askIcon { width: 20px; height: 20px; border-radius: 50%; border: 2px solid #fff; opacity: 0.9; }
+
+/* Footer */
+.footer {
+  position: fixed; left: 0; right: 0; bottom: 0; height: 715px; z-index: 0;
+  background: radial-gradient(90% 70% at 50% 40%, rgb(44, 44, 44), var(--footer));
+  color: #fff;
+}
+.footerInner { height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; }
+.bigCta {
+  display: inline-flex; align-items: center; justify-content: center; height: 124px; padding: 0 134px; border-radius: 999px;
+  color: var(--ink); background: linear-gradient(180deg, #fff 0%, #f1f1f1 55%, #fff 100%);
+  box-shadow: inset 0 -8px 20px rgba(0, 0, 0, 0.08), 0 20px 60px rgba(0, 0, 0, 0.45);
+  transition: transform 0.6s var(--spring), box-shadow 0.4s;
+}
+.bigCta:hover { transform: scale(1.04); box-shadow: inset 0 -8px 20px rgba(0, 0, 0, 0.08), 0 30px 80px rgba(255, 255, 255, 0.12); }
+.social { position: absolute; bottom: 60px; display: flex; gap: 34px; font-size: 16px; }
+.social a { opacity: 0.9; transition: opacity 0.2s; }
+.social a:hover { opacity: 0.5; }
+
+@media (max-width: 900px) {
+  .hero { --hero-h: 640px; }
+  .zines { top: 64px; height: 380px; }
+  .heroRow { flex-direction: column; align-items: flex-start; justify-content: flex-end; gap: 32px; }
+  .heroText { width: auto; }
+  .heroText p { font-size: 24px; line-height: 31px; }
+  .works { grid-template-columns: 1fr; row-gap: 40px; }
+  .sheet { border-radius: 20px 20px 0 0; padding-top: 48px; }
+  .workTitle { font-size: 24px; line-height: 29px; }
+  .band { flex-direction: column; align-items: flex-start; gap: 20px; font-size: 14px; }
+  .bandTagline { font-size: 20px; line-height: 26px; }
+  .bandStack { align-items: flex-start; }
+  .bandSource { flex-wrap: wrap; column-gap: 14px; }
+  .bandRoles { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .bandLogo { width: 18px; height: 18px; border-radius: 5px; }
+  .reel { height: 56vw; }
+  .infoRow { flex-direction: column; gap: 16px; }
+  .quote { padding-top: 0; }
+  .badges { flex-wrap: wrap; gap: 12px; }
+  .impactGrid { grid-template-columns: 1fr; }
+  .statRow { flex-wrap: wrap; }
+  .stat, .statRow:last-child .stat { width: 50%; }
+  .stats :global(.t60) { font-size: 44px; line-height: 52px; }
+  .about { flex-direction: column; align-items: flex-start; }
+  .portrait { width: 100%; height: 380px; }
+  .services { grid-template-columns: 1fr; }
+  .services li { font-size: 24px !important; line-height: 44px; }
+  .letter { grid-template-columns: 1fr; padding: 40px 24px; }
+  .letterHead { position: static; }
+  .letterBody { padding-top: 24px; }
+  .stamp { display: none; }
+  .bigCta { height: 88px; padding: 0 32px; font-size: 24px; letter-spacing: -0.5px; }
 }
