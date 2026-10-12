@@ -28,11 +28,12 @@ export const heroBand = {
 export const site = {
   name: "Rebecca Sun",
   role: "Product Designer",
-  // Work scrolls to the homepage grid; About and Play are their own pages.
+  // Work scrolls to the homepage grid; About, Play and Writing are their own pages.
   nav: [
     { label: "Work", href: "/#work" },
     { label: "About", href: "/about" },
     { label: "Play", href: "/play" },
+    { label: "Writing", href: "/writing" },
   ],
   // hero tagline; empty means none (removed for now — the zine strips carry the hero)
   heroLead: "",
