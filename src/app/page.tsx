@@ -22,13 +22,13 @@ export default function Home() {
           <div className={s.heroRow}>
             {(site.heroLead || site.heroBody) && (
               <div className={s.heroText}>
-                {site.heroLead && <p className="t30 reveal" style={{ color: "var(--ink)" }}>{site.heroLead}</p>}
+                {site.heroLead && <p className="t30 revealLoad" style={{ color: "var(--ink)" }}>{site.heroLead}</p>}
                 {site.heroBody && (
-                  <p className="t30 reveal" style={{ color: "var(--muted)", "--d": "0.08s" } as React.CSSProperties}>{site.heroBody}</p>
+                  <p className="t30 revealLoad" style={{ color: "var(--muted)", "--d": "0.08s" } as React.CSSProperties}>{site.heroBody}</p>
                 )}
               </div>
             )}
-            <div className={`reveal ${s.band}`}>
+            <div className={`revealLoad ${s.band}`}>
               <p className={s.bandTagline}>{heroBand.tagline}</p>
               <div className={s.bandStack}>
                 <p className={s.bandSource}>

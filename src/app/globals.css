@@ -56,6 +56,9 @@ button { font: inherit; letter-spacing: inherit; border: 0; background: none; co
   transition-delay: var(--d, 0s);
 }
 .reveal.in { opacity: 1; transform: none; filter: none; }
+/* Same entrance for things on the first screen, played on load instead of waiting for scroll */
+.revealLoad { animation: revealLoad 0.9s var(--ease-out) var(--d, 0.1s) both; }
+@keyframes revealLoad { from { opacity: 0; transform: translateY(24px); filter: blur(8px); } }
 
 .pill {
   display: inline-flex; align-items: center; justify-content: center;
@@ -69,6 +72,7 @@ button { font: inherit; letter-spacing: inherit; border: 0; background: none; co
 
 @media (prefers-reduced-motion: reduce) {
   .reveal { opacity: 1; transform: none; filter: none; transition: none; }
+  .revealLoad { animation: none; }
 }
 
 /* ══ Eye tracker ═══════════════════════════════════════════
