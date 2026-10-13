@@ -14,7 +14,7 @@ const photos = [
 const groups = [
   { src: "/about/card-atlas.png", hover: "/about/card-atlas-hover.png", alt: "Atlas Digital Technology Consulting Group, Project Manager and Product Designer" },
   { src: "/about/card-asquared.png", hover: "/about/card-asquared-hover.png", alt: "A/Squared Magazine, President and previous Vice President of Design" },
-  { src: "/about/card-mhacks.png", hover: "/about/card-mhacks-hover.png", alt: "MHacks, the University of Michigan hackathon, Designer" },
+  { src: "/about/card-mhacks.png", hover: "/about/card-mhacks-hover.png", alt: "MHacks, the University of Michigan hackathon, Design Chair" },
   { src: "/about/card-shift.png", hover: "/about/card-shift-hover.png", alt: "SHIFT Creator Space, Creator" },
 ];
 

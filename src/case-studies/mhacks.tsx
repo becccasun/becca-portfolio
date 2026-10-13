@@ -24,7 +24,7 @@ function Body() {
         <Prose>
           <p>
             MHacks is the University of Michigan&apos;s hackathon. For the 2026 edition on October 3 and 4, I was the
-            design lead on a team of four, and we built the brand from February all the way to the event itself. The
+            design chair on a team of four, and we built the brand from February all the way to the event itself. The
             scope kept growing as we got ahead of schedule, so the suite ended up covering a website, two mini games, a
             digital check-in pass, social posters, a printed banner, the stage deck, the hacker t-shirt and a giant
             prize check.
@@ -193,7 +193,7 @@ export const mhacks: CaseStudy = {
     title: "MHacks Design Suite",
     cover: img("banner.jpg"),
     concept: "Give Michigan's hackathon one visual language, flowers rendered through technology, that carried from the first poster to the final check.",
-    role: ["Design Lead"],
+    role: ["Design Chair"],
     duration: ["9 months", "Feb to Oct 2026"],
     scope: ["Brand identity", "Website", "Interactive games", "Print and merch"],
     tools: ["Figma", "Photoshop", "Next.js", "Claude Code"],
