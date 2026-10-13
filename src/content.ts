@@ -14,8 +14,7 @@ export const works: { slug: string; title: string; kicker?: string; blurb?: stri
 
 // Credits band along the bottom of the hero
 export const heroBand = {
-  source: "Artifacts from Beqs’ Personal Library (2026)",
-  sourceNote: "Code on Internet",
+  tagline: "Rebecca is a full-stack designer building artful experiences.",
   roles: [
     { text: "Studying UX + AI @ UMich", logo: "/logos/umich.png?v=2" },
     { text: "Design Chair @ MHacks", logo: "/logos/mhacks.png" },

@@ -43,8 +43,7 @@
   font-size: 15px; line-height: 22px; letter-spacing: -0.2px; color: var(--ink);
   translate: 0 0; transition: translate 0.75s var(--spring);
 }
-.bandSource { display: flex; gap: 20px; }
-.bandNote { color: var(--muted); }
+.bandTagline { max-width: 420px; font-size: 24px; line-height: 31px; letter-spacing: -0.48px; color: var(--ink); }
 .bandRoles { display: flex; align-items: center; gap: 34px; list-style: none; }
 .bandRoles li { display: flex; align-items: center; gap: 10px; white-space: nowrap; }
 .bandLogo { width: 22px; height: 22px; border-radius: 6px; object-fit: cover; box-shadow: 0 0 0 1px var(--line); }
@@ -179,7 +178,7 @@
   .sheet { border-radius: 20px 20px 0 0; padding-top: 48px; }
   .workTitle { font-size: 24px; line-height: 29px; }
   .band { flex-direction: column; align-items: flex-start; gap: 20px; font-size: 14px; }
-  .bandSource { flex-wrap: wrap; column-gap: 14px; }
+  .bandTagline { font-size: 20px; line-height: 26px; }
   .bandRoles { flex-direction: column; align-items: flex-start; gap: 8px; }
   .bandLogo { width: 18px; height: 18px; border-radius: 5px; }
   .reel { height: 56vw; }

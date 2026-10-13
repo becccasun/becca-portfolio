@@ -29,10 +29,7 @@ export default function Home() {
               </div>
             )}
             <div className={`revealLoad ${s.band}`}>
-              <p className={s.bandSource}>
-                <span>{heroBand.source}</span>
-                <span className={s.bandNote}>{heroBand.sourceNote}</span>
-              </p>
+              <p className={s.bandTagline}>{heroBand.tagline}</p>
               <ul className={s.bandRoles}>
                 {heroBand.roles.map((r) => (
                   <li key={r.text}>
