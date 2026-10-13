@@ -426,3 +426,6 @@ button { font: inherit; letter-spacing: inherit; border: 0; background: none; co
   inherits: true;
   initial-value: 30deg;
 }
+
+/* Visually hidden, still read by screen readers */
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
