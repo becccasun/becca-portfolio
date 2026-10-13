@@ -12,10 +12,10 @@ const photos = [
 ];
 
 const groups = [
-  { src: "/about/card-atlas.png", alt: "Atlas Digital Technology Consulting Group, Project Manager and Product Designer" },
-  { src: "/about/card-asquared.png", alt: "A/Squared Magazine, President and previous Vice President of Design" },
-  { src: "/about/card-mhacks.png", alt: "MHacks, the University of Michigan hackathon, Designer" },
-  { src: "/about/card-shift.png", alt: "SHIFT Creator Space, Creator" },
+  { src: "/about/card-atlas.png", hover: "/about/card-atlas-hover.png", alt: "Atlas Digital Technology Consulting Group, Project Manager and Product Designer" },
+  { src: "/about/card-asquared.png", hover: "/about/card-asquared-hover.png", alt: "A/Squared Magazine, President and previous Vice President of Design" },
+  { src: "/about/card-mhacks.png", hover: "/about/card-mhacks-hover.png", alt: "MHacks, the University of Michigan hackathon, Designer" },
+  { src: "/about/card-shift.png", hover: "/about/card-shift-hover.png", alt: "SHIFT Creator Space, Creator" },
 ];
 
 export default function AboutPage() {
@@ -62,8 +62,12 @@ export default function AboutPage() {
 
         <div className={s.groups}>
           {groups.map((g) => (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img key={g.src} src={withBase(g.src)} alt={g.alt} loading="lazy" />
+            <div key={g.src} className={s.card}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={withBase(g.src)} alt={g.alt} loading="lazy" />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img className={s.cardHover} src={withBase(g.hover)} alt="" aria-hidden loading="lazy" />
+            </div>
           ))}
         </div>
       </main>
