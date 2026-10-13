@@ -14,7 +14,6 @@ export const works: { slug: string; title: string; kicker?: string; blurb?: stri
 
 // Credits band along the bottom of the hero
 export const heroBand = {
-  tagline: "Rebecca is a full-stack designer building artful experiences.",
   source: "Artifacts from Beqs’ Personal Library (2026)",
   sourceNote: "Code on Internet",
   roles: [

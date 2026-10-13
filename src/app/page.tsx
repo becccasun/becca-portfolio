@@ -29,21 +29,18 @@ export default function Home() {
               </div>
             )}
             <div className={`revealLoad ${s.band}`}>
-              <p className={s.bandTagline}>{heroBand.tagline}</p>
-              <div className={s.bandStack}>
-                <p className={s.bandSource}>
-                  <span>{heroBand.source}</span>
-                  <span className={s.bandNote}>{heroBand.sourceNote}</span>
-                </p>
-                <ul className={s.bandRoles}>
-                  {heroBand.roles.map((r) => (
-                    <li key={r.text}>
-                      {r.text}
-                      <img src={withBase(r.logo)} alt="" width={22} height={22} className={s.bandLogo} />
-                    </li>
-                  ))}
-                </ul>
-              </div>
+              <p className={s.bandSource}>
+                <span>{heroBand.source}</span>
+                <span className={s.bandNote}>{heroBand.sourceNote}</span>
+              </p>
+              <ul className={s.bandRoles}>
+                {heroBand.roles.map((r) => (
+                  <li key={r.text}>
+                    {r.text}
+                    <img src={withBase(r.logo)} alt="" width={22} height={22} className={s.bandLogo} />
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
         </section>

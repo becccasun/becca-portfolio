@@ -33,18 +33,16 @@
 .heroBg { position: absolute; inset: 0 0 -319px; }
 .heroRow { position: relative; height: 100%; width: min(1200px, calc(100% - 32px)); margin: 0 auto; display: flex; align-items: flex-end; justify-content: space-between; padding-bottom: 50px; pointer-events: none; }
 .heroRow > * { pointer-events: auto; }
-/* Zine strips fill the hero above the tagline */
+/* Zine strips fill the hero above the credits band */
 .zines { position: absolute; left: 0; right: 0; top: 80px; height: 620px; z-index: 1; }
 .heroText { width: 600px; }
 
 /* Credits band along the bottom of the hero */
 .band {
-  width: 100%; display: flex; align-items: flex-end; justify-content: space-between; gap: 40px;
+  width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 40px;
   font-size: 15px; line-height: 22px; letter-spacing: -0.2px; color: var(--ink);
   translate: 0 0; transition: translate 0.75s var(--spring);
 }
-.bandTagline { max-width: 420px; font-size: 24px; line-height: 31px; letter-spacing: -0.48px; color: var(--ink); }
-.bandStack { display: flex; flex-direction: column; align-items: flex-end; gap: 12px; }
 .bandSource { display: flex; gap: 20px; }
 .bandNote { color: var(--muted); }
 .bandRoles { display: flex; align-items: center; gap: 34px; list-style: none; }
@@ -181,8 +179,6 @@
   .sheet { border-radius: 20px 20px 0 0; padding-top: 48px; }
   .workTitle { font-size: 24px; line-height: 29px; }
   .band { flex-direction: column; align-items: flex-start; gap: 20px; font-size: 14px; }
-  .bandTagline { font-size: 20px; line-height: 26px; }
-  .bandStack { align-items: flex-start; }
   .bandSource { flex-wrap: wrap; column-gap: 14px; }
   .bandRoles { flex-direction: column; align-items: flex-start; gap: 8px; }
   .bandLogo { width: 18px; height: 18px; border-radius: 5px; }
