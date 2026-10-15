@@ -2,7 +2,9 @@
    height, from its PDF) and so its panels' flat width --w. --rest is the fold a strip
    sits at. */
 .field {
-  --h: 153px;
+  /* Panel height: up to 144px, less when the hero is short. Three rows stand 1.1126 × --h
+     tall each (page plus its fold rise) with two 26px gaps, so this is what fits. */
+  --h: min(144px, calc((100cqh - 52px) / 3.34));
   --rest: 30deg;
   position: absolute; inset: 0;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -97,7 +99,7 @@
 }
 
 @media (max-width: 900px) {
-  .field { --h: 91px; gap: 18px; }
+  .field { --h: min(91px, calc((100cqh - 36px) / 3.34)); gap: 18px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .row { transition: none !important; }

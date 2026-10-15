@@ -5,7 +5,8 @@
    fits), and the works sheet below slides up over it. Scrolling back up pulls the sheet down
    and off, revealing the hero again. */
 .hero {
-  --hero-h: 860px;
+  /* never taller than the window, so the credits band is on screen without scrolling */
+  --hero-h: clamp(560px, 100svh, 860px);
   position: sticky; top: min(0px, calc(100svh - var(--hero-h)));
   height: var(--hero-h); z-index: 0;
   transform-origin: 50% 70%;
@@ -33,8 +34,9 @@
 .heroBg { position: absolute; inset: 0 0 -319px; }
 .heroRow { position: relative; height: 100%; width: min(1200px, calc(100% - 32px)); margin: 0 auto; display: flex; align-items: flex-end; justify-content: space-between; padding-bottom: 50px; pointer-events: none; }
 .heroRow > * { pointer-events: auto; }
-/* Zine strips fill the hero above the credits band */
-.zines { position: absolute; left: 0; right: 0; top: 80px; height: 620px; z-index: 1; }
+/* Zine strips fill the space between the header and the credits band; the strips size
+   themselves to its height (container units in ZineField) */
+.zines { position: absolute; left: 0; right: 0; top: 80px; bottom: 150px; z-index: 1; container-type: size; }
 .heroText { width: 600px; }
 
 /* Credits band along the bottom of the hero */
@@ -170,7 +172,7 @@
 
 @media (max-width: 900px) {
   .hero { --hero-h: 640px; }
-  .zines { top: 64px; height: 380px; }
+  .zines { top: 64px; bottom: auto; height: 380px; }
   .heroRow { flex-direction: column; align-items: flex-start; justify-content: flex-end; gap: 32px; }
   .heroText { width: auto; }
   .heroText p { font-size: 24px; line-height: 31px; }
