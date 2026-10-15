@@ -2,8 +2,8 @@
 import { Fragment, useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { X } from "lucide-react";
-import projects from "@/knowledge/projects.json";
-import { PORTFOLIO_URL } from "@/lib/portfolio";
+import Link from "next/link";
+import { works } from "@/content";
 import ChatMascot from "./ChatMascot";
 import dynamic from "next/dynamic";
 // The bar (and the liquid-gooey library under it) only loads the first time someone
@@ -45,16 +45,33 @@ const SHOWN = 40;
 
 type Msg = { id: number; role: "user" | "assistant"; content: string; error?: boolean };
 
-const BY_SLUG = new Map(projects.map((p) => [p.slug, p]));
+// The chat's knowledge comes from the older portfolio, so its project tags use that site's
+// slugs. Each maps to the case study here that covers it; tags with no page here get no card.
+const PAGE_FOR_TAG: Record<string, string> = {
+  "loop-onboarding": "loop-onboarding",
+  embedder: "feature-discovery",
+  loop: "design-mcp",
+  "loop-design-system": "design-mcp",
+  "loop-design-agent": "design-mcp",
+  mhacks: "mhacks",
+  agentmail: "agentmail",
+};
+const BY_SLUG = new Map(works.filter((w) => !w.comingSoon).map((w) => [w.slug, w]));
 const TAG = /\[\[([a-z0-9-]+)\]\]/g;
 
 /** The answer's prose, without its card tags (or a tag still arriving mid-stream). */
 const prose = (raw: string) => raw.replace(TAG, "").replace(/\[\[[a-z0-9-]*\]?$/, "").trim();
 
+/** "PRODUCT DESIGN INTERN · SUMMER 2026" → "Product Design Intern · Summer 2026" */
+const titleCase = (t: string) => t.toLowerCase().replace(/\b[a-z]/g, (c) => c.toUpperCase());
+
 /** Real projects the answer tagged, in order, at most three. */
 const cardsFor = (raw: string) => {
   const seen = new Set<string>();
-  for (const m of raw.matchAll(TAG)) if (BY_SLUG.has(m[1])) seen.add(m[1]);
+  for (const m of raw.matchAll(TAG)) {
+    const page = PAGE_FOR_TAG[m[1]];
+    if (page && BY_SLUG.has(page)) seen.add(page);
+  }
   return [...seen].slice(0, 3).map((slug) => BY_SLUG.get(slug)!);
 };
 
@@ -283,14 +300,14 @@ export default function Chat() {
                       {!m.error && cardsFor(m.content).length > 0 && (
                         <span className={s.cards}>
                           {cardsFor(m.content).map((p) => (
-                            <a key={p.slug} className={s.card} href={`${PORTFOLIO_URL}/work/${p.slug}`} target="_blank" rel="noopener noreferrer">
-                              <span className={s.cover} style={p.cover ? { backgroundImage: `url(${p.cover})` } : undefined} />
+                            <Link key={p.slug} className={s.card} href={`/work/${p.slug}`}>
+                              <span className={s.cover} style={p.image ? { backgroundImage: `url(${withBase(p.image)})` } : undefined} />
                               <span className={s.cardText}>
                                 <b>{p.title}</b>
-                                <span>{[p.role, p.year].filter(Boolean).join(" · ")}</span>
+                                <span>{p.kicker && titleCase(p.kicker.replace(" \u2022 ", " · "))}</span>
                               </span>
                               <span className={s.go} aria-hidden>→</span>
-                            </a>
+                            </Link>
                           ))}
                         </span>
                       )}

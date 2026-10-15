@@ -1,5 +1,4 @@
 // All copy and project data lives here. Everything is placeholder: swap in your own.
-import { PORTFOLIO_URL } from "@/lib/portfolio";
 
 // Selected works, in display order. Each opens /work/<slug>. Entries without an image show a
 // blank panel; kicker and blurb are optional.
