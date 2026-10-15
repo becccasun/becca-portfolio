@@ -58,14 +58,16 @@ const cardsFor = (raw: string) => {
   return [...seen].slice(0, 3).map((slug) => BY_SLUG.get(slug)!);
 };
 
-/** The history the API accepts: alternating turns starting with a question, at most 19.
-    A question that only got an error back is dropped with its error, so turns still alternate. */
+/** The history the API accepts: alternating turns starting with a question, at most 19 and
+    8,000 characters in all (the oldest go first). A question that only got an error back is
+    dropped with its error, so turns still alternate. */
 function forApi(history: Msg[]) {
   const turns = history
     .filter((m, i) => !m.error && !(m.role === "user" && history[i + 1]?.error))
     .map(({ role, content }) => ({ role, content }));
   let start = Math.max(0, turns.length - 19);
-  while (start < turns.length && turns[start].role !== "user") start++;
+  const size = (from: number) => turns.slice(from).reduce((n, t) => n + t.content.length, 0);
+  while (start < turns.length - 1 && (turns[start].role !== "user" || size(start) > 8000)) start++;
   return turns.slice(start);
 }
 

@@ -3,6 +3,7 @@ import { Figtree } from "next/font/google";
 import "./globals.css";
 import Footer from "@/components/Footer";
 import Chat from "@/components/Chat";
+import SiteAnalytics from "@/components/SiteAnalytics";
 
 // Figtree stands in for the original's Roobert (a commercial Displaay face).
 // If you hold a Roobert licence, drop the files in /public/fonts and point --font-sans at it.
@@ -23,6 +24,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* On every page: the sign-off footer, and the chat with its mascot, which lands in the footer's corner */}
         <Footer />
         <Chat />
+        <SiteAnalytics />
       </body>
     </html>
   );

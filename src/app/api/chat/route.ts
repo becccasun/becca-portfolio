@@ -1,10 +1,12 @@
 import Anthropic from "@anthropic-ai/sdk";
-import { buildSystemPrompt, UNKNOWN_LINE } from "@/lib/chat-prompt";
+import { buildSystemPrompt, OFF_TOPIC_LINE } from "@/lib/chat-prompt";
 
 export const runtime = "nodejs";
 
 const MAX_MESSAGES = 20;
 const MAX_LENGTH = 2000;
+// the whole conversation, so a long chat can't grow into an expensive prompt
+const MAX_TOTAL = 8000;
 
 // A small per-visitor budget so one tab can't run up the bill. In memory, so it resets
 // on restart and isn't shared across server instances — fine for a portfolio.
@@ -45,7 +47,8 @@ export async function POST(req: Request) {
           (m as { content: string }).content.trim().length > 0 &&
           (m as { content: string }).content.length <= MAX_LENGTH,
       ) &&
-      list[list.length - 1].role === "user";
+      list[list.length - 1].role === "user" &&
+      list.reduce((n: number, m: { content: string }) => n + m.content.length, 0) <= MAX_TOTAL;
     if (!ok) throw new Error("bad shape");
     messages = list.map((m: { role: "user" | "assistant"; content: string }) => ({ role: m.role, content: m.content }));
   } catch {
@@ -62,7 +65,7 @@ export async function POST(req: Request) {
   const stream = client.beta.messages.stream({
     model: "claude-sonnet-5-5",
     // answers are two short paragraphs; the cap keeps a runaway reply cheap
-    max_tokens: 1500,
+    max_tokens: 800,
     // chat answers don't need deep deliberation
     output_config: { effort: "low" },
     // if Sonnet 5.5 declines, eligible requests are re-run server-side on the recommended fallback
@@ -86,7 +89,7 @@ export async function POST(req: Request) {
         }
         const final = await stream.finalMessage();
         if (final.stop_reason === "refusal" && !sent) {
-          controller.enqueue(enc.encode(UNKNOWN_LINE));
+          controller.enqueue(enc.encode(OFF_TOPIC_LINE));
         }
       } catch (err) {
         const note =
