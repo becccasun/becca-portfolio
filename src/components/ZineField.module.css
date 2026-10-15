@@ -25,10 +25,6 @@
   --rise-rest: calc(var(--w) * sin(var(--rest)) * 0.32);
   /* Hover lays the strip flat; it widens out from its centre and folds back the same way */
   transition: --fold 0.8s cubic-bezier(0.22, 1, 0.36, 1);
-  /* on load: arrive nearly shut, then open out (backwards fill only, so once it has
-     played, hover transitions take over) */
-  animation: unfold 1.3s cubic-bezier(0.16, 1, 0.3, 1) backwards;
-  animation-delay: calc(var(--row) * 140ms + 120ms);
   position: relative;
   width: calc(var(--n) * var(--w) * cos(var(--rest)));
   height: calc(var(--h) + var(--rise-rest));
@@ -50,7 +46,15 @@
   will-change: transform;
 }
 .row:hover { --fold: 0deg; }
-@keyframes unfold { from { --fold: 80deg; opacity: 0; } 35% { opacity: 1; } }
+/* On load (ZineField sets data-state on each row in turn): it waits nearly shut and
+   unseen, then unfolds on the slower intro curve. Hover still applies mid-unfold, and the
+   transition just heads for flat instead. The shut start only applies where scripts
+   run, so without JS the strips simply sit at rest. */
+.row[data-state] { transition: --fold 1.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.45s linear; }
+.row[data-state="open"] { transition: --fold 0.8s cubic-bezier(0.22, 1, 0.36, 1); }
+@media (scripting: enabled) {
+  .row:not([data-state]) { --fold: 80deg; opacity: 0; }
+}
 
 /* rising face: its right edge lifts by --rise */
 .panel[data-lean="up"] { transform: translateX(var(--x)) skewY(calc(-1 * var(--lean))) scaleX(var(--cos)); }
@@ -96,5 +100,5 @@
   .field { --h: 91px; gap: 18px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .row { animation: none; transition: none; }
+  .row { transition: none !important; }
 }
