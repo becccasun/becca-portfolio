@@ -43,6 +43,10 @@ const FROST = [
 // The stack scrolls, so it can hold a long conversation; this only bounds the DOM.
 const SHOWN = 40;
 
+// what counts as a control rather than blank space, for click-outside-to-close
+const INTERACTIVE =
+  'a, button, input, textarea, select, label, summary, video, iframe, [contenteditable], [role="button"], [role="tab"], [role="separator"], [role="slider"]';
+
 type Msg = { id: number; role: "user" | "assistant"; content: string; error?: boolean };
 
 // The chat's knowledge comes from the older portfolio, so its project tags use that site's
@@ -134,6 +138,22 @@ export default function Chat() {
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && close();
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
+  }, [open, close]);
+
+  // A click on blank page space closes the chat. Clicks on the chat itself, the mascot,
+  // or anything interactive (a link, a stamp, a video) leave it open, and so does the
+  // click that ends a text selection.
+  const chatEl = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!open) return;
+    const onClick = (e: MouseEvent) => {
+      const t = e.target as Element | null;
+      if (!t || chatEl.current?.contains(t) || t.closest(`[data-mascot], ${INTERACTIVE}`)) return;
+      if (!(window.getSelection()?.isCollapsed ?? true)) return;
+      close();
+    };
+    document.addEventListener("click", onClick);
+    return () => document.removeEventListener("click", onClick);
   }, [open, close]);
 
   // The stack follows the newest message unless the visitor has scrolled up to reread.
@@ -263,7 +283,7 @@ export default function Chat() {
               <div className={s.frostWash} />
             </div>
 
-          <div className={s.chat} data-open={open || undefined}>
+          <div ref={chatEl} className={s.chat} data-open={open || undefined}>
             {/* the conversation, stacked up from the mascot */}
             <ol
               ref={log}
