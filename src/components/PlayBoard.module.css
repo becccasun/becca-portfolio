@@ -7,7 +7,8 @@
   display: flex; align-items: stretch;
   width: calc(100% - 32px); max-width: 1680px; margin: 80px auto 0;
   height: calc(100svh - 96px);
-  border: 1px solid rgba(0, 0, 0, 0.08); border-radius: 16px; background: #fff;
+  /* no top edge: the board runs up under the header instead of starting at a line */
+  border: 1px solid rgba(0, 0, 0, 0.08); border-top: 0; border-radius: 0 0 16px 16px; background: #fff;
   overflow-x: auto; overflow-y: hidden; overscroll-behavior-x: contain;
 }
 
@@ -83,15 +84,15 @@
   flex: 0 0 9px; margin: 0 -4px; position: relative; z-index: 1; cursor: col-resize; touch-action: none; outline: none;
 }
 .divider::before { content: ""; position: absolute; inset: 0 auto 0 4px; width: 1px; background: rgba(0, 0, 0, 0.08); transition: background 0.2s; }
-.divider:hover::before, .divider[data-dragging]::before, .divider:focus-visible::before { background: rgb(59, 130, 246); }
+.divider:hover::before, .divider[data-dragging]::before, .divider:focus-visible::before { background: var(--ink-strong); }
 .grip, .pill {
   position: absolute; left: 50%; top: var(--y, 50%); pointer-events: none;
   opacity: 0; scale: 0.8; transition: opacity 0.18s, scale 0.25s var(--spring);
 }
 .grip {
   width: 40px; height: 40px; margin: -20px 0 0 -20px; border-radius: 50%;
-  display: grid; place-items: center; color: #fff; background: rgb(59, 130, 246);
-  box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+  display: grid; place-items: center; color: #fff; background: var(--ink-strong);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
 }
 .pill {
   margin: 28px 0 0; translate: -50% 0; white-space: nowrap;

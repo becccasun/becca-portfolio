@@ -12,7 +12,7 @@ function tilt(id: string) {
 
 function Slip({ n }: { n: Note }) {
   return (
-    <figure className={s.slip} data-mine={n.from_rebecca || undefined} style={{ rotate: `${tilt(n.id)}deg` }}>
+    <figure className={s.slip} style={{ rotate: `${tilt(n.id)}deg` }}>
       <blockquote>{n.body}</blockquote>
       <figcaption>{n.from_rebecca ? "Rebecca" : n.name || "Anonymous"}</figcaption>
     </figure>
