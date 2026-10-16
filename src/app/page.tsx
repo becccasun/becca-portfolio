@@ -29,7 +29,7 @@ export default function Home() {
               </div>
             )}
             <div className={`revealLoad ${s.band}`}>
-              <p className={s.bandTagline}>{heroBand.tagline}</p>
+              <h1 className={s.bandTagline}>{heroBand.tagline}</h1>
               <ul className={s.bandRoles}>
                 {heroBand.roles.map((r) => (
                   <li key={r.text}>

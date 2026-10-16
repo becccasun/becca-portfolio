@@ -2,6 +2,7 @@ import Image from "next/image";
 import { site } from "@/content";
 import s from "./Header.module.css";
 import { withBase } from "@/lib/base";
+import MobileMenu from "./MobileMenu";
 
 // Eight stacked backdrop blurs (0.5px → 64px), each masked to a 3/8-wide band that
 // slides down the 126px strip: the original's progressive blur.
@@ -42,6 +43,7 @@ export default function Header() {
               <a key={l.label} href={withBase(l.href)} className={`t16 ${s.link}`}>{l.label}</a>
             ))}
           </nav>
+          <MobileMenu />
         </div>
       </header>
     </>

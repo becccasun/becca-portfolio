@@ -13,6 +13,8 @@
 
 @media (max-width: 640px) {
   .footer { grid-template-columns: 1fr auto; row-gap: 10px; padding: 20px 16px 24px; }
-  .links { grid-column: 1; gap: 24px; }
+  /* 13px links get a 44px-tall touch area; the negative margin keeps the row where it was */
+  .links { grid-column: 1; gap: 24px; margin: -12px 0; }
+  .links a { padding: 12px 0; }
   .slot { grid-row: 1 / span 2; grid-column: 2; }
 }

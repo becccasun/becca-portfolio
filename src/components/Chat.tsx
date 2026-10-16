@@ -123,13 +123,14 @@ export default function Chat() {
 
   // A stamp opening takes over the screen, so the chat steps aside (StampRow flags the
   // page with html[data-stamp="open"]). No cue here: the mascot is behind the stamp's blur.
+  // The phone menu (html[data-menu="open"]) covers the page the same way.
   useEffect(() => {
     if (!open) return;
     const html = document.documentElement;
     const mo = new MutationObserver(() => {
-      if (html.dataset.stamp === "open") setOpen(false);
+      if (html.dataset.stamp === "open" || html.dataset.menu === "open") setOpen(false);
     });
-    mo.observe(html, { attributes: true, attributeFilter: ["data-stamp"] });
+    mo.observe(html, { attributes: true, attributeFilter: ["data-stamp", "data-menu"] });
     return () => mo.disconnect();
   }, [open]);
 

@@ -27,7 +27,52 @@
 .link { color: var(--nav); transition: opacity 0.2s; }
 .link:hover { opacity: 0.55; }
 
+/* Phone menu (MobileMenu.tsx): the button shares the nav's right track */
+.menuButton {
+  display: none; grid-column: 3; grid-row: 1; justify-self: end;
+  width: 44px; height: 44px; margin-right: -10px; place-items: center; border-radius: 50%;
+}
+.menuButton:focus-visible { outline: 2px solid rgba(var(--ink-rgb), 0.4); outline-offset: -2px; }
+/* two bars that cross into an X */
+.menuIcon { position: relative; width: 20px; height: 8px; }
+.menuIcon::before,
+.menuIcon::after {
+  content: ""; position: absolute; left: 0; right: 0; height: 1.5px; border-radius: 1px; background: var(--ink-strong);
+  transition: translate 0.35s var(--spring), rotate 0.35s var(--spring);
+}
+.menuIcon::before { top: 0; }
+.menuIcon::after { bottom: 0; }
+.menuButton[aria-expanded="true"] .menuIcon::before { translate: 0 3.25px; rotate: 45deg; }
+.menuButton[aria-expanded="true"] .menuIcon::after { translate: 0 -3.25px; rotate: -45deg; }
+
+/* The sheet sits behind the header's name, logo and button (z -1 inside the header),
+   and the header lifts above the chat while it's open */
+:global(html[data-menu="open"]) .header { z-index: 70; }
+:global(html[data-menu="open"]) { overflow: hidden; }
+.sheet {
+  position: fixed; inset: 0; z-index: -1; background: #fff;
+  padding: 104px 16px calc(32px + env(safe-area-inset-bottom));
+  overflow-y: auto;
+}
+.sheet[hidden] { display: none; }
+.sheet ul { list-style: none; }
+.sheet a {
+  display: block; padding: 6px 0;
+  font-size: 40px; line-height: 48px; letter-spacing: -1.2px; color: var(--ink-strong);
+  animation: sheetIn 0.6s var(--ease-out) calc(var(--i) * 0.04s) both;
+}
+.sheet a[aria-current="page"] { color: var(--muted); }
+.sheet a:active { opacity: 0.55; }
+@keyframes sheetIn { from { opacity: 0; translate: 0 12px; } }
+
 @media (max-width: 640px) {
-  .link { display: none; }
+  .nav { display: none; }
   .sep, .role { display: none; }
+  .menuButton { display: grid; }
+  /* a taller hit area for the name without moving it */
+  .name { padding: 10px 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .menuIcon::before, .menuIcon::after { transition: none; }
+  .sheet a { animation: none; }
 }

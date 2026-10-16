@@ -92,9 +92,9 @@
 .work:global(.reveal) { filter: none; transform: translateY(16px); }
 .work:global(.reveal.in) { transform: none; }
 .workThumb { display: block; width: 100%; aspect-ratio: 563 / 363; object-fit: cover; margin-bottom: 15px; background: var(--panel); }
-.workKicker { font-size: 14px; line-height: 16.8px; letter-spacing: 0; color: rgba(0, 0, 0, 0.5); }
+.workKicker { font-size: 14px; line-height: 16.8px; letter-spacing: 0; color: rgba(0, 0, 0, 0.6); }
 .workTitle { font-size: 28px; line-height: 33.6px; letter-spacing: -0.56px; color: rgba(0, 0, 0, 0.75); margin-top: 2px; }
-.workBlurb { font-size: 14px; line-height: 16.8px; letter-spacing: 0; font-weight: 300; color: rgba(0, 0, 0, 0.5); margin-top: 3px; }
+.workBlurb { font-size: 14px; line-height: 16.8px; letter-spacing: 0; font-weight: 300; color: rgba(0, 0, 0, 0.6); margin-top: 3px; }
 
 /* Projects: 960 column, 120px between blocks */
 .projects { display: flex; flex-direction: column; gap: 120px; margin-top: 120px; }
@@ -171,18 +171,22 @@
 
 
 @media (max-width: 900px) {
-  .hero { --hero-h: 640px; }
-  .zines { top: 64px; bottom: auto; height: 380px; }
-  .heroRow { flex-direction: column; align-items: flex-start; justify-content: flex-end; gap: 32px; }
+  /* fits the window like desktop (a fixed 640px ran past short phone screens and hid the
+     credits under the works sheet); the strips take whatever the band leaves */
+  .hero { --hero-h: clamp(520px, 100svh, 760px); }
+  .zines { top: 64px; bottom: 200px; overflow-x: clip; }
+  .heroRow { flex-direction: column; align-items: flex-start; justify-content: flex-end; gap: 32px; padding-bottom: 28px; }
   .heroText { width: auto; }
   .heroText p { font-size: 24px; line-height: 31px; }
   .works { grid-template-columns: 1fr; row-gap: 40px; }
   .sheet { border-radius: 20px 20px 0 0; padding-top: 48px; }
   .workTitle { font-size: 24px; line-height: 29px; }
-  .band { flex-direction: column; align-items: flex-start; gap: 20px; font-size: 14px; }
-  .bandTagline { font-size: 20px; line-height: 26px; }
-  .bandRoles { flex-direction: column; align-items: flex-start; gap: 8px; }
-  .bandLogo { width: 18px; height: 18px; border-radius: 5px; }
+  .band { flex-direction: column; align-items: flex-start; gap: 16px; font-size: 15px; }
+  .bandTagline { font-size: 22px; line-height: 28px; letter-spacing: -0.44px; max-width: 340px; text-wrap: balance; }
+  /* logos lead each line so they stack as one column, instead of trailing ragged text */
+  .bandRoles { flex-direction: column; align-items: flex-start; gap: 6px; }
+  .bandRoles li { flex-direction: row-reverse; gap: 10px; }
+  .bandLogo { width: 20px; height: 20px; border-radius: 5px; }
   .reel { height: 56vw; }
   .infoRow { flex-direction: column; gap: 16px; }
   .quote { padding-top: 0; }
