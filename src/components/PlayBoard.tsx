@@ -3,9 +3,11 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { flushSync } from "react-dom";
 import { playColumns, playItems, type PlayColumnId, type PlayItem } from "@/play";
 import { withBase } from "@/lib/base";
+import Notes from "./Notes";
 import s from "./PlayBoard.module.css";
 
-const DEFAULT_W = 360;
+// Starting widths: Digital Explorations is the widest (and, as the last column, also takes any spare room)
+const DEFAULT_W: Record<PlayColumnId, number> = { notes: 300, art: 340, digital: 560 };
 const MIN_W = 240;
 const MAX_W = 900;
 const ids = playColumns.map((c) => c.id);
@@ -86,7 +88,7 @@ function Statement({ active, onPick }: { active: PlayColumnId | null; onPick: (i
   );
 }
 
-function Divider({ width, onWidth }: { width: number; onWidth: (w: number) => void }) {
+function Divider({ width, reset, onWidth }: { width: number; reset: number; onWidth: (w: number) => void }) {
   const drag = useRef<{ x: number; w: number } | null>(null);
   const [dragging, setDragging] = useState(false);
   const clamp = (w: number) => Math.min(MAX_W, Math.max(MIN_W, Math.round(w)));
@@ -112,7 +114,7 @@ function Divider({ width, onWidth }: { width: number; onWidth: (w: number) => vo
       }}
       onPointerUp={() => { drag.current = null; setDragging(false); }}
       onPointerCancel={() => { drag.current = null; setDragging(false); }}
-      onDoubleClick={() => onWidth(DEFAULT_W)}
+      onDoubleClick={() => onWidth(reset)}
       onKeyDown={(e) => {
         if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
           e.preventDefault();
@@ -130,7 +132,7 @@ function Divider({ width, onWidth }: { width: number; onWidth: (w: number) => vo
 
 export default function PlayBoard() {
   const [col, setCol] = useState<PlayColumnId | null>(null);
-  const [widths, setWidths] = useState<Record<PlayColumnId, number>>({ workbench: DEFAULT_W, art: DEFAULT_W, digital: DEFAULT_W });
+  const [widths, setWidths] = useState<Record<PlayColumnId, number>>(DEFAULT_W);
 
   useEffect(() => {
     setCol(readCol());
@@ -147,7 +149,8 @@ export default function PlayBoard() {
     transition(() => setCol(next));
   }, []);
 
-  const tab = col ?? "workbench";
+  // Phones open on the main column, Digital Explorations
+  const tab = col ?? "digital";
 
   return (
     <>
@@ -182,11 +185,11 @@ export default function PlayBoard() {
                   </h2>
                   <p className={s.colDesc}>{c.description}</p>
                 </header>
-                <div className={s.colBody} tabIndex={0} aria-label={`${c.title} projects`}>
-                  {playItems.filter((it) => it.column === c.id).map((it) => <Card key={it.src} it={it} />)}
+                <div className={s.colBody} tabIndex={0} aria-label={c.id === "notes" ? "Notes" : `${c.title} projects`}>
+                  {c.id === "notes" ? <Notes /> : playItems.filter((it) => it.column === c.id).map((it) => <Card key={it.src} it={it} />)}
                 </div>
               </section>
-              {!open && <Divider width={widths[c.id]} onWidth={(w) => setWidths((p) => ({ ...p, [c.id]: w }))} />}
+              {!open && <Divider width={widths[c.id]} reset={DEFAULT_W[c.id]} onWidth={(w) => setWidths((p) => ({ ...p, [c.id]: w }))} />}
             </div>
           );
         })}
@@ -216,7 +219,7 @@ export default function PlayBoard() {
         </div>
         <div id="play-panel" role="tabpanel" aria-labelledby={`tab-${tab}`} className={s.panel}>
           <p className={s.colDesc}>{playColumns.find((c) => c.id === tab)?.description}</p>
-          {playItems.filter((it) => it.column === tab).map((it) => <Card key={it.src} it={it} />)}
+          {tab === "notes" ? <Notes /> : playItems.filter((it) => it.column === tab).map((it) => <Card key={it.src} it={it} />)}
         </div>
       </div>
     </>

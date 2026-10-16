@@ -62,6 +62,8 @@
 .board[data-expanded] .colHead { padding-left: 28px; padding-right: 28px; }
 .board[data-expanded] .colBody { display: block; columns: 300px; column-gap: 16px; padding: 4px 28px 28px; }
 .board[data-expanded] .colBody > * { break-inside: avoid; margin-bottom: 16px; }
+/* the message board stays one centred column when it fills the board */
+.board[data-expanded="notes"] .colBody { columns: auto; }
 
 /* Cards: flat by default; the ones with a link lift */
 .card {
