@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { site } from "@/content";
 import { withBase } from "@/lib/base";
+import { isCurrentPage } from "@/lib/nav";
 import s from "./Header.module.css";
 
 // Phones only (the header's page links hide under 640px): a button in the header's
@@ -46,8 +47,6 @@ export default function MobileMenu() {
     };
   }, [open]);
 
-  const isCurrent = (href: string) =>
-    href === "/#work" ? pathname.startsWith("/work") : pathname === href || pathname.startsWith(`${href}/`);
 
   return (
     <>
@@ -69,7 +68,7 @@ export default function MobileMenu() {
               <a
                 ref={i === 0 ? first : undefined}
                 href={withBase(l.href)}
-                aria-current={isCurrent(l.href) ? "page" : undefined}
+                aria-current={isCurrentPage(l.href, pathname) ? "page" : undefined}
                 onClick={() => setOpen(false)}
               >
                 {l.label}

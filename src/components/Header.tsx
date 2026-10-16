@@ -3,6 +3,7 @@ import { site } from "@/content";
 import s from "./Header.module.css";
 import { withBase } from "@/lib/base";
 import MobileMenu from "./MobileMenu";
+import NavLinks from "./NavLinks";
 
 // Eight stacked backdrop blurs (0.5px → 64px), each masked to a 3/8-wide band that
 // slides down the 126px strip: the original's progressive blur.
@@ -38,11 +39,7 @@ export default function Header() {
           <a href={withBase("/")} className={s.logo} aria-label={`${site.name}, home`}>
             <Image src={withBase("/logo.png")} alt="" width={36} height={36} priority />
           </a>
-          <nav className={s.nav} aria-label="Pages">
-            {site.nav.map((l) => (
-              <a key={l.label} href={withBase(l.href)} className={`t16 ${s.link}`}>{l.label}</a>
-            ))}
-          </nav>
+          <NavLinks />
           <MobileMenu />
         </div>
       </header>

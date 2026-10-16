@@ -11,6 +11,10 @@
 .blur::before { z-index: 10; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); background-size: 160px; opacity: 0.2; }
 
 .header { position: fixed; inset: 0 0 auto 0; height: 64px; z-index: 10; }
+/* The header is the same on every page, so it holds still while the page beneath it
+   changes. Not while the phone menu is open: its sheet lives inside the header and
+   would cover the incoming page. */
+:global(html:not([data-menu="open"])) .header { view-transition-name: site-header; }
 /* equal outer tracks keep the logo at the dead centre */
 .inner { height: 100%; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; }
 .name { justify-self: start; display: flex; align-items: center; color: var(--ink-strong); white-space: nowrap; }
@@ -23,9 +27,14 @@
 .logo img { display: block; width: 100%; height: 100%; }
 .logo:hover { transform: rotate(-8deg) scale(1.06); }
 .logo:active { transform: scale(0.94); }
-.nav { justify-self: end; display: flex; align-items: center; gap: 13px; }
-.link { color: var(--nav); transition: opacity 0.2s; }
+/* Each link is a pill so the current page can sit in one; the padding replaces the old
+   13px gap, and the negative margin keeps the last word on the column edge */
+.nav { justify-self: end; display: flex; align-items: center; gap: 2px; margin-right: -10px; }
+.link { color: var(--nav); padding: 4px 10px; border-radius: 999px; transition: opacity 0.2s, background 0.2s; }
 .link:hover { opacity: 0.55; }
+.link[aria-current="page"] { background: rgba(0, 0, 0, 0.06); }
+.link[aria-current="page"]:hover { opacity: 1; }
+.link:focus-visible { outline: 2px solid rgba(var(--ink-rgb), 0.4); outline-offset: 0; }
 
 /* Phone menu (MobileMenu.tsx): the button shares the nav's right track */
 .menuButton {

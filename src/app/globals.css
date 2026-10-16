@@ -75,6 +75,32 @@ button { font: inherit; letter-spacing: inherit; border: 0; background: none; co
   .revealLoad { animation: none; }
 }
 
+/* ══ Page change: fade and rise ════════════════════════════
+   Same feel as the old Framer site, where each page's content
+   faded in and rose a little (0.3–0.5s, Framer's standard ease).
+   Moving between pages (plain links, so full loads) fades the old
+   page out quickly while the new one fades in from 16px lower.
+   Opacity and a small translate only, so it stays on the GPU.
+   The "page" type keeps this off the Play board's in-page
+   transitions, and the header and chat mascot hold still (their
+   own view-transition-names). Browsers without cross-page view
+   transitions just load the page. */
+@view-transition { navigation: auto; types: page; }
+
+html:active-view-transition-type(page)::view-transition-group(root) { animation-duration: 0.4s; }
+html:active-view-transition-type(page)::view-transition-old(root) {
+  animation: pageOut 0.18s cubic-bezier(0.44, 0, 0.56, 1) both;
+}
+html:active-view-transition-type(page)::view-transition-new(root) {
+  animation: pageIn 0.4s cubic-bezier(0.44, 0, 0.56, 1) 0.06s both;
+}
+@keyframes pageOut { to { opacity: 0; } }
+@keyframes pageIn { from { opacity: 0; transform: translateY(16px); } }
+
+@media (prefers-reduced-motion: reduce) {
+  @view-transition { navigation: none; }
+}
+
 /* ══ Eye tracker ═══════════════════════════════════════════
    See lab/Watcher.tsx. The frame holds the largest ball the
    Size knob allows, so the wall never rescales it. */
