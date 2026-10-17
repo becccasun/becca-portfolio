@@ -64,8 +64,10 @@ export async function POST(req: Request) {
   client ??= new Anthropic();
   const stream = client.beta.messages.stream({
     model: "claude-sonnet-5-5",
-    // answers are a few sentences or bullets (about 100 tokens); the cap stops a runaway reply
-    max_tokens: 400,
+    // Answers are kept short by the briefing (about 60 words). This cap only stops a runaway
+    // reply, and it also has to hold the model's thinking, which counts toward it: at 400,
+    // thinking plus answer hit the cap and replies were cut off mid-list.
+    max_tokens: 2000,
     // chat answers don't need deep deliberation
     output_config: { effort: "low" },
     // if Sonnet 5.5 declines, eligible requests are re-run server-side on the recommended fallback
