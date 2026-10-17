@@ -88,6 +88,13 @@ export async function POST(req: Request) {
           }
         }
         const final = await stream.finalMessage();
+        // one line per reply that didn't end normally, to find answers that stop mid-sentence
+        if (final.stop_reason !== "end_turn") {
+          console.warn(
+            "chat reply stopped:",
+            JSON.stringify({ stop: final.stop_reason, details: final.stop_details, model: final.model, blocks: final.content.map((b) => b.type), out: final.usage.output_tokens }),
+          );
+        }
         if (final.stop_reason === "refusal" && !sent) {
           controller.enqueue(enc.encode(OFF_TOPIC_LINE));
         }
