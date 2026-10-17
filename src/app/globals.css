@@ -75,27 +75,26 @@ button { font: inherit; letter-spacing: inherit; border: 0; background: none; co
   .revealLoad { animation: none; }
 }
 
-/* ══ Page change: fade and rise ════════════════════════════
-   Same feel as the old Framer site, where each page's content
-   faded in and rose a little (0.3–0.5s, Framer's standard ease).
-   Moving between pages (plain links, so full loads) fades the old
-   page out quickly while the new one fades in from 16px lower.
-   Opacity and a small translate only, so it stays on the GPU.
-   The "page" type keeps this off the Play board's in-page
-   transitions, and the header and chat mascot hold still (their
-   own view-transition-names). Browsers without cross-page view
+/* ══ Page change: lift and rise ════════════════════════════
+   Moving between pages (plain links, so full loads) lifts the old
+   page up and away as it fades, then the new page rises 64px into
+   place and settles. Opacity and translate only, so it stays on the
+   GPU (an earlier slide-up that animated a filter lagged). The
+   "page" type keeps this off the Play board's in-page transitions,
+   and the header and chat mascot hold still (their own
+   view-transition-names). Browsers without cross-page view
    transitions just load the page. */
 @view-transition { navigation: auto; types: page; }
 
-html:active-view-transition-type(page)::view-transition-group(root) { animation-duration: 0.4s; }
+html:active-view-transition-type(page)::view-transition-group(root) { animation-duration: 0.75s; }
 html:active-view-transition-type(page)::view-transition-old(root) {
-  animation: pageOut 0.18s cubic-bezier(0.44, 0, 0.56, 1) both;
+  animation: pageOut 0.32s cubic-bezier(0.55, 0, 0.75, 0.3) both;
 }
 html:active-view-transition-type(page)::view-transition-new(root) {
-  animation: pageIn 0.4s cubic-bezier(0.44, 0, 0.56, 1) 0.06s both;
+  animation: pageIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.14s both;
 }
-@keyframes pageOut { to { opacity: 0; } }
-@keyframes pageIn { from { opacity: 0; transform: translateY(16px); } }
+@keyframes pageOut { to { opacity: 0; transform: translateY(-40px); } }
+@keyframes pageIn { from { opacity: 0; transform: translateY(64px); } }
 
 @media (prefers-reduced-motion: reduce) {
   @view-transition { navigation: none; }
