@@ -14,10 +14,15 @@ export const works: { slug: string; title: string; kicker?: string; blurb?: stri
 // Credits band along the bottom of the hero
 export const heroBand = {
   tagline: "Rebecca is a full-stack designer building artful experiences.",
+  // Newest first; among the 2026 ones, the internship and consultancies lead.
+  // yc: backed by Y Combinator (shown as a small orange Y badge)
   roles: [
-    { text: "Studying UX + AI @ UMich", logo: "/logos/umich.png?v=2" },
-    { text: "Design Chair @ MHacks", logo: "/logos/mhacks.png" },
-    { text: "Product Design @ Loop", logo: "/logos/loop.png" },
+    { text: "Product Design Intern @ Loop", years: "2026", logo: "/logos/loop.png" },
+    { text: "Design Consultant @ Embedder", years: "2026", logo: "/logos/embedder.png", yc: true },
+    { text: "Design Consultant @ Aspect", years: "2026", logo: "/logos/aspect.png", yc: true },
+    { text: "Design Chair @ MHacks", years: "2026", logo: "/logos/mhacks.png" },
+    { text: "Design Consultant @ AgentMail", years: "2025", logo: "/logos/agentmail.png", yc: true },
+    { text: "UX + AI @ UMich", years: "2024–", logo: "/logos/umich.png?v=2" },
   ],
 };
 

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
-import { site } from "@/content";
+import { heroBand, site } from "@/content";
 import { withBase } from "@/lib/base";
 import { isCurrentPage } from "@/lib/nav";
 import s from "./Header.module.css";
@@ -73,6 +73,17 @@ export default function MobileMenu() {
               >
                 {l.label}
               </a>
+            </li>
+          ))}
+        </ul>
+        <ul className={s.sheetCreds} aria-label="Where I am now">
+          {heroBand.roles.map((r) => (
+            <li key={r.text}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={withBase(r.logo)} alt="" />
+              {r.text}
+              {"yc" in r && r.yc && <span className={s.sheetYc} title="Backed by Y Combinator" aria-label="Backed by Y Combinator">Y</span>}
+              <span className={s.sheetYears}>{r.years}</span>
             </li>
           ))}
         </ul>

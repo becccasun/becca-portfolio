@@ -84,7 +84,9 @@ export default function ZineField() {
   }, []);
 
   return (
-    <div ref={field} className={s.field} role="img" aria-label="Pages from Rebecca's ARCH 208 notebook, Map the Mind, and her Design Notebook 2025, folded into zine strips">
+    // The strips, captioned underneath like a piece on a gallery wall
+    <figure className={s.field}>
+      <div ref={field} className={s.rows} role="img" aria-label="Pages from Rebecca's ARCH 208 notebook, Map the Mind, and her Design Notebook 2025, folded into zine strips">
       {ROWS.map((row, r) => (
         <div key={r} className={s.row} style={{ "--shift": `${row.shift}px`, "--row": r, "--n": row.pages.length, "--ratio": row.ratio } as React.CSSProperties}>
           {row.pages.map((page, i) => (
@@ -95,6 +97,10 @@ export default function ZineField() {
           ))}
         </div>
       ))}
-    </div>
+      </div>
+      <figcaption className={s.caption}>
+        <cite>Rebecca&apos;s Design Journals</cite>, InDesign, 2025–26
+      </figcaption>
+    </figure>
   );
 }

@@ -17,6 +17,9 @@ export default function Home() {
       <main className={s.main}>
         {/* Hero */}
         <section className={s.hero}>
+          {/* The hero is all zine; the tagline stays for search engines and screen readers */}
+          <h1 className="sr-only">{heroBand.tagline}</h1>
+          <div className={s.grid} aria-hidden />
           <div className={s.heroBg}><HeroCanvas /></div>
           <div className={s.zines}><ZineField /></div>
           <div className={s.heroRow}>
@@ -28,17 +31,6 @@ export default function Home() {
                 )}
               </div>
             )}
-            <div className={`revealLoad ${s.band}`}>
-              <h1 className={s.bandTagline}>{heroBand.tagline}</h1>
-              <ul className={s.bandRoles}>
-                {heroBand.roles.map((r) => (
-                  <li key={r.text}>
-                    {r.text}
-                    <img src={withBase(r.logo)} alt="" width={22} height={22} className={s.bandLogo} />
-                  </li>
-                ))}
-              </ul>
-            </div>
           </div>
         </section>
 

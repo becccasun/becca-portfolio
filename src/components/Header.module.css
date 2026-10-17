@@ -1,13 +1,13 @@
 .blur { position: fixed; inset: 0 0 auto 0; height: 126px; z-index: 5; pointer-events: none; }
 .blur > div { position: absolute; inset: 0; }
-/* 30% white frost plus fine grain over the blur, both fading out with it so the strip has no hard bottom edge */
+/* 80% white frost plus fine grain over the blur, both fading out with it so the strip has no hard bottom edge */
 .blur::before,
 .blur::after {
   content: ""; position: absolute; inset: 0; z-index: 9;
   -webkit-mask-image: linear-gradient(to bottom, #000 0%, rgba(0,0,0,0.85) 22%, rgba(0,0,0,0.6) 42%, rgba(0,0,0,0.34) 62%, rgba(0,0,0,0.14) 80%, rgba(0,0,0,0.04) 92%, transparent 100%);
   mask-image: linear-gradient(to bottom, #000 0%, rgba(0,0,0,0.85) 22%, rgba(0,0,0,0.6) 42%, rgba(0,0,0,0.34) 62%, rgba(0,0,0,0.14) 80%, rgba(0,0,0,0.04) 92%, transparent 100%);
 }
-.blur::after { background: rgba(255, 255, 255, 0.3); }
+.blur::after { background: rgba(255, 255, 255, 0.8); }
 .blur::before { z-index: 10; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); background-size: 160px; opacity: 0.2; }
 
 .header { position: fixed; inset: 0 0 auto 0; height: 64px; z-index: 10; }
@@ -27,9 +27,10 @@
 .logo img { display: block; width: 100%; height: 100%; }
 .logo:hover { transform: rotate(-8deg) scale(1.06); }
 .logo:active { transform: scale(0.94); }
-/* Each link is a pill so the current page can sit in one; the padding replaces the old
-   13px gap, and the negative margin keeps the last word on the column edge */
-.nav { justify-self: end; display: flex; align-items: center; gap: 2px; margin-right: -10px; }
+/* Each link is a pill so the current page can sit in one; the padding replaces the old 13px gap */
+/* right track: the page links, then the credentials deck (Credentials.tsx) */
+.end { justify-self: end; display: flex; align-items: center; gap: 12px; }
+.nav { display: flex; align-items: center; gap: 2px; }
 .link { color: var(--nav); padding: 4px 10px; border-radius: 999px; transition: opacity 0.2s, background 0.2s; }
 .link:hover { opacity: 0.55; }
 .link[aria-current="page"] { background: rgba(0, 0, 0, 0.06); }
@@ -71,11 +72,16 @@
   animation: sheetIn 0.6s var(--ease-out) calc(var(--i) * 0.04s) both;
 }
 .sheet a[aria-current="page"] { color: var(--muted); }
+.sheetCreds { list-style: none; margin-top: 36px; padding-top: 20px; border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 12px; }
+.sheetCreds li { display: flex; align-items: center; gap: 12px; font-size: 16px; line-height: 22px; color: var(--ink); animation: sheetIn 0.6s var(--ease-out) 0.18s both; }
+.sheetYc { display: inline-grid; place-items: center; width: 16px; height: 16px; margin-left: -4px; border-radius: 3px; background: #f26522; color: #fff; font-size: 11px; line-height: 1; font-weight: 600; }
+.sheetYears { margin-left: auto; color: var(--muted); font-variant-numeric: tabular-nums; font-size: 14px; }
+.sheetCreds img { width: 24px; height: 24px; border-radius: 6px; object-fit: cover; box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08); }
 .sheet a:active { opacity: 0.55; }
 @keyframes sheetIn { from { opacity: 0; translate: 0 12px; } }
 
 @media (max-width: 640px) {
-  .nav { display: none; }
+  .end { display: none; }
   .sep, .role { display: none; }
   .menuButton { display: grid; }
   /* a taller hit area for the name without moving it */
@@ -83,5 +89,5 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .menuIcon::before, .menuIcon::after { transition: none; }
-  .sheet a { animation: none; }
+  .sheet a, .sheetCreds li { animation: none; }
 }

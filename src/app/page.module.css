@@ -5,7 +5,7 @@
    fits), and the works sheet below slides up over it. Scrolling back up pulls the sheet down
    and off, revealing the hero again. */
 .hero {
-  /* never taller than the window, so the credits band is on screen without scrolling */
+  /* never taller than the window, so the whole zine field is on screen without scrolling */
   --hero-h: clamp(560px, 100svh, 860px);
   position: sticky; top: min(0px, calc(100svh - var(--hero-h)));
   height: var(--hero-h); z-index: 0;
@@ -32,27 +32,28 @@
   padding: 64px 0 120px;
 }
 .heroBg { position: absolute; inset: 0 0 -319px; }
+/* Graph-paper grid behind the hero (after cindyly.design): 24px squares in faint grey
+   lines, fading out toward both sides and softly at the bottom so it never meets an edge */
+.grid {
+  position: absolute; inset: 0; pointer-events: none;
+  background-image:
+    linear-gradient(to right, rgba(0, 0, 0, 0.055) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.055) 1px, transparent 1px);
+  background-size: 24px 24px;
+  background-position: center top;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 22%, #000 78%, transparent), linear-gradient(to bottom, #000 75%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 22%, #000 78%, transparent), linear-gradient(to bottom, #000 75%, transparent);
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+}
 .heroRow { position: relative; height: 100%; width: min(1200px, calc(100% - 32px)); margin: 0 auto; display: flex; align-items: flex-end; justify-content: space-between; padding-bottom: 50px; pointer-events: none; }
 .heroRow > * { pointer-events: auto; }
-/* Zine strips fill the space between the header and the credits band; the strips size
-   themselves to its height (container units in ZineField) */
-.zines { position: absolute; left: 0; right: 0; top: 80px; bottom: 150px; z-index: 1; container-type: size; }
+/* The zine field sits centred in the hero: the same height it had when the credits band
+   sat under it (hero minus 230px), split evenly above and below, so the strips keep that
+   size. They size themselves to this box (container units in ZineField). */
+.zines { position: absolute; left: 0; right: 0; top: 115px; bottom: 115px; z-index: 1; container-type: size; }
 .heroText { width: 600px; }
 
-/* Credits band along the bottom of the hero */
-.band {
-  width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 40px;
-  font-size: 15px; line-height: 22px; letter-spacing: -0.2px; color: var(--ink);
-  translate: 0 0; transition: translate 0.75s var(--spring);
-}
-.bandTagline { max-width: 420px; font-size: 24px; line-height: 31px; letter-spacing: -0.48px; color: var(--ink); }
-.bandRoles { display: flex; align-items: center; gap: 34px; list-style: none; }
-.bandRoles li { display: flex; align-items: center; gap: 10px; white-space: nowrap; }
-.bandLogo { width: 22px; height: 22px; border-radius: 6px; object-fit: cover; box-shadow: 0 0 0 1px var(--line); }
-:global(html[data-stamp="open"]) .band {
-  translate: 0 110vh;
-  transition: translate 0.5s cubic-bezier(0.55, 0, 0.9, 0.35);
-}
 
 /* While a stamp is open (StampRow sets html[data-stamp="open"]) the hero copy shoots
    down off the screen, accelerating as it goes, and springs back up once the stamp is
@@ -172,22 +173,17 @@
 
 @media (max-width: 900px) {
   /* fits the window like desktop (a fixed 640px ran past short phone screens and hid the
-     credits under the works sheet); the strips take whatever the band leaves */
+     bottom of the hero under the works sheet); the strips take the rest */
   .hero { --hero-h: clamp(520px, 100svh, 760px); }
-  .zines { top: 64px; bottom: 200px; overflow-x: clip; }
+  /* same split on phones: the old box was the hero minus 264px */
+  .zines { top: 132px; bottom: 132px; overflow-x: clip; }
   .heroRow { flex-direction: column; align-items: flex-start; justify-content: flex-end; gap: 32px; padding-bottom: 28px; }
   .heroText { width: auto; }
   .heroText p { font-size: 24px; line-height: 31px; }
   .works { grid-template-columns: 1fr; row-gap: 40px; }
   .sheet { border-radius: 20px 20px 0 0; padding-top: 48px; }
   .workTitle { font-size: 24px; line-height: 29px; }
-  .band { flex-direction: column; align-items: flex-start; gap: 16px; font-size: 15px; }
-  .bandTagline { font-size: 22px; line-height: 28px; letter-spacing: -0.44px; max-width: 340px; text-wrap: balance; }
-  /* logos lead each line so they stack as one column, instead of trailing ragged text */
-  .bandRoles { flex-direction: column; align-items: flex-start; gap: 6px; }
-  .bandRoles li { flex-direction: row-reverse; gap: 10px; }
-  .bandLogo { width: 20px; height: 20px; border-radius: 5px; }
-  .reel { height: 56vw; }
+          .reel { height: 56vw; }
   .infoRow { flex-direction: column; gap: 16px; }
   .quote { padding-top: 0; }
   .badges { flex-wrap: wrap; gap: 12px; }
