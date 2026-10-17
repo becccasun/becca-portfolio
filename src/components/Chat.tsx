@@ -64,7 +64,20 @@ const BY_SLUG = new Map(works.filter((w) => !w.comingSoon).map((w) => [w.slug, w
 const TAG = /\[\[([a-z0-9-]+)\]\]/g;
 
 /** The answer's prose, without its card tags (or a tag still arriving mid-stream). */
-const prose = (raw: string) => raw.replace(TAG, "").replace(/\[\[[a-z0-9-]*\]?$/, "").trim();
+// Em dashes are banned in the briefing, but the case-study material has some, so any
+// that slip through become a comma here.
+const prose = (raw: string) =>
+  raw.replace(TAG, "").replace(/\[\[[a-z0-9-]*\]?$/, "").replace(/\s*\u2014\s*/g, ", ").trim();
+
+/** One block of a reply: a paragraph, or a list when every line starts with "- " (or "• "). */
+const Block = ({ text }: { text: string }) => {
+  const lines = text.split("\n").map((l) => l.trim()).filter(Boolean);
+  const bullet = /^[-•*]\s+/;
+  if (lines.length > 0 && lines.every((l) => bullet.test(l))) {
+    return <ul>{lines.map((l, i) => <li key={i}>{l.replace(bullet, "")}</li>)}</ul>;
+  }
+  return <p>{text}</p>;
+};
 
 /** "PRODUCT DESIGN INTERN · SUMMER 2026" → "Product Design Intern · Summer 2026" */
 const titleCase = (t: string) => t.toLowerCase().replace(/\b[a-z]/g, (c) => c.toUpperCase());
@@ -316,7 +329,7 @@ export default function Chat() {
                       {prose(m.content)
                         .split(/\n{2,}/)
                         .map((para, j) => (
-                          <p key={j}>{para}</p>
+                          <Block key={j} text={para} />
                         ))}
                       {!m.error && cardsFor(m.content).length > 0 && (
                         <span className={s.cards}>
