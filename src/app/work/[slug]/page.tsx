@@ -2,16 +2,20 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Header from "@/components/Header";
 import Toc from "@/components/case/Toc";
-import { caseStudies, getCase } from "@/case-studies";
+import { caseStudies, unlistedCases, getCase, isUnlisted } from "@/case-studies";
 import s from "@/components/case/case.module.css";
 
 export function generateStaticParams() {
-  return caseStudies.map((c) => ({ slug: c.meta.slug }));
+  return [...caseStudies, ...unlistedCases].map((c) => ({ slug: c.meta.slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
-  const c = getCase((await params).slug);
-  return c ? { title: `${c.meta.title} · Rebecca Sun` } : {};
+  const slug = (await params).slug;
+  const c = getCase(slug);
+  if (!c) return {};
+  return isUnlisted(slug)
+    ? { title: `${c.meta.title} · Rebecca Sun`, robots: { index: false, follow: false } }
+    : { title: `${c.meta.title} · Rebecca Sun` };
 }
 
 export default async function CaseStudyPage({ params }: { params: Promise<{ slug: string }> }) {
