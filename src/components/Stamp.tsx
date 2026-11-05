@@ -53,7 +53,7 @@ const CREASES = [
 const PAPER: "cream" | "charcoal" = "cream";
 const PAPERS = {
   cream: {
-    fill: "#f2efe7",
+    fill: "var(--paper-stamp)",
     // warm, darker specks on light paper
     grain: "0 0 0 0 0.35  0 0 0 0 0.32  0 0 0 0 0.26  0 0 0 0.2 -0.05",
   },

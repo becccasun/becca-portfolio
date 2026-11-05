@@ -1,0 +1,6 @@
+/* Nav link: Header .link */
+.navLink { color: var(--nav); padding: var(--space-4) var(--space-10); border-radius: var(--radius-full); font-size: var(--fs-16); transition: opacity var(--dur-fast), background var(--dur-fast); }
+.navLink:hover { opacity: 0.55; }
+.navLink[aria-current="page"] { background: var(--hover-wash); }
+.navLink[aria-current="page"]:hover { opacity: 1; }
+.navLink:focus-visible { outline: 2px solid rgba(var(--ink-rgb), 0.4); }

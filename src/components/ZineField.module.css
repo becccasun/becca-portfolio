@@ -19,7 +19,7 @@
    plus about half a fold's rise (≈ 0.11 × --h tall) on average. The label is a straight
    line, so it sits that same average distance below the last strip's edge. */
 .caption {
-  position: absolute; left: 0; right: 0; top: calc(50% + (var(--h) * 3.34 + 52px) / 2 + 20px + var(--h) * 0.08);
+  position: absolute; left: 0; right: 0; top: calc(50% + (var(--h) * 3.34 + 52px) / 2 + 32px + var(--h) * 0.08);
   text-align: center; font-size: 13px; line-height: 18px; letter-spacing: 0.1px;
   color: var(--muted);
   animation: captionIn 0.8s var(--ease-out) 1.1s both;
@@ -123,7 +123,7 @@
 @media (max-width: 900px) {
   .field { --h: min(91px, calc((100cqh - 36px) / 3.34)); }
   .rows { gap: 18px; }
-  .caption { top: calc(50% + (var(--h) * 3.34 + 36px) / 2 + 13px + var(--h) * 0.08); font-size: 12px; }
+  .caption { top: calc(50% + (var(--h) * 3.34 + 36px) / 2 + 21px + var(--h) * 0.08); font-size: 12px; }
 }
 /* Phones and small tablets (full-length strips need about 800px): each strip shows its
    first five pages, centred, so the whole zine fits on screen instead of running off both

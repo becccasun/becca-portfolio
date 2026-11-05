@@ -1,0 +1,2 @@
+/* Eyebrow: case .eyebrow */
+.eyebrow { font-size: var(--fs-12); line-height: var(--lh-12); letter-spacing: var(--tracking-eyebrow); text-transform: uppercase; color: var(--muted); }

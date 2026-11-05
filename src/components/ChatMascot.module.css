@@ -1,10 +1,10 @@
-.frame { position: fixed; inset: 0; z-index: 20; pointer-events: none; }
+.frame { position: fixed; inset: 0; z-index: var(--z-mascot); pointer-events: none; }
 
 /* Bottom-right corner; the chat stacks up from here */
 .button {
   position: absolute; bottom: 20px; right: 20px;
   pointer-events: auto; border-radius: 14px;
-  transition: transform 0.45s var(--spring);
+  transition: transform var(--dur-base) var(--spring);
   /* stays put in its corner while pages change (globals.css) */
   view-transition-name: chat-mascot;
 }
@@ -15,16 +15,16 @@
 /* The eye tracker's 200px frame is sized for a demo wall; here it should hug the ball */
 .button :global(.eyt) { width: auto; height: auto; }
 /* Lift off the page, and keep an edge on the dark footer */
-.button :global(.eyt-ball) { filter: drop-shadow(0 0 0.5px rgba(255, 255, 255, 0.35)) drop-shadow(0 6px 12px rgba(0, 0, 0, 0.18)); }
+.button :global(.eyt-ball) { filter: drop-shadow(0 0 0.5px rgba(255, 255, 255, 0.35)) drop-shadow(0 6px 12px var(--black-a18)); }
 
 
 /* While the chat (the bar or its answers) is open the mascot goes from the button
    grey to black, so it reads as switched on; it eases back when the chat closes. */
 .button :global(.eyt-body) { transition: fill 0.35s ease; }
-.button[data-open] :global(.eyt) { --fill-slab: #000; }
+.button[data-open] :global(.eyt) { --fill-slab: var(--black); }
 
 /* when the chat closes, a small hop: this is where it went */
-.button[data-cue] { animation: hop 0.9s var(--spring) 0.15s both; }
+.button[data-cue] { animation: hop var(--dur-slow) var(--spring) 0.15s both; }
 @keyframes hop {
   0% { transform: translateY(0) scale(1); }
   30% { transform: translateY(-7px) scale(1.06, 0.96); }

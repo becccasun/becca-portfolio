@@ -1,0 +1,7 @@
+/* Mark: blocks .mark */
+.mark {
+  flex: none; display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 50%;
+  background: var(--danger); color: var(--on-dark); font-size: var(--fs-12); font-weight: var(--weight-semibold); letter-spacing: 0;
+}
+.good { background: var(--good); }
+.pinned { box-shadow: 0 0 0 3px var(--bg), 0 2px 8px var(--black-a25); }

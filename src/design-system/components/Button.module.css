@@ -1,0 +1,18 @@
+/* Button: pill lg is globals .pill, pill sm is Notes .send, rect md is case .linkOut */
+.button {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--space-8);
+  background: var(--button); color: var(--on-dark); white-space: nowrap;
+  transition: transform 0.4s var(--spring), background var(--dur-fast), opacity var(--dur-fast);
+}
+.button:hover { background: var(--button-hover); }
+.button:active { transform: scale(0.98); }
+.button:disabled { opacity: 0.35; cursor: default; transform: none; }
+.button:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.pill { border-radius: var(--radius-full); }
+.pill.lg { box-shadow: var(--shadow-button); }
+.pill.lg:hover { transform: scale(1.03); }
+.rect { border-radius: var(--radius-10); background: var(--ink); }
+.rect:hover { background: var(--ink-strong); transform: translateY(-1px); }
+.sm { height: 32px; padding: 0 var(--space-14); font-size: var(--fs-13); }
+.md { height: 44px; padding: 0 18px; font-size: var(--fs-15); }
+.lg { height: 50px; padding: 0 var(--space-24); font-size: var(--fs-16); }

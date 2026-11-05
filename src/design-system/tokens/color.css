@@ -1,0 +1,53 @@
+/* ── 2. Semantic: color ──────────────────────────────────────
+   What each color is FOR. The short names (--ink, --muted, --line,
+   --panel...) predate the system and are kept so existing modules
+   keep working. Figma: collection "Color", grouped surface/ text/
+   line/ action/ status/ brand/. */
+:root {
+  /* surfaces */
+  --bg: var(--white);              /* the page */
+  --panel: var(--gray-50);         /* wells, cards, cover placeholders */
+  --frost: var(--gray-100);        /* chat bubbles (used at 90%) */
+  --placeholder: var(--gray-200);  /* an image that hasn't loaded */
+  --cream: var(--cream-100);       /* the letter card, paper stamps */
+  --sticky: var(--yellow-200);     /* sticky notes on case-study slides */
+  --footer: var(--gray-900);
+
+  /* text, strongest to faintest */
+  --ink-strong: var(--gray-950);   /* name, phone menu */
+  --ink: var(--gray-850);          /* body copy */
+  --ink-rgb: 36, 35, 35;           /* --ink for rgba() */
+  --nav: var(--gray-800);          /* header links */
+  --dim: var(--black-a75);         /* work titles, footer */
+  --soft: var(--gray-600);         /* subheads, secondary paragraphs */
+  --tag: var(--black-a60);         /* kickers, tags, signatures */
+  --muted: var(--gray-500);        /* labels, captions, inactive tabs */
+  --hint: var(--black-a45);        /* placeholders, dates, meta */
+  --disabled: var(--black-a25);
+  --sticky-ink: var(--olive-900);
+
+  /* text and icons on dark surfaces */
+  --on-dark: var(--white);
+  --on-dark-muted: var(--white-a70);
+
+  /* lines */
+  --line: var(--black-a6);         /* hairlines, dividers, well rims */
+  --line-strong: var(--black-a8);  /* inputs, chips, image rims */
+  --line-focus: var(--black-a18);  /* a field being typed into */
+  --line-selected: var(--ink);     /* the chosen option (1.5px) */
+
+  /* actions */
+  --button: var(--gray-700);
+  --button-hover: var(--gray-900);
+  --hover-wash: var(--black-a6);   /* current nav pill */
+  --focus: var(--blue-500);
+
+  /* meaning */
+  --danger: var(--red-500);        /* friction marks, invalid fields */
+  --danger-ink: var(--red-600);    /* error text */
+  --good: var(--green-600);        /* "this works" marks */
+  --success: var(--green-500);     /* positive deltas */
+  --green: var(--green-700);
+  --green-ui: var(--success);
+  --brand-yc: var(--orange-500);
+}

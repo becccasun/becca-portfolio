@@ -8,30 +8,39 @@ export type PlayItem = {
   column: PlayColumnId;
   date: string; // display string; a month or just a year is fine
   href?: string;
+  preview?: string; // a muted clip that plays over the still image while the card is hovered
+  book?: { slug: string; pages: number }; // a flip book from public/play/books/<slug>, shown instead of src
+  // A painting shown as a 3D stretched canvas. long = its longer side in inches, depth = its profile.
+  // Canvas cards show only the date and medium; title is kept as the alt text.
+  canvas?: { long: number; depth: number };
 };
 
 // Descriptions are drafts for Rebecca to rewrite.
 // Left to right: notes, then crafts, then the widest column, digital.
 export const playColumns: { id: PlayColumnId; title: string; description: string }[] = [
   { id: "notes", title: "Message Board", description: "What you're thinking about, or just hi. I read each one before it goes up." },
-  { id: "art", title: "Arts and Crafts", description: "Paint, pencil, charcoal and ink. Made by hand, mostly for myself." },
+  { id: "art", title: "Arts and Crafts", description: "Paint, pencil and charcoal. Made by hand, mostly for myself." },
   { id: "digital", title: "Digital Explorations", description: "Journals, posters, code, motion and the web: things I made along the way." },
 ];
 
 // Dates marked "guess" still need checking.
 export const playItems: PlayItem[] = [
   // Digital Explorations
-  { column: "digital", date: "2025", src: "/play/editorial-journal.png", w: 1200, h: 773, title: "Editorial Design Journal", note: "Self-initiated annual journal, 2025 edition" },
+  { column: "digital", date: "2024", src: "/play/books/map-of-the-mind/001.webp", w: 1280, h: 909, title: "Map of the Mind", note: "Editorial Design Journal No. 1, made in InDesign in 2024", book: { slug: "map-of-the-mind", pages: 106 } },
+  { column: "digital", date: "2025", src: "/play/books/agree-to-disagree/001.webp", w: 1280, h: 909, title: "Agree to Disagree", note: "Editorial Design Journal No. 2, made in InDesign in 2025", book: { slug: "agree-to-disagree", pages: 98 } },
   { column: "digital", date: "Jan 2025", src: "/play/asquared-poster.jpg", w: 1200, h: 1500, title: "An A/Squared Affair", note: "Winter 25 launch party poster" },
-  { column: "digital", date: "Oct 2026", src: "/play/stage.jpg", w: 944, h: 590, title: "On stage", note: "Hackathon" }, // guess
-  { column: "digital", date: "2025", src: "/play/touchdesigner.jpg", w: 1200, h: 780, title: "Hand tracking", note: "TouchDesigner + MediaPipe" }, // guess
-  { column: "digital", date: "2025", src: "/play/umi.jpg", w: 1200, h: 773, title: "UMI", note: "Brand identity" }, // guess
+  { column: "digital", date: "Oct 2026", src: "/play/rivet.jpg", w: 1280, h: 720, title: "Rivet", note: "Rivet at SOON Hackathon. First place overall: prompt to hardware design in seconds.", preview: "/play/rivet.mp4" },
+  { column: "digital", date: "2026", src: "/play/touchdesigner.mp4", w: 960, h: 624, type: "video", title: "Hand tracking", note: "TouchDesigner + MediaPipe" },
+  { column: "digital", date: "Sep 2025", src: "/play/mobilens.jpg", w: 1252, h: 1054, title: "MobiLens", note: "MobiLens at MHacks. 2x winner: AR glasses for accessible navigation." },
   { column: "digital", date: "2024", src: "/play/old-portfolio.jpg", w: 1200, h: 627, title: "An earlier portfolio", note: "Web design" }, // guess
 
-  // Arts and Crafts
-  { column: "art", date: "2024", src: "/play/paintings-studio.jpg", w: 1200, h: 1800, title: "Paintings, in the studio", note: "Oil on canvas" }, // guess
-  { column: "art", date: "2024", src: "/play/hourglass.jpg", w: 976, h: 1404, title: "Hourglass", note: "Oil on canvas" }, // guess
-  { column: "art", date: "2023", src: "/play/self-portraits.jpg", w: 1068, h: 1402, title: "Self-portraits", note: "Coloured pencil" }, // guess
-  { column: "art", date: "2023", src: "/play/charcoal.jpg", w: 1200, h: 898, title: "Still life", note: "Charcoal" }, // guess
-  { column: "art", date: "2023", src: "/play/las-vegas.jpg", w: 1200, h: 898, title: "Las Vegas Strip", note: "Ink wash" },
+  // Arts and Crafts: stretched canvases, newest first. Sizes are estimates until Rebecca measures them.
+  { column: "art", date: "2026", src: "/play/canvas/space.jpg", w: 1400, h: 1000, title: "Shooting star", note: "Oil on canvas", canvas: { long: 7, depth: 0.625 } },
+  { column: "art", date: "2026", src: "/play/canvas/lily-pads.jpg", w: 1042, h: 725, title: "Lily pads", note: "Oil on canvas", canvas: { long: 7, depth: 0.625 } },
+  { column: "art", date: "2026", src: "/play/canvas/hills.jpg", w: 782, h: 1114, title: "Green hills", note: "Oil on canvas", canvas: { long: 7, depth: 0.625 } },
+  { column: "art", date: "2026", src: "/play/canvas/orchids.jpg", w: 766, h: 1105, title: "Blue orchids", note: "Oil on canvas", canvas: { long: 7, depth: 0.625 } },
+  { column: "art", date: "2026", src: "/play/canvas/lily-of-the-valley.jpg", w: 806, h: 1152, title: "Lily of the valley", note: "Oil on canvas", canvas: { long: 7, depth: 0.625 } },
+  { column: "art", date: "2024", src: "/play/hourglass.jpg", w: 976, h: 1404, title: "Hourglass", note: "Oil on canvas", canvas: { long: 24, depth: 1.5 } }, // guess
+  { column: "art", date: "2023", src: "/play/self-portraits.jpg", w: 1068, h: 1402, title: "Self-portraits", note: "Coloured pencil", canvas: { long: 24, depth: 1.5 } }, // guess
+  { column: "art", date: "2023", src: "/play/charcoal.jpg", w: 1200, h: 898, title: "Still life", note: "Charcoal", canvas: { long: 24, depth: 1.5 } }, // guess
 ];

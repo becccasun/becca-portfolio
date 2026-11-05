@@ -8,8 +8,12 @@ import s from "./Credentials.module.css";
 // The hero's old credits band, folded into the header: the logos sit as a small stacked
 // deck right of the page links. Hovering (or focusing, or tapping) deals the deck out:
 // each logo drops straight down from the stack to the start of its own row in a
-// dropdown, and the row's text and years fade in beside it. The logos are the same
+// dropdown, and the row's text and years fade in beside it. Work sits above a thin
+// divider, school below it. The logos are the same
 // elements in both states, so the unstacking is one continuous move.
+// where the school entries start (work comes first); the divider goes above it
+const firstSchool = heroBand.roles.findIndex((r) => r.group === "school");
+
 export default function Credentials() {
   const [open, setOpen] = useState(false);
   const wrap = useRef<HTMLDivElement>(null);
@@ -86,18 +90,20 @@ export default function Credentials() {
       >
         {heroBand.roles.map((r, i) => (
           // eslint-disable-next-line @next/next/no-img-element
-          <img key={r.text} src={withBase(r.logo)} alt="" className={s.chip} style={{ "--i": i } as React.CSSProperties} />
+          <img key={r.text} src={withBase(r.logo)} alt="" className={s.chip} style={{ "--i": i, "--below": i >= firstSchool ? 1 : 0 } as React.CSSProperties} />
         ))}
       </button>
       <div ref={panel} id="credentials" className={s.panel} aria-hidden={!open}>
         <ul>
-          {heroBand.roles.map((r, i) => (
+          {heroBand.roles.map((r, i) => [
+            // a plain rule between work and school, no labels
+            i === firstSchool && i > 0 && <li key="divider" role="separator" className={s.divider} />,
             <li key={r.text} style={{ "--i": i } as React.CSSProperties}>
               <span>{r.text}</span>
               {"yc" in r && r.yc && <span className={s.yc} title="Backed by Y Combinator" aria-label="Backed by Y Combinator">Y</span>}
               <span className={s.years}>{r.years}</span>
-            </li>
-          ))}
+            </li>,
+          ])}
         </ul>
       </div>
     </div>

@@ -1,0 +1,33 @@
+/* ── Decor ───────────────────────────────────────────────────
+   Values for the handmade layer: paper, lean, grain. Keep decor
+   reading these so a new piece (a ticket, a receipt, a pressed
+   flower) sits in the same family as the stamps and slips.
+   Figma: collection "Decor". */
+:root {
+  /* papers */
+  --paper-stamp: var(--cream-200);  /* postage stamp paper */
+  --paper-letter: var(--cream);     /* the letter card */
+  --paper-slip: var(--white);       /* message board slips */
+  --paper-sticky: var(--sticky);    /* case-study sticky notes */
+  --paper-dark: var(--button);      /* charcoal stamp paper */
+  --paper-book: var(--white);       /* flip book pages */
+  --paper-book-edge: #e4e1dc;       /* page edges under the flip book */
+  --paper-book-edge-deep: #d2cec7;
+
+  /* lean: how far paper rotates off true */
+  --tilt-slip: 1.2deg;     /* slips lean up to this either way */
+  --tilt-sticky: 1.5deg;   /* sticky notes */
+  --tilt-card: 4deg;       /* placeholder stamp, phone mockup */
+  --tilt-wiggle: -8deg;    /* logo hover */
+
+  /* texture */
+  --grain-alpha: 0.2;      /* paper grain strength */
+  --edge-dashed: 4px dashed var(--cream);  /* stitched edge on the placeholder stamp */
+  --stripe-a: var(--khaki-300);    /* placeholder stamp stripes */
+  --stripe-b: var(--khaki-400);
+
+  /* lift */
+  --shadow-book: 0 1px 0 var(--paper-book-edge), 0 2px 0 var(--paper-book-edge-deep), 0 3px 0 var(--paper-book-edge), 0 4px 0 var(--paper-book-edge-deep),
+    0 14px 28px -10px var(--black-a25), 0 30px 60px -30px var(--black-a18);
+  --shadow-sticky: 0 1px 1px var(--black-a8), 0 10px 24px rgba(60, 50, 0, 0.18);
+}

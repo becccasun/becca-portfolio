@@ -1,0 +1,3 @@
+/* Well: blocks .well */
+.well { border-radius: var(--radius-12); overflow: hidden; background: var(--panel); box-shadow: var(--shadow-rim); }
+.well > img, .well > video { display: block; width: 100%; height: auto; }

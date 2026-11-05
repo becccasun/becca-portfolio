@@ -8,7 +8,7 @@
   width: calc(100% - 32px); max-width: 1680px; margin: 80px auto 0;
   height: calc(100svh - 96px);
   /* no top edge: the board runs up under the header instead of starting at a line */
-  border: 1px solid rgba(0, 0, 0, 0.08); border-top: 0; border-radius: 0 0 16px 16px; background: #fff;
+  border: 1px solid var(--line-strong); border-top: 0; border-radius: 0 0 var(--radius-16) var(--radius-16); background: var(--bg);
   overflow-x: auto; overflow-y: hidden; overscroll-behavior-x: contain;
 }
 
@@ -16,22 +16,18 @@
 .intro {
   flex: 0 0 248px; display: flex; flex-direction: column; gap: 22px;
   padding: 22px 22px 18px; border-right: 1px solid var(--line);
-  overflow-y: auto; position: sticky; left: 0; z-index: 2; background: #fff;
+  overflow-y: auto; position: sticky; left: 0; z-index: 2; background: var(--bg);
 }
-.name { font-size: 16px; line-height: 22px; color: var(--ink-strong); }
-.statement { display: flex; flex-direction: column; gap: 14px; font-size: 14px; line-height: 21px; color: var(--soft); }
-.archive {
-  align-self: flex-start; color: var(--ink); text-decoration: underline;
-  text-decoration-color: rgba(0, 0, 0, 0.25); text-underline-offset: 3px; cursor: default;
-}
-.menu { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; }
+.name { font-size: var(--fs-16); line-height: 22px; color: var(--ink-strong); }
+.statement { display: flex; flex-direction: column; gap: var(--space-14); font-size: var(--fs-14); line-height: 21px; color: var(--soft); }
+.menu { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-2); }
 .menuItem {
-  font-size: 13px; line-height: 18px; color: var(--muted); padding: 3px 9px; margin-left: -9px;
-  border-radius: 999px; transition: background 0.2s, color 0.2s;
+  font-size: var(--fs-13); line-height: var(--lh-13); color: var(--muted); padding: 3px 9px; margin-left: -9px;
+  border-radius: var(--radius-full); transition: background var(--dur-fast), color var(--dur-fast);
 }
 .menuItem:hover { color: var(--ink); }
-.menuItem[aria-current] { background: rgba(0, 0, 0, 0.06); color: var(--ink); }
-.clock { margin-top: auto; font-size: 12px; line-height: 16px; color: rgba(0, 0, 0, 0.35); font-variant-numeric: tabular-nums; }
+.menuItem[aria-current] { background: var(--hover-wash); color: var(--ink); }
+.clock { margin-top: auto; font-size: var(--fs-12); line-height: var(--lh-12); color: var(--black-a35); font-variant-numeric: tabular-nums; }
 
 /* Columns */
 .colWrap { display: flex; flex: 0 0 auto; min-width: 0; }
@@ -39,51 +35,65 @@
 /* The last column stretches into any spare width, so the board never ends in a blank strip */
 .colWrap:last-child { flex-grow: 1; }
 .colWrap:last-child .col { flex-grow: 1; }
-.colHead { padding: 22px 20px 14px; display: flex; flex-direction: column; gap: 8px; }
-.colTitle { font-size: 16px; line-height: 22px; font-weight: 400; color: var(--ink-strong); }
-.colTitle button { display: inline-flex; align-items: center; gap: 4px; transition: opacity 0.2s; }
+.colHead { padding: 22px 20px 14px; display: flex; flex-direction: column; gap: var(--space-8); }
+.colTitle { font-size: var(--fs-16); line-height: 22px; font-weight: 400; color: var(--ink-strong); }
+.colTitle button { display: inline-flex; align-items: center; gap: var(--space-4); transition: opacity var(--dur-fast); }
 .colTitle button:hover { opacity: 0.6; }
 .chev { color: var(--muted); font-size: 18px; line-height: 1; translate: 0 -1px; }
-.colDesc { font-size: 13px; line-height: 19px; color: var(--muted); }
+.colDesc { font-size: var(--fs-13); line-height: 19px; color: var(--muted); }
 .colBody {
-  flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain;
-  padding: 4px 20px 24px; display: flex; flex-direction: column; gap: 14px;
+  flex: 1; min-height: 0; overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain;
+  padding: var(--space-4) var(--space-20) var(--space-24);
 }
-.colBody:focus-visible { outline: 2px solid rgb(59, 130, 246); outline-offset: -2px; }
+/* The cards' own wrapper. It never has a fixed height, so the expanded view's columns grow downward
+   (a height-capped multi-column box overflows sideways and splits cards across columns). */
+.flow { display: flex; flex-direction: column; gap: var(--space-14); }
+.colBody:focus-visible { outline: 2px solid var(--focus); outline-offset: -2px; }
 
 .back {
-  align-self: flex-start; font-size: 13px; line-height: 18px; color: var(--muted);
-  padding: 4px 10px; margin: -4px 0 4px -10px; border-radius: 999px; transition: background 0.2s, color 0.2s;
+  align-self: flex-start; font-size: var(--fs-13); line-height: var(--lh-13); color: var(--muted);
+  padding: var(--space-4) var(--space-10); margin: -4px 0 4px -10px; border-radius: var(--radius-full); transition: background var(--dur-fast), color var(--dur-fast);
 }
-.back:hover { background: rgba(0, 0, 0, 0.05); color: var(--ink); }
+.back:hover { background: var(--black-a5); color: var(--ink); }
 
 /* Expanded: the open column fills the board and its cards flow into a grid */
 .board[data-expanded] .colWrap { flex: 1 1 auto; }
 .board[data-expanded] .col { flex: 1; }
-.board[data-expanded] .colHead { padding-left: 28px; padding-right: 28px; }
-.board[data-expanded] .colBody { display: block; columns: 300px; column-gap: 16px; padding: 4px 28px 28px; }
-.board[data-expanded] .colBody > * { break-inside: avoid; margin-bottom: 16px; }
+.board[data-expanded] .colHead { padding-left: var(--space-28); padding-right: var(--space-28); }
+.board[data-expanded] .colBody { padding: var(--space-4) var(--space-28) var(--space-28); }
+/* A grid rather than CSS columns: Chrome misplaces elements inside multi-column boxes for
+   IntersectionObserver, which is what wakes the 3D canvases and the flip books */
+.board[data-expanded] .flow { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: var(--space-16); align-items: start; }
+/* Digital Explorations, full width: justified rows (see Bento in PlayBoard.tsx). One gap everywhere;
+   cards in a row share a height, with their media level along the bottom. */
+.bento { display: flex; flex-direction: column; gap: var(--space-16); }
+.bentoRow { display: flex; gap: var(--space-16); align-items: stretch; }
+.bentoRow > .card { min-width: 0; }
+.bentoRow > .card > :last-child { margin-top: auto; }
+.bentoRow > .card > :nth-last-child(2) { margin-bottom: var(--space-4); }
 /* the message board stays one centred column when it fills the board */
-.board[data-expanded="notes"] .colBody { columns: auto; }
+.board[data-expanded="notes"] .flow { display: flex; }
 
 /* Cards: flat by default; the ones with a link lift */
 .card {
-  display: flex; flex-direction: column; gap: 4px; padding: 12px 12px 12px;
-  background: #fff; border: 1px solid rgba(0, 0, 0, 0.07); border-radius: 12px; color: inherit;
+  display: flex; flex-direction: column; gap: var(--space-4); padding: var(--space-12) var(--space-12) var(--space-12);
+  background: var(--bg); border: 1px solid rgba(0, 0, 0, 0.07); border-radius: var(--radius-12); color: inherit;
 }
+/* Canvases stand on the column with no card around them */
+.bare { background: none; border-color: transparent; padding-left: 0; padding-right: 0; }
 .linked { transition: translate 0.35s var(--spring), box-shadow 0.35s var(--ease-out); }
-.linked:hover { translate: 0 -3px; box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04); }
-.date { font-size: 11px; line-height: 15px; color: rgba(0, 0, 0, 0.38); }
-.cardTitle { font-size: 14px; line-height: 19px; color: var(--ink); }
-.note { font-size: 12px; line-height: 16px; color: var(--muted); }
-.media { margin-top: 8px; border-radius: 6px; overflow: hidden; background: var(--panel); }
+.linked:hover { translate: 0 -3px; box-shadow: 0 10px 24px var(--black-a8), 0 2px 6px rgba(0, 0, 0, 0.04); }
+.date { font-size: var(--fs-11); line-height: 15px; color: var(--black-a35); }
+.cardTitle { font-size: var(--fs-14); line-height: 19px; color: var(--ink); }
+.note { font-size: var(--fs-12); line-height: var(--lh-12); color: var(--muted); }
+.media { margin-top: var(--space-8); border-radius: var(--radius-6); overflow: hidden; background: var(--panel); }
 .media img, .media video { display: block; width: 100%; height: 100%; object-fit: cover; }
 
 /* Divider and resize handle */
 .divider {
   flex: 0 0 9px; margin: 0 -4px; position: relative; z-index: 1; cursor: col-resize; touch-action: none; outline: none;
 }
-.divider::before { content: ""; position: absolute; inset: 0 auto 0 4px; width: 1px; background: rgba(0, 0, 0, 0.08); transition: background 0.2s; }
+.divider::before { content: ""; position: absolute; inset: 0 auto 0 4px; width: 1px; background: var(--black-a8); transition: background var(--dur-fast); }
 .divider:hover::before, .divider[data-dragging]::before, .divider:focus-visible::before { background: var(--ink-strong); }
 .grip, .pill {
   position: absolute; left: 50%; top: var(--y, 50%); pointer-events: none;
@@ -91,12 +101,12 @@
 }
 .grip {
   width: 40px; height: 40px; margin: -20px 0 0 -20px; border-radius: 50%;
-  display: grid; place-items: center; color: #fff; background: var(--ink-strong);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+  display: grid; place-items: center; color: var(--on-dark); background: var(--ink-strong);
+  box-shadow: 0 4px 14px var(--black-a25);
 }
 .pill {
-  margin: 28px 0 0; translate: -50% 0; white-space: nowrap;
-  font-size: 11px; line-height: 15px; padding: 3px 8px; border-radius: 999px; color: #fff; background: rgba(20, 20, 20, 0.85);
+  margin: var(--space-28) 0 0; translate: -50% 0; white-space: nowrap;
+  font-size: var(--fs-11); line-height: 15px; padding: 3px 8px; border-radius: var(--radius-full); color: var(--on-dark); background: rgba(20, 20, 20, 0.85);
 }
 .divider:hover .grip, .divider:hover .pill, .divider[data-dragging] .grip,
 .divider:focus-visible .grip, .divider:focus-visible .pill { opacity: 1; scale: 1; }
@@ -108,21 +118,21 @@
 .mobile { display: none; }
 @media (max-width: 899px) {
   .board { display: none; }
-  .mobile { display: block; width: calc(100% - 32px); margin: 88px auto 0; padding-bottom: 64px; }
-  .mobileIntro { display: flex; flex-direction: column; gap: 18px; padding-bottom: 24px; }
+  .mobile { display: block; width: calc(100% - 32px); margin: 88px auto 0; padding-bottom: var(--space-64); }
+  .mobileIntro { display: flex; flex-direction: column; gap: 18px; padding-bottom: var(--space-24); }
   .mobileIntro .menu { display: none; }
   .mobileIntro .clock { margin-top: 0; }
   .tabs {
-    position: sticky; top: 68px; z-index: 6; display: flex; gap: 2px; padding: 4px;
+    position: sticky; top: 68px; z-index: 6; display: flex; gap: var(--space-2); padding: var(--space-4);
     border-radius: 999px; background: rgba(240, 240, 240, 0.92); backdrop-filter: blur(10px);
   }
   .tab {
-    flex: 1 1 auto; min-height: 40px; padding: 0 10px; border-radius: 999px; white-space: nowrap;
-    font-size: 13px; line-height: 18px; color: var(--muted); transition: background 0.2s, color 0.2s;
+    flex: 1 1 auto; min-height: 40px; padding: 0 var(--space-10); border-radius: var(--radius-full); white-space: nowrap;
+    font-size: var(--fs-13); line-height: var(--lh-13); color: var(--muted); transition: background var(--dur-fast), color var(--dur-fast);
   }
-  .tab[aria-selected="true"] { background: #fff; color: var(--ink); box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08); }
-  .tab:focus-visible { outline: 2px solid rgb(59, 130, 246); outline-offset: 1px; }
-  .panel { display: flex; flex-direction: column; gap: 14px; padding-top: 18px; }
+  .tab[aria-selected="true"] { background: var(--bg); color: var(--ink); box-shadow: 0 1px 3px var(--black-a8); }
+  .tab:focus-visible { outline: 2px solid var(--focus); outline-offset: 1px; }
+  .panel { display: flex; flex-direction: column; gap: var(--space-14); padding-top: 18px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -1,0 +1,4 @@
+/* Stat: blocks .stats */
+.stat { display: flex; flex-direction: column-reverse; gap: var(--space-4); }
+.stat dd { font-size: var(--fs-32); line-height: var(--lh-32); letter-spacing: var(--ls-32); color: var(--ink); }
+.stat dt { font-size: var(--fs-14); color: var(--muted); }

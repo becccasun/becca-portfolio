@@ -1,0 +1,11 @@
+/* Chat messages: Chat .bubble / .chip */
+.question { padding: var(--space-6) var(--space-12); border-radius: 14px 14px 4px 14px; background: var(--button); color: var(--on-dark); font-family: var(--font-ui); font-size: 12.5px; line-height: 17px; letter-spacing: 0; }
+.reply {
+  position: relative; padding: var(--space-12) var(--space-14); border-radius: 18px 18px 6px 18px;
+  background: color-mix(in srgb, var(--frost) 90%, transparent); border: 1px solid var(--black-a5); box-shadow: var(--shadow-card);
+  color: var(--ink); font-family: var(--font-ui); font-size: var(--fs-14); line-height: 21px; letter-spacing: 0;
+}
+.reply::before {
+  content: ""; position: absolute; bottom: -6px; right: var(--space-14); width: 12px; height: 12px;
+  background: inherit; border-right: inherit; border-bottom: inherit; transform: rotate(45deg); border-radius: 0 0 3px 0;
+}

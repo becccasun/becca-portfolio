@@ -77,8 +77,8 @@ export default function MobileMenu() {
           ))}
         </ul>
         <ul className={s.sheetCreds} aria-label="Where I am now">
-          {heroBand.roles.map((r) => (
-            <li key={r.text}>
+          {heroBand.roles.map((r, i) => (
+            <li key={r.text} className={i > 0 && r.group !== heroBand.roles[i - 1].group ? s.sheetSplit : undefined}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={withBase(r.logo)} alt="" />
               {r.text}

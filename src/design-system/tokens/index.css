@@ -1,0 +1,14 @@
+/* ══ Design tokens ══════════════════════════════════════════
+   Import order is the layer order: primitives first, then the
+   semantic files that alias them. Components read semantic tokens
+   only. Each file mirrors one Figma variable collection in
+   1rTK6v2nTl8bq7fWHNJEyc ("Portfolio"). /system renders all of it. */
+@import "./primitives.css";
+@import "./color.css";
+@import "./spacing.css";
+@import "./radius.css";
+@import "./elevation.css";
+@import "./type.css";
+@import "./layout.css";
+@import "./motion.css";
+@import "./decor.css";

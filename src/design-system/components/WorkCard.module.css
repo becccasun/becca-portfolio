@@ -1,0 +1,6 @@
+/* Work card: home .work */
+.work { display: flex; flex-direction: column; min-width: 0; }
+.thumb { display: block; width: 100%; aspect-ratio: 563 / 363; object-fit: cover; margin-bottom: 15px; background: var(--panel); }
+.kicker { font-size: var(--fs-14); line-height: 16.8px; letter-spacing: 0; color: var(--tag); }
+.title { font-size: var(--fs-28); line-height: 33.6px; letter-spacing: var(--ls-28); color: var(--dim); margin-top: var(--space-2); }
+.blurb { font-size: var(--fs-14); line-height: 16.8px; letter-spacing: 0; font-weight: var(--weight-light); color: var(--tag); margin-top: 3px; }

@@ -1,0 +1,23 @@
+:root {
+  /* ── Type scale (size / line height / tracking) ──────────── */
+  --fs-11: 11px;  --lh-11: 14px;
+  --fs-12: 12px;  --lh-12: 16px;
+  --fs-13: 13px;  --lh-13: 18px;
+  --fs-14: 14px;  --lh-14: 20px;
+  --fs-15: 15px;  --lh-15: 22px;
+  --fs-16: 16px;  --lh-16: 23.2px; --ls-16: -0.32px;
+  --fs-17: 17px;  --lh-17: 27px;   --ls-17: -0.17px;
+  --fs-20: 20px;  --lh-20: 28px;   --ls-20: -0.4px;
+  --fs-24: 24px;  --lh-24: 31px;   --ls-24: -0.48px;
+  --fs-28: 28px;  --lh-28: 34px;   --ls-28: -0.56px;
+  --fs-30: 30px;  --lh-30: 39px;   --ls-30: -0.6px;
+  --fs-32: 32px;  --lh-32: 38px;   --ls-32: -0.8px;
+  --fs-40: 40px;  --lh-40: 48px;   --ls-40: -1.2px;
+  --fs-56: 56px;  --lh-56: 64px;   --ls-56: -1.4px;
+  --fs-60: 60px;  --lh-60: 72px;   --ls-60: -1.2px;
+  --tracking-eyebrow: 0.08em;
+  --weight-light: 300;
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+}

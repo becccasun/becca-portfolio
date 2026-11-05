@@ -1,0 +1,4 @@
+/* Tag: solid is blocks .optTag, overlay is blocks .compareTag */
+.tag { display: inline-flex; align-items: center; font-weight: var(--weight-medium); letter-spacing: 0; white-space: nowrap; }
+.solid { font-size: var(--fs-11); padding: var(--space-2) var(--space-6); border-radius: var(--radius-4); background: var(--ink); color: var(--on-dark); }
+.overlay { font-size: var(--fs-12); font-weight: var(--weight-regular); padding: 3px var(--space-8); border-radius: var(--radius-6); background: var(--white-a90); color: var(--ink); }

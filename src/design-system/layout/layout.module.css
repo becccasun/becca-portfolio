@@ -1,0 +1,18 @@
+/* Layout scaffolding. Widths, gutters and the header offset are layout tokens. */
+.page { width: min(var(--page), calc(100% - 2 * var(--gutter))); margin: 0 auto; padding: calc(var(--header-h) + var(--space-72)) 0 var(--space-120); }
+.col { width: min(var(--col), calc(100% - 2 * var(--gutter))); }
+.wide { width: min(var(--wide), calc(100% - 2 * var(--gutter))); }
+
+.section { display: flex; flex-direction: column; gap: var(--space-24); padding: var(--space-48) 0; }
+.divider { border-top: 1px solid var(--line); }
+
+.stack { display: flex; flex-direction: column; min-width: 0; }
+.row { flex-direction: row; }
+.wrap { flex-wrap: wrap; }
+
+.grid { display: grid; min-width: 0; }
+
+@media (max-width: 720px) {
+  .page { padding-top: calc(var(--header-h) + var(--space-40)); padding-bottom: var(--space-72); }
+  .collapse { grid-template-columns: 1fr !important; }
+}

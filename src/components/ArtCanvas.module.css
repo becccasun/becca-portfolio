@@ -1,0 +1,21 @@
+/* The slot a canvas turns in: no box, no fill, so the canvas stands on the column itself.
+   The drawing surface overhangs the slot by the furthest any corner can reach in any pose (see
+   canvasFit.ts), and the same room is kept clear above and below, so a turning canvas is never cut off;
+   it ignores the pointer, and drags land on the slot. Horizontal drags turn it; vertical swipes on
+   touch still scroll the page. */
+.stage {
+  position: relative; margin: calc(var(--space-8) + var(--room, 0%)) 0 var(--room, 0%);
+  cursor: grab; touch-action: pan-y; user-select: none; -webkit-user-select: none; outline: none;
+}
+.stage[data-dragging] { cursor: grabbing; }
+.stage:focus-visible { box-shadow: var(--shadow-selected); border-radius: var(--radius-6); }
+.stage canvas {
+  position: absolute; top: calc(-1 * var(--oy)); left: calc(-1 * var(--ox));
+  width: calc(100% + 2 * var(--ox)); height: calc(100% + 2 * var(--oy)); display: block; pointer-events: none;
+  opacity: 0; transition: opacity var(--dur-base) var(--ease-out);
+}
+.stage[data-ready] canvas { opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .stage canvas { transition: none; }
+}

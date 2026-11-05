@@ -75,6 +75,8 @@
 .sheetCreds { list-style: none; margin-top: 36px; padding-top: 20px; border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 12px; }
 .sheetCreds li { display: flex; align-items: center; gap: 12px; font-size: 16px; line-height: 22px; color: var(--ink); animation: sheetIn 0.6s var(--ease-out) 0.18s both; }
 .sheetYc { display: inline-grid; place-items: center; width: 16px; height: 16px; margin-left: -4px; border-radius: 3px; background: #f26522; color: #fff; font-size: 11px; line-height: 1; font-weight: 600; }
+/* first school entry: a rule above it, the work/school divider */
+.sheetSplit { margin-top: 6px; padding-top: 18px; border-top: 1px solid var(--line); }
 .sheetYears { margin-left: auto; color: var(--muted); font-variant-numeric: tabular-nums; font-size: 14px; }
 .sheetCreds img { width: 24px; height: 24px; border-radius: 6px; object-fit: cover; box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08); }
 .sheet a:active { opacity: 0.55; }

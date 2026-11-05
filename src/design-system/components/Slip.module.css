@@ -1,0 +1,4 @@
+/* Slip: Notes .slip */
+.slip { width: min(100%, 264px); margin: 0; padding: var(--space-12) var(--space-16) 9px; background: var(--paper-slip); text-align: center; border-radius: 1px; box-shadow: var(--shadow-slip); }
+.slip blockquote { margin: 0; font-size: var(--fs-13); line-height: var(--lh-13); letter-spacing: 0.1px; color: var(--ink); overflow-wrap: anywhere; }
+.slip figcaption { margin-top: var(--space-6); font-size: var(--fs-11); line-height: var(--lh-11); letter-spacing: 0.6px; text-transform: uppercase; color: var(--tag); }

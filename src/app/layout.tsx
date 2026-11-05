@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Figtree } from "next/font/google";
+import "@/design-system/tokens/index.css";
 import "./globals.css";
 import Footer from "@/components/Footer";
 import Chat from "@/components/Chat";

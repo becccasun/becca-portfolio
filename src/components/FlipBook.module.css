@@ -1,0 +1,63 @@
+/* ══ Flip book ═══════════════════════════════════════════
+   The open spread sits centred on a soft table. Closed on the cover, the book slides
+   right-of-spine into the centre; closed on the back, the other way. */
+.stage {
+  position: relative; aspect-ratio: 4 / 3; margin-top: var(--space-8);
+  border-radius: var(--radius-6); background: var(--panel); overflow: hidden;
+  user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent;
+}
+
+.book {
+  --turn: 0.9s;
+  position: absolute; left: 7%; top: 50%; width: 86%; aspect-ratio: 1280 / 909;
+  translate: 0 -50%; perspective: 2600px;
+  transition: translate var(--turn) var(--ease-out);
+}
+.book[data-at="front"] { translate: -25% -50%; }
+.book[data-at="back"] { translate: 25% -50%; }
+
+/* The paper block under the leaves: its footprint follows what's open, with a few page edges and a low shadow.
+   Closed, the block itself narrows to one page (rather than being clipped), so its shadow stays soft on every side. */
+.base {
+  position: absolute; top: 0; bottom: 0; left: 0; right: 0; border-radius: 2px; background: var(--paper-book);
+  box-shadow: var(--shadow-book);
+  transition: left var(--turn) var(--ease-out), right var(--turn) var(--ease-out);
+}
+.book[data-at="front"] .base { left: 50%; }
+.book[data-at="back"] .base { right: 50%; }
+
+/* One sheet: hinged on the spine, front face on the right, back face on the left once turned */
+.leaf {
+  position: absolute; top: 0; left: 50%; width: 50%; height: 100%;
+  transform-origin: left center; transform-style: preserve-3d;
+  transition: transform var(--turn) cubic-bezier(0.45, 0.05, 0.25, 1);
+}
+.leaf[data-flipped] { transform: rotateY(-180deg); }
+
+.face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; overflow: hidden; background: var(--paper-book); }
+.back { transform: rotateY(180deg); }
+.face img { display: block; width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+
+/* Gutter shade where the page curves into the spine, and a light sweep while a page turns */
+.face::before, .face::after { content: ""; position: absolute; inset: 0; pointer-events: none; }
+.front::before { background: linear-gradient(90deg, var(--black-a15), var(--black-a3) 6%, transparent 14%); }
+.back::before { background: linear-gradient(270deg, var(--black-a15), var(--black-a3) 6%, transparent 14%); }
+.face::after { background: linear-gradient(90deg, var(--black-a18), transparent 70%); opacity: 0; }
+.back::after { background: linear-gradient(270deg, var(--black-a18), transparent 70%); }
+.leaf[data-turning] .face::after { animation: sweep var(--turn) ease-in-out; }
+@keyframes sweep { 50% { opacity: 1; } }
+
+/* Click targets: one per page half, riding with the book */
+.hit {
+  position: absolute; top: 0; height: 100%; width: 50%; z-index: 5000;
+  cursor: pointer; touch-action: manipulation; border-radius: 2px;
+}
+.hitLeft { left: 0; }
+.hitRight { left: 50%; }
+.hit:disabled { cursor: default; }
+.hit:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .book { --turn: 0.01s; }
+  .leaf[data-turning] .face::after { animation: none; }
+}

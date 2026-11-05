@@ -1,0 +1,13 @@
+:root {
+  /* ── Radius ──────────────────────────────────────────────── */
+  --radius-2: 2px;     /* paper: slips, sticky notes */
+  --radius-4: 4px;     /* tags inside cards */
+  --radius-6: 6px;     /* small labels, bars */
+  --radius-8: 8px;     /* tabs, thumbnails, fields */
+  --radius-10: 10px;   /* the link-out button */
+  --radius-12: 12px;   /* wells, option cards, composer */
+  --radius-16: 16px;   /* portraits, large panels */
+  --radius-20: 20px;   /* home panels, phone sheet top */
+  --radius-28: 28px;   /* the works sheet, the chat bar */
+  --radius-full: 999px;
+}

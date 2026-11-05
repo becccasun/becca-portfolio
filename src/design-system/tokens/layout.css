@@ -1,0 +1,18 @@
+:root {
+  /* ── Layout ──────────────────────────────────────────────── */
+  --col: 960px;      /* reading column */
+  --wide: 1040px;
+  --page: 1146px;    /* works grid, case-study layout */
+  --gutter: 16px;    /* side margin on small screens */
+  --header-h: 64px;
+  --break-md: 720px;  /* the one main breakpoint (media queries cannot read vars; use the number) */
+
+  /* ── Layers ──────────────────────────────────────────────── */
+  --z-header-blur: 5;
+  --z-header: 10;
+  --z-frost: 19;
+  --z-mascot: 20;
+  --z-cursor: 50;
+  --z-chat: 60;
+  --z-menu: 70;
+}

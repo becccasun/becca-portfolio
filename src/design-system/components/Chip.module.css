@@ -1,0 +1,9 @@
+/* Chip: Chat .starter */
+.chip {
+  font-family: var(--font-ui); font-size: var(--fs-13); letter-spacing: 0; color: var(--ink);
+  padding: 7px 13px; border-radius: var(--radius-full); background: var(--white-a90);
+  border: 1px solid var(--line-strong); box-shadow: var(--shadow-chip);
+  transition: background var(--dur-fast), transform 0.3s var(--spring);
+}
+.chip:hover { background: var(--bg); transform: translateY(-1px); }
+.chip:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }

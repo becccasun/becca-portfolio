@@ -1,0 +1,14 @@
+:root {
+  /* ── Elevation ───────────────────────────────────────────── */
+  --shadow-rim: 0 0 0 1px var(--line);
+  --shadow-rim-inset: inset 0 0 0 1px var(--line);
+  --shadow-selected: inset 0 0 0 1.5px var(--line-selected);
+  --shadow-button: inset 0 1px 0 var(--white-a12), 0 1px 2px var(--black-a20), 0 4px 10px var(--black-a8);
+  --shadow-chip: 0 2px 8px var(--black-a6);
+  --shadow-card: 0 6px 24px var(--black-a8);
+  --shadow-pop: 0 8px 24px var(--black-a20);
+  --shadow-cursor: 0 4px 16px var(--black-a25);
+  --shadow-browser: 0 0 0 1px var(--line), 0 12px 40px var(--black-a6);
+  --shadow-slip: 0 0 0 1px var(--black-a5), 0 1px 2px var(--black-a6), 0 6px 14px -8px var(--black-a18);
+  --shadow-sheet: 0 -1px 0 var(--line), 0 -18px 50px rgba(0, 0, 0, 0.07);
+}

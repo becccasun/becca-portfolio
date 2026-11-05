@@ -1,0 +1,12 @@
+/* Decor: paper surfaces and grain. Values come from tokens/decor.css. */
+.paper { position: relative; isolation: isolate; padding: var(--space-16); }
+.paper > :not(.grain) { position: relative; z-index: 1; }
+.slip { background: var(--paper-slip); border-radius: 1px; box-shadow: var(--shadow-slip); }
+.sticky { background: var(--paper-sticky); color: var(--sticky-ink); border-radius: var(--radius-2); box-shadow: var(--shadow-sticky); padding: var(--space-16) var(--space-16) 18px; }
+.letter { background: var(--paper-letter); border-radius: var(--radius-20); padding: var(--space-72); }
+.placeholder { width: 88px; height: 104px; border-radius: var(--radius-4); padding: 0; background: repeating-linear-gradient(45deg, var(--stripe-a) 0 6px, var(--stripe-b) 6px 12px); outline: var(--edge-dashed); outline-offset: -2px; }
+.stamp { background: var(--paper-stamp); border-radius: var(--radius-2); }
+.dark { background: var(--paper-dark); color: var(--on-dark); border-radius: var(--radius-2); }
+
+.grain { position: absolute; inset: 0; pointer-events: none; opacity: var(--grain-alpha); mix-blend-mode: multiply; border-radius: inherit; }
+.dark .grain { mix-blend-mode: screen; }

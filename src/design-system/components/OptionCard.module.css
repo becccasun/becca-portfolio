@@ -1,0 +1,5 @@
+/* Option card: blocks .decision */
+.option { padding: var(--space-16); border-radius: var(--radius-12); box-shadow: var(--shadow-rim-inset); display: flex; flex-direction: column; gap: var(--space-6); }
+.chosen { box-shadow: var(--shadow-selected); }
+.name { font-size: var(--fs-15); font-weight: var(--weight-medium); display: flex; align-items: center; gap: var(--space-8); }
+.note { font-size: var(--fs-14); line-height: var(--lh-14); color: var(--soft); }

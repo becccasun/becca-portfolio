@@ -1,0 +1,11 @@
+/* Icon button: Slideshow arrows, chat close */
+.iconButton {
+  display: inline-grid; place-items: center; flex: none;
+  width: 32px; height: 32px; border-radius: var(--radius-8);
+  box-shadow: var(--shadow-rim-inset); color: var(--ink);
+  transition: background var(--dur-fast), color var(--dur-fast);
+}
+.iconButton:hover { background: var(--panel); }
+.iconButton:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.onDark { width: 34px; height: 34px; border-radius: var(--radius-full); box-shadow: none; color: var(--on-dark-muted); }
+.onDark:hover { background: var(--white-a12); color: var(--on-dark); }
