@@ -71,8 +71,9 @@
 .bentoRow > .card { min-width: 0; }
 .bentoRow > .card > :last-child { margin-top: auto; }
 .bentoRow > .card > :nth-last-child(2) { margin-bottom: var(--space-4); }
-/* the message board stays one centred column when it fills the board */
-.board[data-expanded="notes"] .flow { display: flex; }
+/* The message board fills the open column: the composer stays centred, the slips spread into rows.
+   (stretch undoes the grid's align-items: start, which shrank the board to one slip wide) */
+.board[data-expanded="notes"] .flow { display: flex; align-items: stretch; }
 
 /* Cards: flat by default; the ones with a link lift */
 .card {

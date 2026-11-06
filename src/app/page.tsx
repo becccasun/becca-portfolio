@@ -4,6 +4,7 @@ import HeroCanvas from "@/components/HeroCanvas";
 // Stamps are set aside for now (StampRow + Stamp still in components/); the hero is the zine field.
 import ZineField from "@/components/ZineField";
 import ComingSoonCard from "@/components/ComingSoonCard";
+import HoverClip from "@/components/HoverClip";
 import Reveal from "@/components/Reveal";
 import s from "./page.module.css";
 import { withBase } from "@/lib/base";
@@ -41,7 +42,7 @@ export default function Home() {
           {works.map((w) => {
             const inner = (
               <>
-                {w.image ? <img src={withBase(w.image)} alt="" className={s.workThumb} style={w.fit ? { objectFit: w.fit, background: w.bg, padding: w.pad, boxSizing: "border-box" } : undefined} /> : <div className={s.workThumb} aria-hidden />}
+                {w.image && w.video ? <HoverClip src={w.image} clip={w.video} alt="" className={s.workThumb} /> : w.image ? <img src={withBase(w.image)} alt="" className={s.workThumb} style={w.fit ? { objectFit: w.fit, background: w.bg, padding: w.pad, boxSizing: "border-box" } : undefined} /> : <div className={s.workThumb} aria-hidden />}
                 {w.kicker && <p className={s.workKicker}>{w.kicker}</p>}
                 <h2 className={s.workTitle}>{w.title}</h2>
                 {w.blurb && <p className={s.workBlurb}>{w.blurb}</p>}

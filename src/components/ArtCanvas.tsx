@@ -11,8 +11,8 @@ import s from "./ArtCanvas.module.css";
 // long: the canvas's longer side in inches; depth: its profile in inches.
 export default function ArtCanvas({ src, w, h, long, depth, label }: { src: string; w: number; h: number; long: number; depth: number; label: string }) {
   const host = useRef<HTMLDivElement>(null);
-  // Each canvas starts at its own angle so the column isn't turning in lockstep
-  const pose = useRef<Pose>({ yaw: -0.38 - ([...src].reduce((a, c) => a + c.charCodeAt(0), 0) % 7) * 0.5, pitch: 0.1 });
+  // Every canvas starts painting-side out, each a few degrees apart so the column isn't turning in lockstep
+  const pose = useRef<Pose>({ yaw: -0.38 + (([...src].reduce((a, c) => a + c.charCodeAt(0), 0) % 7) - 3) * 0.08, pitch: 0.1 });
   const [ready, setReady] = useState(false);
   const aspect = w / h;
   // Room the canvas can swing into: the drawing surface overhangs the slot by this much, and the card
