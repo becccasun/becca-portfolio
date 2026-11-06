@@ -8,7 +8,7 @@ import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment
 import { FOV, MAX_PITCH, canvasFit } from "./canvasFit";
 
 export type CanvasSpec = { src: string; aspect: number; long: number; depth: number };
-export type Pose = { yaw: number; pitch: number };
+export type Pose = { yaw: number; pitch: number; fresh?: boolean }; // fresh: not placed yet, start it in the idle sway
 
 const THREADS_PER_IN = 30;
 const TILE_THREADS = 16; // threads per texture tile, each way
@@ -272,26 +272,51 @@ export function mountCanvas(host: HTMLElement, spec: CanvasSpec, pose: Pose, onR
     renderer.render(scene, camera);
   }
 
-  // Turns on its own while on screen. A drag takes over (a flick carries on and slows down); a moment
-  // after letting go it eases back into the slow turn, in the direction it was last sent. Scrolling is left alone.
-  const AUTO = 0.38; // rad/s, about one turn every 16 seconds
+  // Left alone, the canvas sways gently around its front: a slow pan left and right with a little tilt,
+  // never far enough to show the back. A drag can turn it all the way round (a flick carries on and slows
+  // down); a moment after letting go a spring pulls it back to the front, the short way round.
+  // Scrolling is left alone.
+  const SWAY = 0.32; // rad, about 18° either side of front: the sides show, the back never does
+  const SWAY_HZ = 1 / 7; // one full sway every 7 seconds
+  const TILT = 0.05; // rad of up/down nod on top of the resting tilt
   const REST_PITCH = 0.1;
-  let raf = 0, dragging = false, last = { x: 0, y: 0, t: 0 }, vel = reduced ? 0 : AUTO, dir = 1;
-  let lastFrame = 0, released = -Infinity, onScreen = false;
+  const HOLD_MS = 1200; // how long a turned canvas stays where it was left before springing back
+  const K = 4, ZETA = 0.8; // spring stiffness (rad/s) and damping: a soft return with a hint of overshoot
+  const TAU = Math.PI * 2;
+  // each canvas sways on its own phase so the column isn't moving in lockstep
+  const phase = ([...spec.src].reduce((a, c) => a + c.charCodeAt(0), 0) % 97) / 97 * TAU;
+  const target = (now: number) => {
+    if (reduced) return { yaw: 0, pitch: REST_PITCH };
+    const a = (now / 1000) * SWAY_HZ * TAU + phase;
+    return { yaw: SWAY * Math.sin(a), pitch: REST_PITCH + TILT * Math.sin(a * 0.6 + 1.3) };
+  };
+  let raf = 0, dragging = false, last = { x: 0, y: 0, t: 0 }, vel = 0, pvel = 0;
+  let lastFrame = 0, released = -Infinity, onScreen = false, settled = false;
+  // A fresh canvas starts already in its sway, painting side out
+  if (pose.fresh) { Object.assign(pose, target(performance.now())); pose.fresh = false; }
   const loop = (now: number) => {
     raf = 0;
     const dt = Math.min(0.05, lastFrame ? (now - lastFrame) / 1000 : 0);
     lastFrame = now;
+    settled = false;
     if (!dragging) {
-      if (reduced) vel = 0;
-      else if (now - released > 1200) {
-        vel += (AUTO * dir - vel) * Math.min(1, dt * 1.2);
-        pose.pitch += (REST_PITCH - pose.pitch) * Math.min(1, dt * 1.2);
-      } else vel *= Math.exp(-dt * 2.5);
+      if (now - released < HOLD_MS) {
+        vel *= Math.exp(-dt * 2.5);
+        pvel = 0;
+      } else {
+        const g = target(now);
+        // after a spin, head for the nearest copy of the front rather than unwinding every turn
+        // (dropping whole turns from the angle changes nothing on screen)
+        pose.yaw -= TAU * Math.round((pose.yaw - g.yaw) / TAU);
+        vel += (K * K * (g.yaw - pose.yaw) - 2 * ZETA * K * vel) * dt;
+        pvel += (K * K * (g.pitch - pose.pitch) - 2 * ZETA * K * pvel) * dt;
+        settled = reduced && Math.abs(g.yaw - pose.yaw) < 0.001 && Math.abs(vel) < 0.001 && Math.abs(g.pitch - pose.pitch) < 0.001;
+      }
       pose.yaw += vel * dt;
+      pose.pitch += pvel * dt;
     }
     render();
-    if (onScreen && (dragging || !reduced)) raf = requestAnimationFrame(loop);
+    if (onScreen && !settled) raf = requestAnimationFrame(loop);
     else lastFrame = 0;
   };
   const kick = () => { if (!raf) raf = requestAnimationFrame(loop); };
@@ -302,7 +327,7 @@ export function mountCanvas(host: HTMLElement, spec: CanvasSpec, pose: Pose, onR
 
   const onDown = (e: PointerEvent) => {
     if (e.button !== 0) return;
-    dragging = true; vel = 0;
+    dragging = true; vel = 0; pvel = 0;
     last = { x: e.clientX, y: e.clientY, t: performance.now() };
     host.setPointerCapture(e.pointerId);
     host.dataset.dragging = "";
@@ -315,7 +340,6 @@ export function mountCanvas(host: HTMLElement, spec: CanvasSpec, pose: Pose, onR
     pose.pitch = Math.max(-MAX_PITCH, Math.min(MAX_PITCH, pose.pitch + dy));
     const now = performance.now(), dt = Math.max(8, now - last.t) / 1000;
     vel = dx / dt;
-    if (Math.abs(dx) > 0.002) dir = Math.sign(dx);
     last = { x: e.clientX, y: e.clientY, t: now };
   };
   const onUp = () => {

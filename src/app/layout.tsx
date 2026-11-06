@@ -35,7 +35,7 @@ const PERSON = {
   url: "https://www.rebeccasun.me",
   image: "https://www.rebeccasun.me/opengraph-image.jpg",
   alumniOf: { "@type": "CollegeOrUniversity", name: "University of Michigan" },
-  sameAs: ["https://www.linkedin.com/in/beccasun/"],
+  sameAs: ["https://www.linkedin.com/in/beccasun/", "https://github.com/becccasun", "https://x.com/beqscreatives"],
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

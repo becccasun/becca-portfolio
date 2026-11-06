@@ -35,6 +35,7 @@ export const playItems: PlayItem[] = [
   { column: "digital", date: "2024", src: "/play/old-portfolio.jpg", w: 1200, h: 627, title: "An earlier portfolio", note: "Web design" }, // guess
 
   // Arts and Crafts: stretched canvases, newest first. Sizes are estimates until Rebecca measures them.
+  { column: "art", date: "2026", src: "/play/canvas/mountain.jpg", w: 1000, h: 1470, title: "Snowy mountain", note: "Oil on canvas", canvas: { long: 7, depth: 0.625 } },
   { column: "art", date: "2026", src: "/play/canvas/space.jpg?v=2", w: 1000, h: 1400, title: "Shooting star", note: "Oil on canvas", canvas: { long: 7, depth: 0.625 } },
   { column: "art", date: "2026", src: "/play/canvas/lily-pads.jpg?v=2", w: 725, h: 1042, title: "Lily pads", note: "Oil on canvas", canvas: { long: 7, depth: 0.625 } },
   { column: "art", date: "2026", src: "/play/canvas/hills.jpg", w: 782, h: 1114, title: "Green hills", note: "Oil on canvas", canvas: { long: 7, depth: 0.625 } },
