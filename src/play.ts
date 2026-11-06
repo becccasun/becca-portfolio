@@ -1,5 +1,5 @@
 // Play board: a message board (Notes.tsx) and two columns of cards. w and h are the media's own pixel size, so each card
-// holds its proportions before load. type defaults to "image"; videos autoplay muted on loop.
+// holds its proportions before load. type defaults to "image"; videos autoplay muted on loop (give them a poster so they show at once).
 // A card with an href opens it in a new tab and lifts on hover; without one it stays flat.
 export type PlayColumnId = "notes" | "art" | "digital";
 
@@ -9,6 +9,7 @@ export type PlayItem = {
   date: string; // display string; a month or just a year is fine
   href?: string;
   preview?: string; // a muted clip that plays over the still image while the card is hovered
+  poster?: string; // for type "video": its first frame, shown at once while the clip loads
   book?: { slug: string; pages: number }; // a flip book from public/play/books/<slug>, shown instead of src
   // A painting shown as a 3D stretched canvas. long = its longer side in inches, depth = its profile.
   // Canvas cards show only the date and medium; title is kept as the alt text.
@@ -29,8 +30,8 @@ export const playItems: PlayItem[] = [
   { column: "digital", date: "2024", src: "/play/books/map-of-the-mind/001.webp", w: 1280, h: 909, title: "Map of the Mind", note: "Editorial Design Journal No. 1, made in InDesign in 2024", book: { slug: "map-of-the-mind", pages: 106 } },
   { column: "digital", date: "2025", src: "/play/books/agree-to-disagree/001.webp", w: 1280, h: 909, title: "Agree to Disagree", note: "Editorial Design Journal No. 2, made in InDesign in 2025", book: { slug: "agree-to-disagree", pages: 98 } },
   { column: "digital", date: "2026", src: "/play/kaleidoscope.jpg?v=2", w: 1600, h: 1135, title: "Kaleidoscope Glyph", note: "Personal project, react native" },
-  { column: "digital", date: "Oct 2026", src: "/play/rivet-recap.mp4", w: 960, h: 592, type: "video", title: "Rivet", note: "Rivet at SOON Hackathon. First place overall: prompt to hardware design in seconds." },
-  { column: "digital", date: "2026", src: "/play/touchdesigner.mp4", w: 960, h: 624, type: "video", title: "Hand tracking", note: "TouchDesigner + MediaPipe" },
+  { column: "digital", date: "Oct 2026", src: "/play/rivet-recap.mp4", poster: "/play/rivet-recap-poster.jpg", w: 960, h: 592, type: "video", title: "Rivet", note: "Rivet at SOON Hackathon. First place overall: prompt to hardware design in seconds." },
+  { column: "digital", date: "2026", src: "/play/touchdesigner.mp4", poster: "/play/touchdesigner-poster.jpg", w: 960, h: 624, type: "video", title: "Hand tracking", note: "TouchDesigner + MediaPipe" },
   { column: "digital", date: "Sep 2025", src: "/play/mobilens.jpg", w: 1252, h: 1054, title: "MobiLens", note: "MobiLens at MHacks. 2x winner: AR glasses for accessible navigation." },
   { column: "digital", date: "2024", src: "/play/old-portfolio.jpg", w: 1200, h: 627, title: "An earlier portfolio", note: "Web design" }, // guess
 

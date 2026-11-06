@@ -15,7 +15,14 @@
   opacity: 0; transition: opacity var(--dur-base) var(--ease-out);
 }
 .stage[data-ready] canvas { opacity: 1; }
+/* The flat stand-in: the painting where the front face sits at rest. It stays put under the fading-in canvas,
+   then drops out once the canvas is fully opaque, so it never peeks out from behind a turned canvas. */
+.poster {
+  position: absolute; pointer-events: none; /* size and place: inline, from canvasFit's fill */
+  box-shadow: 0 1px 2px var(--black-a8), 0 6px 16px var(--black-a8);
+}
+.stage[data-ready] .poster { visibility: hidden; transition: visibility 0s linear var(--dur-base); }
 
 @media (prefers-reduced-motion: reduce) {
-  .stage canvas { transition: none; }
+  .stage canvas, .stage[data-ready] .poster { transition: none; }
 }

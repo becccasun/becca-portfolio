@@ -215,12 +215,12 @@ export default function FlipBook({ slug, pages, title }: { slug: string; pages: 
             <div key={j} ref={leafRef(j)} className={s.leaf} aria-hidden>
               <div className={`${s.face} ${s.front}`}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={src(front)} alt="" loading={eager ? "eager" : "lazy"} decoding="async" draggable={false} />
+                <img src={src(front)} alt="" loading={eager ? "eager" : "lazy"} decoding="async" draggable={false} suppressHydrationWarning />
               </div>
               <div className={`${s.face} ${s.back}`}>
                 {back <= pages && (
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img src={src(back)} alt="" loading={eager ? "eager" : "lazy"} decoding="async" draggable={false} />
+                  <img src={src(back)} alt="" loading={eager ? "eager" : "lazy"} decoding="async" draggable={false} suppressHydrationWarning />
                 )}
               </div>
             </div>

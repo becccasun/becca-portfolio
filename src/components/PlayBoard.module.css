@@ -136,6 +136,22 @@
   .panel { display: flex; flex-direction: column; gap: var(--space-14); padding-top: 18px; }
 }
 
+/* ── Loading in ───────────────────────────────────────────────────────────
+   Everything on the board is in the first HTML, so the page is there at once and settles in: the intro and
+   columns rise in one after another, and each picture fades up as it arrives (the layout script in
+   layout.tsx stamps data-loaded) instead of popping in. Without scripting, images just show. */
+@keyframes rise { from { opacity: 0; translate: 0 10px; } }
+.board > .intro, .board > .colWrap, .mobileIntro, .tabs, .panel { animation: rise 0.7s var(--ease-out) backwards; }
+.board > :nth-child(2), .tabs { animation-delay: 0.06s; }
+.board > :nth-child(3), .panel { animation-delay: 0.12s; }
+.board > :nth-child(4) { animation-delay: 0.18s; }
+/* once in, columns that come back (closing an expanded column) don't replay it */
+.board[data-entered] > *, .mobile[data-entered] > * { animation: none; }
+:global(html.js) .board img, :global(html.js) .mobile img { opacity: 0; transition: opacity 0.6s var(--ease-out); }
+:global(html.js) .board img[data-loaded], :global(html.js) .mobile img[data-loaded] { opacity: 1; }
+
 @media (prefers-reduced-motion: reduce) {
   .linked, .grip, .pill { transition: none; }
+  .board > *, .mobile > * { animation: none; }
+  :global(html.js) .board img, :global(html.js) .mobile img { transition: none; }
 }

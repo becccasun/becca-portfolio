@@ -40,10 +40,19 @@ const PERSON = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={sans.variable}>
+    // suppressHydrationWarning: the inline script below adds the "js" class before React loads
+    <html lang="en" className={sans.variable} suppressHydrationWarning>
       {/* Browser extensions (Grammarly, etc.) stamp attributes onto <body> before React
           loads; this ignores attribute differences on this one element only. */}
       <body suppressHydrationWarning>
+        {/* Runs before any image is parsed. Marks the page as scripted (so styles may hide an image until it
+            arrives, knowing something will show it) and stamps each image inside a [data-img-fade] area data-loaded
+            the moment it lands or fails, even before React has loaded (those images set suppressHydrationWarning). Load events don't bubble (and never reach window), so this listens on document in the capture phase. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `document.documentElement.classList.add("js");function m(e){var t=e.target;if(t&&t.tagName==="IMG"&&t.closest("[data-img-fade]"))t.setAttribute("data-loaded","")}document.addEventListener("load",m,true);document.addEventListener("error",m,true);`,
+          }}
+        />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(PERSON) }} />
         {/* Pages link with plain <a>, so each click is a full load. Hovering a link (or
             pressing it) fetches its HTML ahead of time, so the page transition can start

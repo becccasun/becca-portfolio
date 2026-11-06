@@ -49,7 +49,7 @@ export default function HoverClip({ src, clip, alt, className, style }: { src: s
   return (
     <div ref={box} className={`${className ?? ""} ${s.box}`} style={style} data-playing={playing || undefined}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={withBase(src)} alt={alt} loading="lazy" />
+      <img src={withBase(src)} alt={alt} loading="lazy" suppressHydrationWarning />
       <video ref={video} className={s.clip} src={load ? withBase(clip) : undefined} muted loop playsInline preload="none" aria-hidden />
     </div>
   );

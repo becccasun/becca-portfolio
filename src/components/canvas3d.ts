@@ -8,7 +8,7 @@ import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment
 import { FOV, MAX_PITCH, canvasFit } from "./canvasFit";
 
 export type CanvasSpec = { src: string; aspect: number; long: number; depth: number };
-export type Pose = { yaw: number; pitch: number; fresh?: boolean }; // fresh: not placed yet, start it in the idle sway
+export type Pose = { yaw: number; pitch: number; fresh?: boolean }; // fresh: never shown yet, so it starts front-on and eases into the sway
 
 const THREADS_PER_IN = 30;
 const TILE_THREADS = 16; // threads per texture tile, each way
@@ -239,6 +239,7 @@ export function mountCanvas(host: HTMLElement, spec: CanvasSpec, pose: Pose, onR
     scene.add(model.group);
     fit();
     render();
+    if (rampFrom === Infinity) rampFrom = performance.now();
     onReady();
   });
 
@@ -285,15 +286,20 @@ export function mountCanvas(host: HTMLElement, spec: CanvasSpec, pose: Pose, onR
   const TAU = Math.PI * 2;
   // each canvas sways on its own phase so the column isn't moving in lockstep
   const phase = ([...spec.src].reduce((a, c) => a + c.charCodeAt(0), 0) % 97) / 97 * TAU;
+  // A fresh canvas holds front-on (matching the flat stand-in it replaces) until it has faded in, then eases
+  // into the sway over a couple of seconds; one coming back into view carries on swaying from where it was.
+  const fresh = !!pose.fresh;
+  pose.fresh = false;
+  let rampFrom = fresh ? Infinity : -Infinity;
+  const RAMP_MS = 2500;
   const target = (now: number) => {
     if (reduced) return { yaw: 0, pitch: REST_PITCH };
+    const r = Math.min(1, Math.max(0, (now - rampFrom - 300) / RAMP_MS)), k = r * r * (3 - 2 * r);
     const a = (now / 1000) * SWAY_HZ * TAU + phase;
-    return { yaw: SWAY * Math.sin(a), pitch: REST_PITCH + TILT * Math.sin(a * 0.6 + 1.3) };
+    return { yaw: k * SWAY * Math.sin(a), pitch: k * (REST_PITCH + TILT * Math.sin(a * 0.6 + 1.3)) };
   };
   let raf = 0, dragging = false, last = { x: 0, y: 0, t: 0 }, vel = 0, pvel = 0;
   let lastFrame = 0, released = -Infinity, onScreen = false, settled = false;
-  // A fresh canvas starts already in its sway, painting side out
-  if (pose.fresh) { Object.assign(pose, target(performance.now())); pose.fresh = false; }
   const loop = (now: number) => {
     raf = 0;
     const dt = Math.min(0.05, lastFrame ? (now - lastFrame) / 1000 : 0);

@@ -8,6 +8,7 @@ import Notes from "./Notes";
 import FlipBook from "./FlipBook";
 import ArtCanvas from "./ArtCanvas";
 import HoverClip from "./HoverClip";
+import LoopClip from "./LoopClip";
 import s from "./PlayBoard.module.css";
 
 // Starting widths: Digital Explorations is the widest (and, as the last column, also takes any spare room)
@@ -45,10 +46,10 @@ function Clock() {
 function Card({ it, style }: { it: PlayItem; style?: React.CSSProperties }) {
   const media =
     it.type === "video" ? (
-      <video src={withBase(it.src)} autoPlay muted loop playsInline />
+      it.poster ? <LoopClip src={it.src} poster={it.poster} alt={it.title} /> : <video src={withBase(it.src)} autoPlay muted loop playsInline />
     ) : (
       // eslint-disable-next-line @next/next/no-img-element
-      <img src={withBase(it.src)} alt={it.title} loading="lazy" />
+      <img src={withBase(it.src)} alt={it.title} loading="lazy" suppressHydrationWarning />
     );
   const inner = (
     <>
@@ -201,6 +202,9 @@ function Divider({ width, reset, onWidth }: { width: number; reset: number; onWi
 export default function PlayBoard() {
   const [col, setCol] = useState<PlayColumnId | null>(null);
   const [widths, setWidths] = useState<Record<PlayColumnId, number>>(DEFAULT_W);
+  // The entrance plays once; after it, columns that remount (closing an expanded one) just appear
+  const [entered, setEntered] = useState(false);
+  useEffect(() => { const id = setTimeout(() => setEntered(true), 1000); return () => clearTimeout(id); }, []);
 
   useEffect(() => {
     setCol(readCol());
@@ -223,7 +227,7 @@ export default function PlayBoard() {
   return (
     <>
       {/* Desktop: the resizable column board */}
-      <div className={s.board} data-expanded={col ?? undefined}>
+      <div className={s.board} data-img-fade data-expanded={col ?? undefined} data-entered={entered || undefined}>
         <aside className={s.intro}>
           <Statement active={col} onPick={(id) => go(id)} />
           <Clock />
@@ -270,7 +274,7 @@ export default function PlayBoard() {
       </div>
 
       {/* Phones: one page-scrolling list behind real tabs, no nested scrollers or drag targets */}
-      <div className={s.mobile}>
+      <div className={s.mobile} data-img-fade data-entered={entered || undefined}>
         <div className={s.mobileIntro}>
           <Statement active={null} onPick={(id) => go(id, true)} />
           <Clock />

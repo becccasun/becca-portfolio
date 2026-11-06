@@ -58,3 +58,8 @@
 @media (max-width: 899px) {
   .body, .name { font-size: var(--fs-16); line-height: 22px; }
 }
+
+/* Notes arrive a moment after the page (they're fetched); they fade up rather than pop in */
+@keyframes slipsIn { from { opacity: 0; translate: 0 6px; } }
+.slips, .empty { animation: slipsIn 0.5s var(--ease-out) backwards; }
+@media (prefers-reduced-motion: reduce) { .slips, .empty { animation: none; } }
