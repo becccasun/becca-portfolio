@@ -15,10 +15,13 @@ export const notesReady = Boolean(KEY);
 
 const headers = { apikey: KEY, "Content-Type": "application/json" };
 
-export async function fetchNotes(): Promise<Note[]> {
+// In the browser: always fresh. On the server (revalidate set): the /play page bakes the notes into its HTML so
+// they're there on first paint, refreshed at most every `revalidate` seconds (a build-time snapshot in the
+// static export), and the browser then quietly fetches the latest.
+export async function fetchNotes(revalidate?: number): Promise<Note[]> {
   const res = await fetch(
     `${API}/rest/v1/notes?select=id,created_at,body,name,from_rebecca&approved=eq.true&order=created_at.desc&limit=200`,
-    { headers, cache: "no-store" },
+    revalidate === undefined ? { headers, cache: "no-store" } : { headers, next: { revalidate } },
   );
   if (!res.ok) throw new Error(`notes ${res.status}`);
   return res.json();

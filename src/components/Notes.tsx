@@ -80,23 +80,26 @@ function Compose() {
   );
 }
 
-export default function Notes() {
-  const [notes, setNotes] = useState<Note[] | null>(null);
+// initial: the notes the page was built with, shown straight away. The browser then fetches the latest and
+// swaps them in quietly; if that fails, the built-in ones stay.
+export default function Notes({ initial }: { initial: Note[] | null }) {
+  const [notes, setNotes] = useState<Note[] | null>(initial);
   const [failed, setFailed] = useState(!notesReady);
+  const [arrived] = useState(!initial); // only notes that turn up after the page get a fade of their own
 
   useEffect(() => {
     if (!notesReady) return;
-    fetchNotes().then(setNotes, () => setFailed(true));
-  }, []);
+    fetchNotes().then(setNotes, () => { if (!initial) setFailed(true); });
+  }, [initial]);
 
   if (failed) return <p className={s.empty}>The message board is taking a nap. Check back soon.</p>;
 
   return (
     <div className={s.board}>
       <Compose />
-      {notes && notes.length === 0 && <p className={s.empty}>No notes yet. Be the first.</p>}
+      {notes && notes.length === 0 && <p className={s.empty} data-arrived={arrived || undefined}>No notes yet. Be the first.</p>}
       {notes && notes.length > 0 && (
-        <div className={s.slips}>
+        <div className={s.slips} data-arrived={arrived || undefined}>
           {notes.map((n) => <Slip key={n.id} n={n} />)}
         </div>
       )}

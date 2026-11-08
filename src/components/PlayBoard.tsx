@@ -3,6 +3,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { flushSync } from "react-dom";
 import type React from "react";
 import { playColumns, playItems, type PlayColumnId, type PlayItem } from "@/play";
+import type { Note } from "@/lib/notes";
 import { withBase } from "@/lib/base";
 import Notes from "./Notes";
 import FlipBook from "./FlipBook";
@@ -199,7 +200,7 @@ function Divider({ width, reset, onWidth }: { width: number; reset: number; onWi
   );
 }
 
-export default function PlayBoard() {
+export default function PlayBoard({ notes }: { notes: Note[] | null }) {
   const [col, setCol] = useState<PlayColumnId | null>(null);
   const [widths, setWidths] = useState<Record<PlayColumnId, number>>(DEFAULT_W);
   // The entrance plays once; after it, columns that remount (closing an expanded one) just appear
@@ -262,7 +263,7 @@ export default function PlayBoard() {
                     <Bento items={playItems.filter((it) => it.column === c.id)} />
                   ) : (
                     <div className={s.flow}>
-                      {c.id === "notes" ? <Notes /> : playItems.filter((it) => it.column === c.id).map((it) => <Card key={it.src} it={it} />)}
+                      {c.id === "notes" ? <Notes initial={notes} /> : playItems.filter((it) => it.column === c.id).map((it) => <Card key={it.src} it={it} />)}
                     </div>
                   )}
                 </div>
@@ -297,7 +298,7 @@ export default function PlayBoard() {
         </div>
         <div id="play-panel" role="tabpanel" aria-labelledby={`tab-${tab}`} className={s.panel}>
           <p className={s.colDesc}>{playColumns.find((c) => c.id === tab)?.description}</p>
-          {tab === "notes" ? <Notes /> : playItems.filter((it) => it.column === tab).map((it) => <Card key={it.src} it={it} />)}
+          {tab === "notes" ? <Notes initial={notes} /> : playItems.filter((it) => it.column === tab).map((it) => <Card key={it.src} it={it} />)}
         </div>
       </div>
     </>
