@@ -6,8 +6,9 @@ import { STATIC_EXPORT } from "@/lib/base";
 // - Vercel Web Analytics: visitors, page views, bounce rate, top pages, referrers, devices.
 //   Turn it on under the project's Analytics tab.
 // - Microsoft Clarity: scroll depth (where people drop off), active time on page, heatmaps
-//   and session recordings. Loads once NEXT_PUBLIC_CLARITY_ID is set in Vercel.
-const CLARITY_ID = process.env.NEXT_PUBLIC_CLARITY_ID;
+//   and session recordings. NEXT_PUBLIC_CLARITY_ID overrides the default.
+// Project "Rebecca Portfolio" on clarity.microsoft.com. The ID is public (it ships in the page).
+const CLARITY_ID = process.env.NEXT_PUBLIC_CLARITY_ID ?? "zc2ilseu2h";
 
 export default function SiteAnalytics() {
   if (STATIC_EXPORT) return null;
