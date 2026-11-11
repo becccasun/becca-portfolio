@@ -8,6 +8,7 @@ import { STATIC_EXPORT } from "@/lib/base";
 // - Microsoft Clarity: scroll depth (where people drop off), active time on page, heatmaps
 //   and session recordings. NEXT_PUBLIC_CLARITY_ID overrides the default.
 // Project "Rebecca Portfolio" on clarity.microsoft.com. The ID is public (it ships in the page).
+// Keep the Script id off "clarity": an element id becomes window.clarity and breaks the tag.
 const CLARITY_ID = process.env.NEXT_PUBLIC_CLARITY_ID ?? "zc2ilseu2h";
 
 export default function SiteAnalytics() {
@@ -16,7 +17,7 @@ export default function SiteAnalytics() {
     <>
       <Analytics />
       {CLARITY_ID && (
-        <Script id="clarity" strategy="afterInteractive">
+        <Script id="ms-clarity-init" strategy="afterInteractive">
           {`(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script",${JSON.stringify(CLARITY_ID)});`}
         </Script>
       )}
