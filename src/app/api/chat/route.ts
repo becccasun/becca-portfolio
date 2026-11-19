@@ -22,7 +22,50 @@ function allowed(ip: string) {
   return true;
 }
 
+const MODEL = "claude-sonnet-5-5";
+
 let client: Anthropic | null = null;
+
+// Health check for the scheduled monitor (.github/workflows/chat-health.yml): asks the API
+// for the chat's model, which costs nothing and fails the same way a real question would
+// when the key is revoked or the model is retired. Says only whether it works and why not.
+// The answer is kept for five minutes so the check can't be used to hammer the API.
+const HEALTH_TTL_MS = 5 * 60 * 1000;
+let health: { at: number; status: number; body: { ok: boolean; reason?: string } } | null = null;
+
+export async function GET() {
+  if (!health || Date.now() - health.at > HEALTH_TTL_MS) {
+    let status = 200;
+    let body: { ok: boolean; reason?: string } = { ok: true };
+    if (!process.env.ANTHROPIC_API_KEY && !process.env.ANTHROPIC_AUTH_TOKEN) {
+      status = 503;
+      body = { ok: false, reason: "no_key" };
+    } else {
+      try {
+        client ??= new Anthropic();
+        await client.models.retrieve(MODEL);
+      } catch (err) {
+        status = 503;
+        body = {
+          ok: false,
+          reason:
+            err instanceof Anthropic.AuthenticationError
+              ? "key_rejected"
+              : err instanceof Anthropic.PermissionDeniedError
+              ? "key_not_permitted"
+              : err instanceof Anthropic.NotFoundError
+              ? "model_not_found"
+              : err instanceof Anthropic.APIError && err.status
+              ? `api_${err.status}`
+              : "unreachable",
+        };
+        console.error("chat health check failed:", err instanceof Anthropic.APIError ? `${err.status} ${err.message}` : err);
+      }
+    }
+    health = { at: Date.now(), status, body };
+  }
+  return Response.json(health.body, { status: health.status, headers: { "cache-control": "no-store" } });
+}
 
 export async function POST(req: Request) {
   const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "local";
@@ -63,7 +106,7 @@ export async function POST(req: Request) {
   }
   client ??= new Anthropic();
   const stream = client.beta.messages.stream({
-    model: "claude-sonnet-5-5",
+    model: MODEL,
     // Answers are kept short by the briefing (about 60 words). This cap only stops a runaway
     // reply, and it also has to hold the model's thinking, which counts toward it: at 400,
     // thinking plus answer hit the cap and replies were cut off mid-list.

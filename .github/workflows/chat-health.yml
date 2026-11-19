@@ -1,0 +1,30 @@
+# Asks the live site whether the chat can still reach Claude, four times a day.
+# If the API key has been revoked or the model retired, this run fails and GitHub emails
+# the repo owner, so a broken chat is found here and not by a visitor.
+# Fix for key_rejected / no_key: create a key at console.anthropic.com, set it as
+# ANTHROPIC_API_KEY in the Vercel project (Production), then redeploy.
+name: Chat health
+
+on:
+  schedule:
+    - cron: "17 */6 * * *"
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ask the live chat if it is working
+        run: |
+          for attempt in 1 2 3; do
+            code=$(curl -sS -m 30 -o reply.json -w '%{http_code}' https://www.rebeccasun.me/api/chat || echo 000)
+            echo "attempt $attempt: HTTP $code $(cat reply.json 2>/dev/null)"
+            if [ "$code" = "200" ] && grep -q '"ok":true' reply.json; then exit 0; fi
+            # a rejected or missing key won't fix itself, so don't wait on it
+            if grep -qE 'key_rejected|key_not_permitted|no_key|model_not_found' reply.json 2>/dev/null; then break; fi
+            sleep 360
+          done
+          echo "::error::The portfolio chat is down: $(cat reply.json 2>/dev/null). See the notes at the top of this workflow."
+          exit 1
